@@ -115,6 +115,23 @@ Current status:
 - `flutter test` passes
 - Android APK build requires Android SDK to be installed/configured on the machine
 
+## Generate Project Tree
+
+Use the helper script when you need a clean project structure for planning,
+handoff, or AI context:
+
+```powershell
+python tools/gen_tree_flutter.py --root . --depth 6 --out nut_tree.txt
+```
+
+For a smaller app-only view that hides platform folders:
+
+```powershell
+python tools/gen_tree_flutter.py --root . --depth 6 --app-only --out nut_tree.txt
+```
+
+Generated `*_tree.txt` files are ignored by git.
+
 ## What Should Be Committed
 
 Commit source and project configuration:

@@ -25,6 +25,8 @@ Thumbs.db
 build/
 coverage/
 **/doc/api/
+*_tree.txt
+nut_tree*.txt
 
 # Android local/generated files
 android/local.properties
