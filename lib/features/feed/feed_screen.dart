@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/widgets/nut_card.dart';
+import '../../shared/widgets/nut_pill.dart';
+import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import '../streak/streak_model.dart';
 import 'feed_post.dart';
@@ -10,60 +15,158 @@ class FeedScreen extends StatefulWidget {
     super.key,
     required this.feedService,
     required this.streak,
+    this.username,
   });
 
   final FeedService feedService;
   final StreakModel streak;
+  final String? username;
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  late List<FeedPost> _posts;
+  List<FeedPost> _posts = [];
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final l10n = context.l10n;
+
+    widget.feedService.ensureMockPosts([
+      FeedPost(
+        id: 'mock-1',
+        username: l10n.feedMockUserSteady,
+        streakDay: 12,
+        content: l10n.feedMockPostSteady,
+        reactionCount: 18,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+      ),
+      FeedPost(
+        id: 'mock-2',
+        username: l10n.feedMockUserDayByDay,
+        streakDay: 4,
+        content: l10n.feedMockPostDayByDay,
+        reactionCount: 9,
+        createdAt: DateTime.now().subtract(const Duration(hours: 2)),
+      ),
+      FeedPost(
+        id: 'mock-3',
+        username: l10n.feedMockUserClearMind,
+        streakDay: 31,
+        content: l10n.feedMockPostClearMind,
+        reactionCount: 42,
+        createdAt: DateTime.now().subtract(const Duration(hours: 5)),
+      ),
+    ]);
+
     _posts = widget.feedService.loadPosts();
   }
 
   void _postProgress() {
-    widget.feedService.createProgressPost(widget.streak.currentStreakDays());
+    final l10n = context.l10n;
+    final streakDay = widget.streak.currentStreakDays();
+
+    widget.feedService.createProgressPost(
+      streakDay,
+      defaultUsername: l10n.feedDefaultUsername,
+      content: l10n.feedProgressContent(streakDay),
+      username: widget.username,
+    );
     setState(() => _posts = widget.feedService.loadPosts());
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Feed')),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(20),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(title: Text(l10n.feedTitle)),
+      body: NutResponsiveListView(
+        children: [
+          _FeedHeader(onPostProgress: _postProgress),
+          for (final post in _posts) ...[
+            const SizedBox(height: NutSpacing.medium),
+            _FeedPostCard(post: post),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _FeedHeader extends StatelessWidget {
+  const _FeedHeader({required this.onPostProgress});
+
+  final VoidCallback onPostProgress;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final palette = context.nutPalette;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SectionHeader(
+                title: l10n.feedHeaderTitle,
+                subtitle: l10n.feedHeaderSubtitle,
+              ),
+            ),
+            NutPill(
+              label: l10n.feedMembersPill,
+              icon: Icons.people_outline,
+            ),
+          ],
+        ),
+        const SizedBox(height: NutSpacing.medium),
+        NutCard(
+          padding: const EdgeInsets.all(14),
+          borderColor: palette.accentBg,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(NutRadius.card),
+            onTap: onPostProgress,
+            child: Row(
               children: [
-                const SectionHeader(
-                  title: 'People are trying with you.',
-                  subtitle:
-                      'Text-first community posts. No login or backend yet.',
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: palette.accentBg,
+                    borderRadius: BorderRadius.circular(NutRadius.pill),
+                  ),
+                  child: Icon(
+                    Icons.trending_up,
+                    color: palette.accentGold,
+                    size: 20,
+                  ),
                 ),
-                const SizedBox(height: 16),
-                FilledButton.icon(
-                  onPressed: _postProgress,
-                  icon: const Icon(Icons.add_card),
-                  label: const Text('Post progress'),
+                const SizedBox(width: NutSpacing.medium),
+                Expanded(
+                  child: Text(
+                    l10n.feedComposePrompt,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: palette.textSecondary,
+                        ),
+                  ),
+                ),
+                const SizedBox(width: NutSpacing.small),
+                IconButton(
+                  onPressed: onPostProgress,
+                  icon: const Icon(Icons.add),
+                  color: palette.accentGold,
+                  tooltip: l10n.feedPostProgress,
                 ),
               ],
-            );
-          }
-
-          return _FeedPostCard(post: _posts[index - 1]);
-        },
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemCount: _posts.length + 1,
-      ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -75,74 +178,110 @@ class _FeedPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = context.l10n;
+    final palette = context.nutPalette;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: post.isProgressCard
-                      ? colorScheme.primary
-                      : colorScheme.primaryContainer,
+    return NutCard(
+      padding: const EdgeInsets.all(16),
+      borderColor: post.isProgressCard ? palette.accentBg : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color:
+                      post.isProgressCard ? palette.accentBg : palette.surface,
+                  borderRadius: BorderRadius.circular(NutRadius.pill),
+                ),
+                child: Center(
                   child: Text(
                     post.username.substring(0, 1).toUpperCase(),
                     style: TextStyle(
                       color: post.isProgressCard
-                          ? colorScheme.onPrimary
-                          : colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w800,
+                          ? palette.accentGold
+                          : palette.textPrimary,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '@${post.username}',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.feedUsername(post.username),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n.feedDayMeta(
+                        _formatCreatedAt(context, post.createdAt),
+                        post.streakDay,
                       ),
-                      Text(
-                        'Day ${post.streakDay}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                      ),
-                    ],
-                  ),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ),
-                if (post.isProgressCard)
-                  Chip(
-                    label: const Text('Progress'),
-                    visualDensity: VisualDensity.compact,
-                    side: BorderSide.none,
-                    backgroundColor: colorScheme.primaryContainer,
-                  ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text(post.content, style: Theme.of(context).textTheme.bodyLarge),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Icon(Icons.favorite_border,
-                    size: 18, color: colorScheme.primary),
-                const SizedBox(width: 6),
-                Text('${post.reactionCount} support'),
-              ],
-            ),
-          ],
-        ),
+              ),
+              if (post.isProgressCard)
+                NutPill(
+                  label: l10n.feedProgressPill,
+                  icon: Icons.trending_up,
+                ),
+            ],
+          ),
+          const SizedBox(height: NutSpacing.medium),
+          Text(post.content, style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(height: NutSpacing.medium),
+          Row(
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                decoration: BoxDecoration(
+                  color: palette.surface,
+                  borderRadius: BorderRadius.circular(NutRadius.pill),
+                  border: Border.all(color: palette.border),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.favorite_border,
+                      size: 16,
+                      color: palette.accentGold,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      l10n.feedReactionSupport(post.reactionCount),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: palette.textSecondary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
+}
+
+String _formatCreatedAt(BuildContext context, DateTime createdAt) {
+  final elapsed = DateTime.now().difference(createdAt);
+  final l10n = context.l10n;
+
+  if (elapsed.inMinutes < 1) return l10n.feedNow;
+  if (elapsed.inMinutes < 60) return l10n.feedMinutesAgo(elapsed.inMinutes);
+  if (elapsed.inHours < 24) return l10n.feedHoursAgo(elapsed.inHours);
+
+  return l10n.feedDaysAgo(elapsed.inDays);
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../app/theme.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/widgets/nut_button.dart';
+import '../../shared/widgets/nut_card.dart';
+import '../../shared/widgets/nut_pill.dart';
+import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/stat_card.dart';
 import '../streak/streak_model.dart';
@@ -8,64 +15,122 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     super.key,
     required this.streak,
+    this.username,
+    this.reason,
     required this.onOpenPaywall,
   });
 
   final StreakModel streak;
+  final String? username;
+  final String? reason;
   final VoidCallback onOpenPaywall;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final displayName = _displayUsername(l10n, username);
+    final palette = context.nutPalette;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
+      appBar: AppBar(title: Text(l10n.profileTitle)),
+      body: NutResponsiveListView(
         children: [
-          const SectionHeader(
-            title: '@you',
-            subtitle: 'Private local profile for the MVP.',
+          SectionHeader(
+            title: l10n.profileUsername(displayName),
+            subtitle: reason == null
+                ? l10n.profileDefaultSubtitle
+                : l10n.profileReasonSubtitle(reason!),
           ),
-          const SizedBox(height: 20),
-          StatCard(
-            label: 'Current streak days',
-            value: streak.currentStreakDays().toString(),
-            icon: Icons.local_fire_department_outlined,
-          ),
-          const SizedBox(height: 12),
-          StatCard(
-            label: 'Lifetime clean days',
-            value: streak.lifetimeCleanDays.toString(),
-            icon: Icons.favorite_outline,
-          ),
-          const SizedBox(height: 20),
-          Card(
-            child: Padding(
+          const SizedBox(height: 24),
+          if (reason != null) ...[
+            NutCard(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    'Premium placeholder',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                  NutPill(
+                    label: l10n.profileYourReason,
+                    icon: Icons.flag_outlined,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Journal, analytics, stats, notifications, widgets, and themes will live here later.',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 14),
-                  OutlinedButton(
-                    onPressed: onOpenPaywall,
-                    child: const Text('View premium'),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      reason!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 16),
+          ],
+          Row(
+            children: [
+              Expanded(
+                child: StatCard(
+                  label: l10n.profileCurrentStreakDays,
+                  value: streak.currentStreakDays().toString(),
+                  icon: Icons.local_fire_department_outlined,
+                ),
+              ),
+              const SizedBox(width: NutSpacing.medium),
+              Expanded(
+                child: StatCard(
+                  label: l10n.lifetimeCleanDays,
+                  value: streak.lifetimeCleanDays.toString(),
+                  icon: Icons.favorite_outline,
+                  accentColor: palette.success,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          StatCard(
+            label: l10n.profileTotalRelapses,
+            value: streak.relapseCount.toString(),
+            icon: Icons.replay_outlined,
+            accentColor: palette.reset,
+          ),
+          const SizedBox(height: 24),
+          NutCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NutPill(
+                  label: l10n.profilePremium,
+                  icon: Icons.auto_awesome,
+                  backgroundColor: palette.premiumBg,
+                  foregroundColor: palette.premium,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.profilePremiumTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.profilePremiumBody,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: palette.textSecondary,
+                      ),
+                ),
+                const SizedBox(height: 16),
+                NutSecondaryButton(
+                  onPressed: onOpenPaywall,
+                  label: l10n.profileViewPremium,
+                  foregroundColor: palette.premium,
+                  borderColor: palette.premium.withOpacity(0.45),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+String _displayUsername(AppLocalizations l10n, String? username) {
+  final value = username?.trim();
+  if (value == null || value.isEmpty) return l10n.profileDefaultUsername;
+  return value;
 }

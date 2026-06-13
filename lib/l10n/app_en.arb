@@ -1,0 +1,298 @@
+{
+  "@@locale": "en",
+  "appTitle": "NUT",
+  "@appTitle": {
+    "description": "Application title shown in app bars and system surfaces."
+  },
+  "navHome": "Home",
+  "navFeed": "Feed",
+  "navBadges": "Badges",
+  "navProfile": "Profile",
+  "homeTitle": "Protect today.",
+  "homeSupportDefault": "A private streak space for the next right choice.",
+  "homeSupportFocus": "A private space to protect your focus, one choice at a time.",
+  "homeSupportConfidence": "Build quiet confidence through small protected days.",
+  "homeSupportDiscipline": "Keep discipline calm, steady, and private.",
+  "homeSupportEnergy": "Protect the energy you want to bring into today.",
+  "homeSupportJustTrying": "Trying counts. Start with the next right choice.",
+  "homeCurrentStreak": "Current streak",
+  "homeReadyWhenYouAre": "Ready when you are",
+  "homeStreakDayLabel": "{count, plural, =1{day protected} other{days protected}}",
+  "@homeStreakDayLabel": {
+    "description": "Label under the large streak day count.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHours": "hours",
+  "homeMinutes": "minutes",
+  "homeStartedMessage": "You do not need a perfect week. Protect the next hour.",
+  "@homeStartedMessage": {
+    "description": "Sensitive supportive copy shown when the user has an active streak."
+  },
+  "homeNotStartedMessage": "Start when you are ready. Your progress stays on this device.",
+  "@homeNotStartedMessage": {
+    "description": "Sensitive first-use copy shown before a streak starts."
+  },
+  "lifetimeCleanDays": "Lifetime clean days",
+  "homeRestartMindfully": "Restart mindfully",
+  "homeStartStreak": "Start streak",
+  "homeResetWithSupport": "Reset with support",
+  "@homeResetWithSupport": {
+    "description": "Sensitive reset entry point. Keep compassionate and non-shaming."
+  },
+  "homeCheckInToday": "Check in today",
+  "homeCheckedInToday": "Checked in today",
+  "homeDaysClean": "days clean",
+  "homeProgressTitle": "Your progress",
+  "homeBestStreak": "Best streak",
+  "homeThisWeekTitle": "This week",
+  "homeWeekdayMonday": "M",
+  "homeWeekdayTuesday": "T",
+  "homeWeekdayWednesday": "W",
+  "homeWeekdayThursday": "T",
+  "homeWeekdayFriday": "F",
+  "homeWeekdaySaturday": "S",
+  "homeWeekdaySunday": "S",
+  "homeNextMilestone": "Next milestone",
+  "homeNextMilestoneBody": "{daysLeft, plural, =0{Milestone reached. Keep protecting the day.} =1{1 day to the {milestone}-day badge.} other{{daysLeft} days to the {milestone}-day badge.}}",
+  "@homeNextMilestoneBody": {
+    "placeholders": {
+      "daysLeft": {
+        "type": "int"
+      },
+      "milestone": {
+        "type": "int"
+      }
+    }
+  },
+  "homeQuoteTitle": "Today",
+  "homeQuoteBody": "You do not need intensity. You need one protected choice.",
+  "@homeQuoteBody": {
+    "description": "Sensitive supportive home copy. Keep calm and non-clinical."
+  },
+  "homeRyanTeaserTitle": "Ryan companion",
+  "homeRyanTeaserBody": "A calm companion layer can come later. For now, the streak stays simple.",
+  "relapseTitle": "Before you reset",
+  "relapseGentleReset": "Reset",
+  "relapseHeadline": "This does not erase your effort.",
+  "@relapseHeadline": {
+    "description": "Sensitive relapse/reset headline. Must avoid shame or punishment language."
+  },
+  "relapseBody": "Take a breath. Start again with what you learned. Your next choice still matters.",
+  "@relapseBody": {
+    "description": "Sensitive relapse/reset body copy. Must remain compassionate."
+  },
+  "relapseLifetimeCleanDaysSaved": "Lifetime clean days saved",
+  "relapseKeepGoing": "Keep going",
+  "@relapseKeepGoing": {
+    "description": "Primary CTA on relapse screen. It should keep the current streak unchanged."
+  },
+  "relapseBackToHome": "Back to home",
+  "relapseStreakRecap": "Your streak",
+  "relapseStreakRecapBody": "{days, plural, =0{Every honest restart still matters.} =1{1 day of real effort.} other{{days} days of real effort.}}",
+  "@relapseStreakRecapBody": {
+    "description": "Sensitive relapse recap copy. Must affirm effort without shame.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "relapseReflectionTitle": "Optional reflection",
+  "relapseReflectionBody": "Notice what happened. No judgment, just information.",
+  "@relapseReflectionBody": {
+    "description": "Sensitive reflection copy on relapse screen. Must avoid blame."
+  },
+  "relapseTriggerStress": "Stress",
+  "relapseTriggerBoredom": "Boredom",
+  "relapseTriggerLateNight": "Late night",
+  "relapseTriggerPhoneInBed": "Phone in bed",
+  "relapseTriggerLonely": "Lonely",
+  "relapseTriggerOther": "Other",
+  "relapseResetMyStreak": "Reset my streak",
+  "@relapseResetMyStreak": {
+    "description": "Secondary destructive action. It should not be visually dominant."
+  },
+  "relapseConfirmTitle": "Reset your streak?",
+  "@relapseConfirmTitle": {
+    "description": "Sensitive reset confirmation title. Must stay neutral, not punitive."
+  },
+  "relapseConfirmBody": "This records the current chapter and starts a new one today.",
+  "@relapseConfirmBody": {
+    "description": "Sensitive reset confirmation body. Must stay compassionate."
+  },
+  "relapseConfirmReset": "Yes, reset",
+  "relapseConfirmCancel": "Not now",
+  "relapseFooter": "You are still the person who made the effort.",
+  "@relapseFooter": {
+    "description": "Sensitive reassurance copy on relapse screen."
+  },
+  "feedTitle": "Feed",
+  "feedHeaderTitle": "Community",
+  "feedHeaderSubtitle": "People are trying with you. Text-first, no images.",
+  "feedMembersPill": "2.4k members",
+  "feedComposePrompt": "Share a small win or check in with your streak.",
+  "feedPostProgress": "Post progress",
+  "feedProgressPill": "Progress",
+  "feedUsername": "@{username}",
+  "@feedUsername": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "feedDayMeta": "{timeAgo} - Day {day}",
+  "@feedDayMeta": {
+    "description": "Post metadata with relative time and streak day.",
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "feedReactionSupport": "{count} support",
+  "@feedReactionSupport": {
+    "description": "Simple support reaction count.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedNow": "now",
+  "feedMinutesAgo": "{count}m ago",
+  "@feedMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedHoursAgo": "{count}h ago",
+  "@feedHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedDaysAgo": "{count}d ago",
+  "@feedDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedMockUserSteady": "steady_fox",
+  "feedMockPostSteady": "Made it through a difficult evening by going for a walk.",
+  "feedMockUserDayByDay": "day_by_day",
+  "feedMockPostDayByDay": "Checking in. Today I am keeping my phone out of bed.",
+  "feedMockUserClearMind": "clear_mind",
+  "feedMockPostClearMind": "Hit 30 days yesterday. The main change is feeling less reactive.",
+  "feedDefaultUsername": "you",
+  "feedProgressContent": "I am protecting day {day} today.",
+  "@feedProgressContent": {
+    "description": "Local progress post generated by the user.",
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "badgesTitle": "Badges",
+  "badgesHeaderTitle": "Milestones",
+  "badgesHeaderSubtitle": "Unlocked badges mark progress. Locked ones stay quiet.",
+  "badgeFirstWeekTitle": "First Week",
+  "badgeFirstWeekDescription": "Seven steady days.",
+  "badgeThirtyDaysTitle": "Thirty Days",
+  "badgeThirtyDaysDescription": "A month of protecting your progress.",
+  "badgeNinetyDaysTitle": "Ninety Days",
+  "badgeNinetyDaysDescription": "A major reset window.",
+  "badgeOneYearTitle": "One Year",
+  "badgeOneYearDescription": "A long-term identity shift.",
+  "badgeUnlocked": "Unlocked",
+  "badgeDaysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
+  "@badgeDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "badgeDetail": "{days, plural, =1{1 day} other{{days} days}} - {description}",
+  "@badgeDetail": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "profileTitle": "Profile",
+  "profileUsername": "@{username}",
+  "@profileUsername": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDefaultSubtitle": "Private local profile for the MVP.",
+  "profileReasonSubtitle": "Reason: {reason}",
+  "@profileReasonSubtitle": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "profileDefaultUsername": "you",
+  "profileYourReason": "Your reason",
+  "profileCurrentStreakDays": "Current streak days",
+  "profileTotalRelapses": "Total resets",
+  "profilePremium": "Premium",
+  "profilePremiumTitle": "Tools for deeper reflection",
+  "profilePremiumBody": "Journal, analytics, advanced stats, notifications, widgets, and themes will live here later.",
+  "profileViewPremium": "View premium",
+  "paywallTitle": "Premium",
+  "paywallFeatureJournal": "Journal",
+  "paywallFeatureRelapseAnalytics": "Relapse analytics",
+  "paywallFeatureAdvancedStats": "Advanced stats",
+  "paywallFeatureCustomNotifications": "Custom notifications",
+  "paywallFeatureWidgetsThemes": "Premium widgets/themes",
+  "paywallPremiumPlaceholder": "Premium placeholder",
+  "paywallHeadline": "Build deeper insight into your recovery.",
+  "paywallBody": "No purchase flow is active yet. These are planned tools for reflection, patterns, and personalization.",
+  "paywallMonthlyTitle": "Monthly",
+  "paywallMonthlyPrice": "$4.99/month",
+  "paywallMonthlyCaption": "Flexible placeholder plan",
+  "paywallYearlyTitle": "Yearly",
+  "paywallYearlyPrice": "$29.99/year",
+  "paywallYearlyCaption": "Best value placeholder plan",
+  "paywallPopular": "Popular",
+  "paywallComingSoon": "Coming soon",
+  "onboardingWelcome": "Welcome to NUT",
+  "onboardingHeadline": "Set up a private space for your streak.",
+  "onboardingBody": "You can personalize this now, or skip and start quietly.",
+  "onboardingUsernameQuestion": "What should we call you?",
+  "onboardingUsernameHint": "Username",
+  "onboardingOptionalReason": "Optional reason",
+  "onboardingReasonHelper": "Pick one word to keep the app feeling personal.",
+  "onboardingReasonFocus": "Focus",
+  "onboardingReasonConfidence": "Confidence",
+  "onboardingReasonDiscipline": "Discipline",
+  "onboardingReasonEnergy": "Energy",
+  "onboardingReasonJustTrying": "Just trying",
+  "onboardingContinue": "Continue",
+  "onboardingSkip": "Skip for now"
+}
