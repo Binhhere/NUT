@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                 child: StatCard(
                   label: l10n.profileCurrentStreakDays,
                   value: streak.currentStreakDays().toString(),
-                  icon: Icons.local_fire_department_outlined,
+                  sublabel: l10n.homeDays,
                 ),
               ),
               const SizedBox(width: NutSpacing.medium),
@@ -77,8 +77,8 @@ class ProfileScreen extends StatelessWidget {
                 child: StatCard(
                   label: l10n.lifetimeCleanDays,
                   value: streak.lifetimeCleanDays.toString(),
-                  icon: Icons.favorite_outline,
-                  accentColor: palette.success,
+                  sublabel: l10n.homeDaysClean,
+                  valueColor: palette.success,
                 ),
               ),
             ],
@@ -87,8 +87,7 @@ class ProfileScreen extends StatelessWidget {
           StatCard(
             label: l10n.profileTotalRelapses,
             value: streak.relapseCount.toString(),
-            icon: Icons.replay_outlined,
-            accentColor: palette.reset,
+            valueColor: palette.reset,
           ),
           const SizedBox(height: 24),
           NutCard(

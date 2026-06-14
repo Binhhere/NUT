@@ -3,62 +3,68 @@ import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 import 'nut_card.dart';
 
+/// Vertical stat card matching the HTML home stats:
+/// small uppercase label, large value, optional muted sublabel.
 class StatCard extends StatelessWidget {
   const StatCard({
     super.key,
     required this.label,
     required this.value,
-    this.icon,
-    this.accentColor,
+    this.sublabel,
+    this.valueColor,
+    this.onTap,
   });
 
   final String label;
   final String value;
-  final IconData? icon;
-  final Color? accentColor;
+  final String? sublabel;
+  final Color? valueColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
-    final accent = accentColor ?? palette.accentGold;
+    final color = valueColor ?? palette.accentGold;
 
-    return NutCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          if (icon != null) ...[
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: accent.withOpacity(0.14),
-                borderRadius: BorderRadius.circular(NutRadius.pill),
+    return GestureDetector(
+      onTap: onTap,
+      child: NutCard(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label.toUpperCase(),
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: palette.textMuted,
+                letterSpacing: 0.6,
               ),
-              child: Icon(icon, color: accent, size: 20),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w500,
+                color: color,
+                height: 1.1,
+              ),
+            ),
+            if (sublabel != null) ...[
+              const SizedBox(height: 2),
+              Text(
+                sublabel!,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: palette.textMuted,
+                ),
+              ),
+            ],
           ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: palette.textSecondary,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

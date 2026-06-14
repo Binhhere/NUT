@@ -24,6 +24,7 @@ class NutApp extends StatelessWidget {
     required this.feedService,
     required this.initialStreak,
     required this.initialOnboarding,
+    this.locale,
   });
 
   final StreakService streakService;
@@ -31,6 +32,7 @@ class NutApp extends StatelessWidget {
   final FeedService feedService;
   final StreakModel initialStreak;
   final OnboardingProfile initialOnboarding;
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class NutApp extends StatelessWidget {
       theme: NutTheme.light(),
       darkTheme: NutTheme.dark(),
       themeMode: ThemeMode.system,
+      locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: const [
         Locale('en'),

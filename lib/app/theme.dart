@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class NutColors {
   NutColors._();
 
-  static const background = Color(0xFF0D0D0D);
-  static const surface = Color(0xFF161616);
-  static const card = Color(0xFF1E1E1E);
+  static const background = Color(0xFF060606); // HTML: --bg #060606
+  static const surface = Color(0xFF111111); // HTML: --surface #111111
+  static const card = Color(0xFF1A1A1A); // HTML: --card #1A1A1A
   static const border = Color(0x11FFFFFF);
 
   static const accentGold = Color(0xFFF5A623);
   static const accentDark = Color(0xFFD4850A);
-  static const accentBg = Color(0xFF2A1F0A);
+  static const accentBg = Color(0xFF1E1609); // HTML: --accent-bg #1E1609
 
   static const textPrimary = Color(0xFFFFFFFF);
   static const textSecondary = Color(0xFFA0A0A0);

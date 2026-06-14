@@ -11,18 +11,24 @@ The current build is intentionally local-first:
 - No RevenueCat
 - Streak data is stored on-device with `shared_preferences`
 - Feed posts are mock/in-memory data
+- Android application ID: `com.binhhere.nut`
+- Supported locales: English (`en`), Portuguese (`pt`), Japanese (`ja`)
+- Theme mode follows the device setting with dark and light theme foundations
 
 ## MVP Features
 
 - Current streak counter in days, hours, and minutes
-- Start/restart streak
-- Compassionate relapse reset flow
+- First-launch onboarding for username and reason
+- Daily check-in/start streak
+- Compassionate relapse reflection and reset confirmation flow
 - Lifetime clean days counter
+- Best streak and reset count tracking
 - Milestone badges: 7, 30, 90, and 365 days
 - Mock community feed with text posts
 - Local "Post progress" action
 - Profile screen with premium placeholder
 - Paywall placeholder with planned premium features
+- Responsive content constraints for phones, tablets, and wider layouts
 
 ## Project Structure
 
@@ -32,7 +38,9 @@ lib/
   app/
     nut_app.dart
     theme.dart
+    constants.dart
   features/
+    onboarding/
     streak/
     feed/
     badges/
@@ -40,7 +48,8 @@ lib/
     paywall/
   shared/
     widgets/
-    utils/
+    services/
+    models/
 ```
 
 ## Requirements
@@ -74,7 +83,7 @@ flutter config --android-sdk "C:\Users\<you>\AppData\Local\Android\Sdk"
 ## Clone and Run
 
 ```powershell
-git clone <repo-url>
+git clone https://github.com/Binhhere/NUT.git
 cd NUT
 flutter doctor
 flutter pub get
@@ -94,19 +103,21 @@ flutter run -d <device-id>
 flutter build apk --debug
 ```
 
-For a release build later:
+For an unsigned/store-unready release build check:
 
 ```powershell
 flutter build apk --release
 ```
 
 Release signing is not configured yet. Do not commit keystores or `key.properties`.
+The current release build uses debug signing in `android/app/build.gradle` only so local release runs are possible during MVP work.
 
 ## Useful Checks
 
 ```powershell
 flutter analyze
 flutter test
+flutter gen-l10n
 ```
 
 Current status:
@@ -157,13 +168,18 @@ Do not commit:
 - generated iOS/macOS Flutter environment files
 - signing keys, keystores, or `key.properties`
 
+## Internal Test Readiness
+
+This app is suitable for local Android testing and small internal tester builds.
+Before a public Google Play release, complete `docs/RELEASE_CHECKLIST.md`.
+
 ## Next Product Steps
 
-1. Add onboarding for username and first streak start.
-2. Persist local feed progress posts.
-3. Add local reminders/notifications.
-4. Add a simple journal screen behind the premium placeholder.
-5. Add analytics for relapse patterns, still keeping the tone compassionate.
+1. Persist local feed progress posts if the feed remains local during early testing.
+2. Add a real app icon and Android adaptive icon.
+3. Configure release signing outside git.
+4. Add privacy policy and store listing copy.
+5. Decide whether public MVP is private tracker first or includes real moderated community.
 6. Later, integrate Supabase for auth/community feed with moderation.
 7. Later, integrate RevenueCat or native billing for premium.
 8. Later, add Firebase only if crash reporting, analytics, or notifications are needed.

@@ -12,6 +12,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   final l10n = lookupAppLocalizations(const Locale('en'));
 
+  tearDown(() {
+    TestWidgetsFlutterBinding.instance.platformDispatcher
+        .clearLocaleTestValue();
+  });
+
   test('onboarding profile is saved locally', () async {
     SharedPreferences.setMockInitialValues({});
     final service = OnboardingService();
@@ -29,6 +34,38 @@ void main() {
     expect(profile.hasSeenOnboarding, isTrue);
     expect(profile.username, 'Binh');
     expect(profile.reason, 'Focus');
+  });
+
+  test('streak reset stores lifetime days, best streak, and reset count',
+      () async {
+    final startDate = DateTime.now().subtract(const Duration(days: 10));
+    SharedPreferences.setMockInitialValues({
+      'streak_start_date': startDate.toIso8601String(),
+      'lifetime_clean_days': 4,
+      'best_streak': 7,
+      'relapse_count': 2,
+    });
+    final service = StreakService();
+    final loaded = await service.loadStreak();
+
+    final reset = await service.resetStreak(loaded);
+
+    expect(reset.lifetimeCleanDays, greaterThanOrEqualTo(14));
+    expect(reset.bestStreak, greaterThanOrEqualTo(10));
+    expect(reset.relapseCount, 3);
+    expect(reset.hasStarted, isTrue);
+  });
+
+  test('check-in starts a local streak when none exists', () async {
+    SharedPreferences.setMockInitialValues({});
+    final service = StreakService();
+    final loaded = await service.loadStreak();
+
+    final checkedIn = await service.checkIn(loaded);
+
+    expect(checkedIn.hasStarted, isTrue);
+    expect(checkedIn.isCheckedInToday, isTrue);
+    expect(checkedIn.lifetimeCleanDays, 0);
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',
@@ -87,4 +124,44 @@ void main() {
     expect(find.text(l10n.appTitle), findsOneWidget);
     expect(find.text(l10n.navHome), findsOneWidget);
   });
+
+  testWidgets('Portuguese locale renders localized navigation',
+      (WidgetTester tester) async {
+    final pt = lookupAppLocalizations(const Locale('pt'));
+
+    await tester.pumpWidget(_testApp(locale: const Locale('pt')));
+
+    expect(find.text(pt.navHome), findsOneWidget);
+    expect(find.text(pt.navFeed), findsOneWidget);
+    expect(find.text(pt.navBadges), findsOneWidget);
+    expect(find.text(pt.navProfile), findsOneWidget);
+  });
+
+  testWidgets('Japanese locale renders localized navigation',
+      (WidgetTester tester) async {
+    final ja = lookupAppLocalizations(const Locale('ja'));
+
+    await tester.pumpWidget(_testApp(locale: const Locale('ja')));
+
+    expect(find.text(ja.navHome), findsOneWidget);
+    expect(find.text(ja.navFeed), findsOneWidget);
+    expect(find.text(ja.navBadges), findsOneWidget);
+    expect(find.text(ja.navProfile), findsOneWidget);
+  });
+}
+
+Widget _testApp({Locale? locale}) {
+  return NutApp(
+    streakService: StreakService(),
+    onboardingService: OnboardingService(),
+    feedService: FeedService(),
+    initialStreak: const StreakModel(
+      startDate: null,
+      lifetimeCleanDays: 0,
+    ),
+    initialOnboarding: const OnboardingProfile(
+      hasSeenOnboarding: true,
+    ),
+    locale: locale,
+  );
 }

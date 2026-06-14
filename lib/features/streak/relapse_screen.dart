@@ -161,8 +161,8 @@ class _RelapseScreenState extends State<RelapseScreen> {
           StatCard(
             label: l10n.relapseLifetimeCleanDaysSaved,
             value: widget.streak.lifetimeCleanDays.toString(),
-            icon: Icons.verified_outlined,
-            accentColor: palette.success,
+            sublabel: l10n.homeDaysClean,
+            valueColor: palette.success,
           ),
           const SizedBox(height: NutSpacing.medium),
           NutCard(

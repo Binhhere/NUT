@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text(l10n.appTitle)),
       body: NutResponsiveListView(
         children: [
+          // Screen-level title — SectionHeader (24sp)
           SectionHeader(
             title: l10n.homeTitle,
             subtitle: _supportLineForReason(l10n, widget.reason),
@@ -140,7 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: NutSpacing.large),
-          SectionHeader(title: l10n.homeProgressTitle),
+
+          // Section label nhỏ — SmallSectionLabel (10sp uppercase)
+          SmallSectionLabel(title: l10n.homeProgressTitle),
           const SizedBox(height: NutSpacing.medium),
           Row(
             children: [
@@ -148,8 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: StatCard(
                   label: l10n.lifetimeCleanDays,
                   value: widget.streak.lifetimeCleanDays.toString(),
-                  icon: Icons.favorite_outline,
-                  accentColor: palette.success,
+                  sublabel: l10n.homeDaysClean,
+                  valueColor: palette.success,
                 ),
               ),
               const SizedBox(width: NutSpacing.medium),
@@ -157,12 +160,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: StatCard(
                   label: l10n.homeBestStreak,
                   value: widget.streak.effectiveBestStreak.toString(),
-                  icon: Icons.emoji_events_outlined,
+                  sublabel: l10n.homeDays,
                 ),
               ),
             ],
           ),
           const SizedBox(height: NutSpacing.large),
+
+          // Section label nhỏ
+          SmallSectionLabel(title: l10n.homeThisWeekTitle),
+          const SizedBox(height: NutSpacing.medium),
           _WeekCard(
             checkedToday: widget.streak.isCheckedInToday,
             labels: [
@@ -175,8 +182,16 @@ class _HomeScreenState extends State<HomeScreen> {
               l10n.homeWeekdaySunday,
             ],
           ),
+          const SizedBox(height: NutSpacing.large),
+
+          // Section label nhỏ
+          SmallSectionLabel(title: l10n.homeNextMilestone),
           const SizedBox(height: NutSpacing.medium),
           _MilestoneCard(streak: widget.streak),
+          const SizedBox(height: NutSpacing.large),
+
+          // Section label nhỏ
+          SmallSectionLabel(title: l10n.homeQuoteTitle),
           const SizedBox(height: NutSpacing.medium),
           _QuoteCard(),
           const SizedBox(height: NutSpacing.medium),
@@ -354,32 +369,22 @@ class _WeekCard extends StatelessWidget {
     final todayIndex = DateTime.now().weekday - 1;
 
     return NutCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            context.l10n.homeThisWeekTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: NutSpacing.medium),
-          Row(
-            children: [
-              for (var index = 0; index < labels.length; index++)
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: index == labels.length - 1 ? 0 : 6,
-                    ),
-                    child: _WeekDay(
-                      label: labels[index],
-                      isToday: index == todayIndex,
-                      checked: index < todayIndex ||
-                          (index == todayIndex && checkedToday),
-                    ),
-                  ),
+          for (var index = 0; index < labels.length; index++)
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: index == labels.length - 1 ? 0 : 6,
                 ),
-            ],
-          ),
+                child: _WeekDay(
+                  label: labels[index],
+                  isToday: index == todayIndex,
+                  checked: index < todayIndex ||
+                      (index == todayIndex && checkedToday),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -491,14 +496,11 @@ class _QuoteCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          NutPill(
-            label: context.l10n.homeQuoteTitle,
-            icon: Icons.wb_sunny_outlined,
-          ),
-          const SizedBox(height: NutSpacing.medium),
           Text(
             context.l10n.homeQuoteBody,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
           ),
         ],
       ),
@@ -512,22 +514,49 @@ class _RyanTeaserCard extends StatelessWidget {
     final palette = context.nutPalette;
 
     return NutCard(
-      borderColor: palette.border,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      borderColor: palette.premiumBg,
+      child: Row(
         children: [
-          NutPill(
-            label: context.l10n.homeRyanTeaserTitle,
-            icon: Icons.auto_awesome,
-            backgroundColor: palette.surface,
-            foregroundColor: palette.textSecondary,
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: palette.premiumSurface,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: palette.premium.withOpacity(0.2),
+              ),
+            ),
+            child: const Center(
+              child: Text('🌙', style: TextStyle(fontSize: 18)),
+            ),
           ),
-          const SizedBox(height: NutSpacing.medium),
-          Text(
-            context.l10n.homeRyanTeaserBody,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: palette.textSecondary,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.homeRyanTeaserTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: 13,
+                      ),
                 ),
+                const SizedBox(height: 2),
+                Text(
+                  context.l10n.homeRyanTeaserBody,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: palette.textSecondary,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          NutPill(
+            label: 'V2',
+            backgroundColor: palette.premiumBg,
+            foregroundColor: palette.premium,
           ),
         ],
       ),
