@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
+import '../../shared/services/local_storage_service.dart';
 import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
@@ -26,6 +29,15 @@ class RelapseScreen extends StatefulWidget {
 class _RelapseScreenState extends State<RelapseScreen> {
   final Set<String> _selectedTriggers = {};
   bool _isResetting = false;
+
+  Future<void> _saveTriggers() async {
+    if (_selectedTriggers.isEmpty) return;
+    final entry = jsonEncode({
+      'date': DateTime.now().toIso8601String(),
+      'triggers': _selectedTriggers.toList(),
+    });
+    await LocalStorageService.instance.appendRelapseTriggerEntry(entry);
+  }
 
   Future<void> _showResetConfirmation() async {
     await showModalBottomSheet<void>(
@@ -61,6 +73,7 @@ class _RelapseScreenState extends State<RelapseScreen> {
                       ? null
                       : () async {
                           setState(() => _isResetting = true);
+                          await _saveTriggers();
                           await widget.onConfirmReset();
                           if (!mounted || !context.mounted) return;
                           Navigator.of(context).pop();
@@ -97,7 +110,6 @@ class _RelapseScreenState extends State<RelapseScreen> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.relapseTitle)),
       body: NutResponsiveListView(
         children: [
           NutCard(

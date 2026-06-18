@@ -28,6 +28,8 @@ class LocalStorageService {
   static const kLifetimeDays = 'lifetime_clean_days'; // int
   static const kRelapseCount = 'relapse_count'; // int
   static const kRelapseTriggers = 'relapse_triggers'; // String (JSON list)
+  static const kRelapseTriggersHistory =
+      'relapse_triggers_history'; // List<String>, mỗi entry là JSON {date, triggers}
   static const kNotifEnabled = 'notif_enabled'; // bool
   static const kLastCheckin = 'streak_last_checkin'; // String ISO8601
   static const kBestStreak = 'best_streak_days'; // int
@@ -60,6 +62,20 @@ class LocalStorageService {
   Future<String?> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
+  }
+
+  // ─────────────────────────────────────────────
+  // STRING LIST
+  // ─────────────────────────────────────────────
+
+  Future<void> setStringList(String key, List<String> value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, value);
+  }
+
+  Future<List<String>> getStringList(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(key) ?? const [];
   }
 
   // ─────────────────────────────────────────────
@@ -155,4 +171,14 @@ class LocalStorageService {
 
   Future<void> setLastCheckin(DateTime dt) =>
       setString(kLastCheckin, dt.toIso8601String());
+
+  /// Lưu 1 lần reset kèm trigger đã chọn vào lịch sử (append-only).
+  /// entry dạng JSON string: {"date": ISO8601, "triggers": ["Stress", ...]}
+  Future<void> appendRelapseTriggerEntry(String jsonEntry) async {
+    final existing = await getStringList(kRelapseTriggersHistory);
+    await setStringList(kRelapseTriggersHistory, [...existing, jsonEntry]);
+  }
+
+  Future<List<String>> getRelapseTriggerHistory() =>
+      getStringList(kRelapseTriggersHistory);
 }

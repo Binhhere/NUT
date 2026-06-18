@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:nut_mvp/app/nut_app.dart';
@@ -65,7 +65,16 @@ void main() {
 
     expect(checkedIn.hasStarted, isTrue);
     expect(checkedIn.isCheckedInToday, isTrue);
+    expect(checkedIn.currentStreakDays(),
+        0); // 0 because start date is today, difference is 0 days
     expect(checkedIn.lifetimeCleanDays, 0);
+  });
+
+  test('newly started streak shows day one immediately', () {
+    final now = DateTime(2026, 6, 14, 10);
+    final streak = StreakModel(startDate: now, lifetimeCleanDays: 0);
+
+    expect(streak.currentStreakDays(now), 0);
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',
@@ -82,17 +91,18 @@ void main() {
         initialOnboarding: const OnboardingProfile(
           hasSeenOnboarding: true,
         ),
+        showSplash: false,
       ),
     );
 
-    expect(find.text(l10n.appTitle), findsOneWidget);
+    expect(find.text(l10n.homeTitle), findsOneWidget);
     expect(find.text(l10n.navHome), findsOneWidget);
     expect(find.text(l10n.navFeed), findsOneWidget);
     expect(find.text(l10n.navBadges), findsOneWidget);
     expect(find.text(l10n.navProfile), findsOneWidget);
   });
 
-  testWidgets('first launch onboarding can be skipped',
+  testWidgets('first launch onboarding can be finished',
       (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({});
 
@@ -108,20 +118,29 @@ void main() {
         initialOnboarding: const OnboardingProfile(
           hasSeenOnboarding: false,
         ),
+        showSplash: false,
       ),
     );
 
-    expect(find.text(l10n.onboardingHeadline), findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      find.text(l10n.onboardingSkip),
-      200,
-      scrollable: find.byType(Scrollable).first,
-    );
-    await tester.tap(find.text(l10n.onboardingSkip));
+    // Step 1: Name
+    expect(find.text('What should\nwe call you?'), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'Binh');
+    await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    expect(find.text(l10n.appTitle), findsOneWidget);
+    // Step 2: Reason
+    expect(find.text('Why are\nyou here?'), findsOneWidget);
+    await tester.tap(find.text(l10n.onboardingReasonFocus));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    // Step 3: Ready
+    expect(find.text("You're ready."), findsOneWidget);
+    await tester.tap(find.text('Start my streak'));
+    await tester.pumpAndSettle();
+
+    // Shell
+    expect(find.text(l10n.homeTitle), findsOneWidget);
     expect(find.text(l10n.navHome), findsOneWidget);
   });
 
@@ -148,6 +167,30 @@ void main() {
     expect(find.text(ja.navBadges), findsOneWidget);
     expect(find.text(ja.navProfile), findsOneWidget);
   });
+
+  testWidgets('feed plus opens compose before creating a progress post',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_testApp());
+
+    await tester.tap(find.text(l10n.navFeed));
+    await tester.pumpAndSettle();
+
+    final generatedContent = l10n.feedProgressContent(0);
+    expect(find.text(generatedContent), findsNothing);
+
+    await tester.tap(find.byTooltip(l10n.feedPostProgress));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.feedComposeTitle), findsOneWidget);
+    expect(find.text(generatedContent), findsNothing);
+
+    await tester.enterText(find.byType(TextField).last, 'Small win today');
+    await tester.pump();
+    await tester.tap(find.text(l10n.feedComposeSubmit));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Small win today'), findsOneWidget);
+  });
 }
 
 Widget _testApp({Locale? locale}) {
@@ -163,5 +206,6 @@ Widget _testApp({Locale? locale}) {
       hasSeenOnboarding: true,
     ),
     locale: locale,
+    showSplash: false,
   );
 }

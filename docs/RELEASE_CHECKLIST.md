@@ -28,7 +28,10 @@ Use this before sharing an APK/AAB outside your own device.
 ## Before Public Google Play
 
 - Replace default launcher icon with NUT branding.
-- Configure release signing outside git.
+- Generate a real release keystore and create `android/key.properties`
+  from `android/key.properties.example` (gradle now reads it automatically
+  — see README "Build Android APK"). Confirm the built AAB is NOT signed
+  with the debug fallback before uploading.
 - Build an AAB with `flutter build appbundle --release`.
 - Create privacy policy.
 - Create terms/basic disclaimer.
@@ -40,6 +43,9 @@ Use this before sharing an APK/AAB outside your own device.
   - real community feed with moderation.
 - If community feed is public, add moderation/reporting before launch.
 - If paywall is visible as anything more than a placeholder, integrate real billing and restore purchases.
+- Journal and Relapse analytics screens are reachable from the paywall
+  feature list as locked previews — confirm copy still reads as "coming
+  soon" and not as a working purchase before public release.
 
 ## Do Not Commit
 

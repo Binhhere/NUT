@@ -72,6 +72,11 @@
   "feedMembersPill": "2.4千人",
   "feedComposePrompt": "小さな成功や継続のチェックインを共有しましょう。",
   "feedPostProgress": "進捗を投稿",
+  "feedComposeTitle": "進捗を投稿",
+  "feedComposeBodyHint": "小さな近況を書いてください...",
+  "feedComposeHelper": "{day}日目として投稿されます。",
+  "feedComposeSubmit": "投稿",
+  "feedComposeCancel": "キャンセル",
   "feedProgressPill": "進捗",
   "feedUsername": "@{username}",
   "feedDayMeta": "{timeAgo} - {day}日目",
@@ -86,7 +91,7 @@
   "feedMockPostDayByDay": "チェックイン。今日はスマホをベッドに持ち込みません。",
   "feedMockUserClearMind": "clear_mind",
   "feedMockPostClearMind": "昨日30日に到達しました。一番の変化は、反応的になりにくくなったことです。",
-  "feedDefaultUsername": "you",
+  "feedDefaultUsername": "匿名",
   "feedProgressContent": "今日は{day}日目を守っています。",
   "badgesTitle": "バッジ",
   "badgesHeaderTitle": "マイルストーン",
@@ -106,7 +111,8 @@
   "profileUsername": "@{username}",
   "profileDefaultSubtitle": "MVP用のプライベートなローカルプロフィールです。",
   "profileReasonSubtitle": "理由: {reason}",
-  "profileDefaultUsername": "you",
+  "profileDefaultUsername": "匿名",
+  "profileAnonymousUsername": "匿名",
   "profileYourReason": "あなたの理由",
   "profileCurrentStreakDays": "現在の継続日数",
   "profileTotalRelapses": "リセット合計",
@@ -144,5 +150,58 @@
   "onboardingReasonEnergy": "エネルギー",
   "onboardingReasonJustTrying": "まず試す",
   "onboardingContinue": "続ける",
-  "onboardingSkip": "今はスキップ"
+  "onboardingSkip": "今はスキップ",
+  "onboardingStepLabel": "ステップ {current} / {total}",
+  "@onboardingStepLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingStep1Title": "何と呼べば\nいいですか？",
+  "onboardingStep1Subtitle": "これは非公開です。いつでも変えられます。",
+  "onboardingStep1InputLabel": "ユーザー名",
+  "onboardingStep1InputHint": "名前を入力",
+  "onboardingStep1Note": "この端末であなたにだけ表示されます。",
+  "onboardingStep2Title": "なぜここに\nいるのですか？",
+  "onboardingStep2Subtitle": "今しっくりと感じるものを選んでください。後で変えられます。",
+  "onboardingStep3Title": "準備完了です。",
+  "onboardingStep3Subtitle": "下のボタンをタップすると継続が始まります。完璧を目指す必要はありません。",
+  "onboardingStep3StreakLabel": "現在の継続",
+  "onboardingStep3CTA": "継続を始める",
+  "settingsTitle": "設定",
+  "settingsSectionAppearance": "外観",
+  "settingsDarkMode": "ダークモード",
+  "settingsDarkModeSubtitle": "ライトテーマは今後のビルドで追加予定です。",
+  "settingsSectionSecurity": "セキュリティ",
+  "settingsAppLock": "アプリロック",
+  "settingsAppLockSubtitle": "NUTを開く際に生体認証またはPINを要求します。",
+  "settingsSectionNotifications": "通知",
+  "settingsDailyReminder": "毎日リマインダー",
+  "settingsDailyReminderSubtitle": "チェックインの通知を受け取ります。",
+  "settingsReminderTime": "通知時間",
+  "settingsSectionData": "データ",
+  "settingsExportData": "データをエクスポート",
+  "settingsExportDataSubtitle": "バックアップファイルを共有します",
+  "settingsImportData": "データをインポート",
+  "settingsImportDataSubtitle": "バックアップファイルから復元します",
+  "settingsAboutNut": "NUTについて",
+  "settingsVersionInfo": "v{version} · {wave}",
+  "@settingsVersionInfo": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "wave": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSectionDeveloper": "開発者",
+  "settingsResetOnboarding": "オンボーディングをリセット",
+  "settingsResetOnboardingSubtitle": "ローカルプロフィールを消去します（開発用）"
 }

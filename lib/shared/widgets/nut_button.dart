@@ -94,20 +94,21 @@ class NutGhostButton extends StatelessWidget {
     required this.label,
     this.onPressed,
     this.foregroundColor,
+    this.borderColor,
     this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final Color? foregroundColor;
+  final Color? borderColor;
   final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
     final fg = foregroundColor ?? palette.textSecondary;
-    // HTML border2 = rgba(255,255,255,0.12)
-    const borderColor = Color(0x1EFFFFFF);
+    final border = borderColor ?? palette.border;
 
     return SizedBox(
       width: double.infinity,
@@ -116,7 +117,7 @@ class NutGhostButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: fg,
-          side: const BorderSide(color: borderColor, width: 0.5),
+          side: BorderSide(color: border, width: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(NutRadius.button),
           ),

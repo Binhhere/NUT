@@ -13,7 +13,7 @@ The current build is intentionally local-first:
 - Feed posts are mock/in-memory data
 - Android application ID: `com.binhhere.nut`
 - Supported locales: English (`en`), Portuguese (`pt`), Japanese (`ja`)
-- Theme mode follows the device setting with dark and light theme foundations
+- Dark theme is forced by default for the MVP visual identity
 
 ## MVP Features
 
@@ -68,6 +68,11 @@ Install these before running the app on a new machine:
      - Android SDK Command-line Tools
      - Android SDK Build-Tools
      - Android Emulator, if you want to run an emulator
+   - **Quick Emulator Setup:**
+     - Open **Tools** > **Device Manager**.
+     - Click **Create Virtual Device**.
+     - Select **Pixel 9** > **Next**.
+     - Select **API level 35 (Android 15)** > **Download** (if missing) > **Next**.
 
 3. Android SDK path
    - If Flutter cannot find the SDK, set it manually:
@@ -103,14 +108,19 @@ flutter run -d <device-id>
 flutter build apk --debug
 ```
 
-For an unsigned/store-unready release build check:
+For a release build:
 
 ```powershell
 flutter build apk --release
+flutter build appbundle --release
 ```
 
-Release signing is not configured yet. Do not commit keystores or `key.properties`.
-The current release build uses debug signing in `android/app/build.gradle` only so local release runs are possible during MVP work.
+Release signing now reads `android/key.properties` if present (copy from
+`android/key.properties.example` and fill in your real keystore details).
+If `key.properties` is missing, the release build automatically falls back
+to the debug keystore so `flutter run --release` keeps working on a fresh
+machine — but an AAB built that way must never be uploaded to Google Play.
+Do not commit keystores or `key.properties`; both are gitignored.
 
 ## Useful Checks
 
@@ -120,11 +130,10 @@ flutter test
 flutter gen-l10n
 ```
 
-Current status:
-
-- `flutter analyze` passes
-- `flutter test` passes
-- Android APK build requires Android SDK to be installed/configured on the machine
+Run `flutter gen-l10n` after pulling changes that touch `lib/l10n/*.arb`,
+then `flutter analyze` and `flutter test` before relying on this list —
+localization keys and generated code can drift from `lib/l10n/*.arb`
+if a screen is edited without updating all three locale files.
 
 ## Generate Project Tree
 

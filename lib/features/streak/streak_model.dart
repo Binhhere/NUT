@@ -1,3 +1,25 @@
+// lib/features/streak/streak_model.dart
+
+enum RipplePhase {
+  /// Ngày 0 — chưa bắt đầu. Chỉ có điểm sáng, không ripple.
+  seed,
+
+  /// Ngày 1–6 — mỗi ngày 1 ripple arc mới. Tăng dần.
+  growing,
+
+  /// Đúng ngày 7 — animation breakthrough: tâm vỡ, nghiêng 3D, bay lên.
+  breakthrough,
+
+  /// Ngày 8–29 — field nhìn từ góc xiên 3D, điểm sáng đang dâng.
+  ascending,
+
+  /// Ngày 30–89 — second breakthrough. Ripple nhỏ dần phía dưới.
+  rising,
+
+  /// Ngày 90+ — điểm sáng cao, ripple decay thành ánh sáng.
+  orbit,
+}
+
 class StreakModel {
   const StreakModel({
     required this.startDate,
@@ -22,7 +44,24 @@ class StreakModel {
     return current.difference(startDate!);
   }
 
-  int currentStreakDays([DateTime? now]) => currentDuration(now).inDays;
+  // ─────────────────────────────────────────────
+  // currentStreakDays — đếm số ngày calendar đã qua kể từ startDate.
+  //
+  // Timeline spec:
+  //   Cùng ngày start   → 0  (Day 0 = ngày bắt đầu)
+  //   Ngày hôm sau      → 1
+  //   Sau 7 ngày        → 7
+  // ─────────────────────────────────────────────
+  int currentStreakDays([DateTime? now]) {
+    if (!hasStarted) return 0;
+    final today = _dateOnly(now ?? DateTime.now());
+    final start = _dateOnly(startDate!);
+    final diff = today.difference(start).inDays;
+    return diff < 0 ? 0 : diff;
+  }
+
+  static DateTime _dateOnly(DateTime dt) =>
+      DateTime(dt.year, dt.month, dt.day);
 
   bool get isCheckedInToday {
     if (lastCheckinDate == null) return false;
@@ -53,8 +92,39 @@ class StreakModel {
 
   double get nextMilestoneProgress {
     final milestone = nextMilestone;
-    if (milestone == 0) return 1;
-    return (currentStreakDays() / milestone).clamp(0, 1).toDouble();
+    if (milestone == 0) return 1.0;
+    return (currentStreakDays() / milestone).clamp(0.0, 1.0);
+  }
+
+  // ─────────────────────────────────────────────
+  // RIPPLE PHASE
+  // Nguồn sự thật cho RippleField và BreakthroughAnimation.
+  // Session 2 sẽ dùng getter này để quyết định render path.
+  // ─────────────────────────────────────────────
+
+  RipplePhase get ripplePhase {
+    final days = currentStreakDays();
+    if (!hasStarted || days == 0) return RipplePhase.seed;
+    if (days < 7)  return RipplePhase.growing;
+    if (days == 7) return RipplePhase.breakthrough;
+    if (days < 30) return RipplePhase.ascending;
+    if (days < 90) return RipplePhase.rising;
+    return RipplePhase.orbit;
+  }
+
+  /// Số ripple arc cần vẽ trong phase growing (1–6).
+  /// Trong các phase khác, RippleField tự tính theo phase.
+  int get rippleCount {
+    final days = currentStreakDays();
+    return days.clamp(0, 6);
+  }
+
+  /// Progress nội tại trong growing phase [0.0–1.0].
+  /// Dùng để animate opacity của ripple mới nhất (chưa "settled").
+  double get growingPhaseProgress {
+    final days = currentStreakDays();
+    if (days == 0) return 0.0;
+    return (days / 7.0).clamp(0.0, 1.0);
   }
 
   StreakModel copyWith({

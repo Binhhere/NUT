@@ -30,18 +30,20 @@ class NutResponsiveListView extends StatelessWidget {
               NutSpacing.screenBottom,
             );
 
-        return Align(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: maxWidth ??
-                  (isWide
-                      ? NutBreakpoints.maxTabletContent
-                      : NutBreakpoints.maxPhoneContent),
-            ),
-            child: ListView(
-              padding: resolvedPadding,
-              children: children,
+        return SafeArea(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: maxWidth ??
+                    (isWide
+                        ? NutBreakpoints.maxTabletContent
+                        : NutBreakpoints.maxPhoneContent),
+              ),
+              child: ListView(
+                padding: resolvedPadding,
+                children: children,
+              ),
             ),
           ),
         );

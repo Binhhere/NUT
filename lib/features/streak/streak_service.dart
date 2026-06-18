@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:home_widget/home_widget.dart';
 
 import 'streak_model.dart';
 
@@ -82,6 +83,17 @@ class StreakService {
         _lastCheckinKey,
         streak.lastCheckinDate!.toIso8601String(),
       );
+    }
+
+    // Sync with Home Widget
+    try {
+      await HomeWidget.saveWidgetData<int>(
+          'streak_count', streak.currentStreakDays());
+      await HomeWidget.updateWidget(
+        androidName: 'StreakWidgetProvider',
+      );
+    } catch (e) {
+      // Ignore widget update errors
     }
   }
 

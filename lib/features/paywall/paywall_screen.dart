@@ -6,25 +6,48 @@ import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
 import '../../shared/widgets/responsive_page.dart';
+import '../analytics/relapse_analytics_screen.dart';
+import '../journal/journal_screen.dart';
+import '../streak/streak_model.dart';
 
 class PaywallScreen extends StatelessWidget {
-  const PaywallScreen({super.key});
+  const PaywallScreen({super.key, this.streak});
+
+  /// Optional — when provided, the Relapse analytics preview can show
+  /// real (free) numbers instead of zeroed placeholders.
+  final StreakModel? streak;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final palette = context.nutPalette;
-    final features = [
-      l10n.paywallFeatureJournal,
-      l10n.paywallFeatureRelapseAnalytics,
-      l10n.paywallFeatureAdvancedStats,
-      l10n.paywallFeatureCustomNotifications,
-      l10n.paywallFeatureWidgetsThemes,
+    final features = <_PaywallFeature>[
+      _PaywallFeature(
+        label: l10n.paywallFeatureJournal,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => JournalScreen(onOpenPaywall: () {}),
+          ),
+        ),
+      ),
+      _PaywallFeature(
+        label: l10n.paywallFeatureRelapseAnalytics,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => RelapseAnalyticsScreen(
+              streak: streak ?? const StreakModel(startDate: null, lifetimeCleanDays: 0),
+              onOpenPaywall: () {},
+            ),
+          ),
+        ),
+      ),
+      _PaywallFeature(label: l10n.paywallFeatureAdvancedStats),
+      _PaywallFeature(label: l10n.paywallFeatureCustomNotifications),
+      _PaywallFeature(label: l10n.paywallFeatureWidgetsThemes),
     ];
 
     // TODO: Wire these plans to RevenueCat or platform billing after MVP validation.
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.paywallTitle)),
       body: NutResponsiveListView(
         children: [
           NutCard(
@@ -66,7 +89,14 @@ class PaywallScreen extends StatelessWidget {
                       Icons.check_circle_outline,
                       color: palette.premium,
                     ),
-                    title: Text(feature),
+                    title: Text(feature.label),
+                    trailing: feature.onTap == null
+                        ? null
+                        : Icon(
+                            Icons.chevron_right,
+                            color: palette.textMuted,
+                          ),
+                    onTap: feature.onTap,
                   ),
               ],
             ),
@@ -89,6 +119,13 @@ class PaywallScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _PaywallFeature {
+  const _PaywallFeature({required this.label, this.onTap});
+
+  final String label;
+  final VoidCallback? onTap;
 }
 
 class _PriceCard extends StatelessWidget {

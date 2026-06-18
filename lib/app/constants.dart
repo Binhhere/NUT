@@ -1,139 +1,62 @@
 // lib/app/constants.dart
-// Tập trung toàn bộ string copy, milestone text, badge definitions, options.
-// Không chứa màu sắc (→ theme.dart) hay spacing (→ NutSpacing).
+//
+// Chỉ chứa logic/data KHÔNG phải UI string:
+//   - Streak milestone message logic (dynamic, không dịch được bằng ARB)
+//   - Numeric constants
+//   - Dev/debug flags
+//
+// KHÔNG còn:
+//   - relapseTriggers   → dùng l10n.relapseTrigger* trong RelapseScreen
+//   - onboardingReasons → dùng l10n.onboardingReason* trong OnboardingScreen
+//   - paywallFeatures   → dùng l10n.paywallFeature* trong PaywallScreen
+//   - badgeDefinitions  → define trực tiếp trong BadgesScreen với l10n titles
+//
+// Lý do: những list trên đã có bản dịch trong app_en.arb / app_pt.arb / app_ja.arb.
+// Giữ chúng ở đây nghĩa là luôn hardcode tiếng Anh, bỏ qua localization.
 
 class AppConstants {
   AppConstants._();
 
   // ─────────────────────────────────────────────
-  // 1. STREAK MILESTONE MESSAGES
-  // Source: Screen 05 · Home → "Supportive messages theo milestone range"
+  // STREAK MILESTONE MESSAGES
+  // Logic động theo số ngày — không thể express bằng ARB plural rules
+  // vì có 5 ranges khác nhau. Wave 3: chuyển vào ARB nếu cần dịch.
+  // Source: Screen 05 · Home
   // ─────────────────────────────────────────────
 
   static String streakMessage(int days) {
     if (days >= 365) return 'One year. This is who you are now.';
     if (days >= 90) return 'This is rare. Most people never get here.';
-    if (days >= 30) {
-      return 'A month of clarity. You\'re building something real.';
-    }
+    if (days >= 30) return 'A month of clarity. You\'re building something real.';
     if (days >= 7) return 'One week down. Keep the momentum.';
     return 'Every day counts. Starting is the hardest part.';
   }
 
   // ─────────────────────────────────────────────
-  // 2. RELAPSE TRIGGER OPTIONS
-  // Source: Screen 06 · Relapse → "multi-select pills"
-  // ─────────────────────────────────────────────
-
-  static const List<String> relapseTriggers = [
-    'Stress',
-    'Boredom',
-    'Late night',
-    'Loneliness',
-    'Triggered by content',
-    'Other',
-  ];
-
-  // ─────────────────────────────────────────────
-  // 3. ONBOARDING REASON OPTIONS
-  // Source: Screen 02 · Onboarding → Bước 2
-  // ─────────────────────────────────────────────
-
-  static const List<String> onboardingReasons = [
-    'Better focus',
-    'More energy',
-    'Build discipline',
-    'Improve relationships',
-    'Just trying it',
-    'Prefer not to say',
-  ];
-
-  // ─────────────────────────────────────────────
-  // 4. RELAPSE COPY RULES
-  // Source: Screen 06 · Relapse + Design System → "Relapse screen"
-  //
-  // APPROVED words/phrases:
-  //   "reset", "start again", "new chapter", "what you learned"
-  //
-  // FORBIDDEN — never use in any relapse-related copy:
-  //   "failed", "lost", "weak", "start from zero", "back to day 0"
-  // ─────────────────────────────────────────────
-
-  // ─────────────────────────────────────────────
-  // 5. PAYWALL COPY
+  // PAYWALL PRICING (numeric / non-translatable)
+  // Giá tiền không qua ARB — thay đổi theo region ở Wave 3 (RevenueCat).
   // Source: Screen 10 · Paywall
   // ─────────────────────────────────────────────
 
-  static const String paywallTitle = 'NUT Premium';
-  static const String paywallSubtext =
-      'Tools for the long game. No ads. No noise.';
-  static const String paywallTrialText = '7-day free trial · cancel anytime';
-  static const String paywallAnnualPrice = '\$29.99/year';
-  static const String paywallMonthlyPrice = '\$4.99/month';
-  static const String paywallPerMonthEquiv = '\$2.50/month';
+  static const String paywallAnnualPrice = r'$29.99/year';
+  static const String paywallMonthlyPrice = r'$4.99/month';
+  static const String paywallPerMonthEquiv = r'$2.50/month';
   static const String paywallSaveLabel = 'Save 50%';
-
-  /// 5 tính năng premium — hiển thị dạng feature list trong Paywall screen
-  static const List<String> paywallFeatures = [
-    'Unlimited journal entries',
-    'Relapse pattern analytics',
-    'Custom reminder time',
-    'Priority support',
-    'Early access to new features',
-  ];
+  static const String paywallTrialText = '7-day free trial · cancel anytime';
 
   // ─────────────────────────────────────────────
-  // 6. BADGE DEFINITIONS
-  // Source: Screen 08 · Badges
-  // Được dùng bởi BadgeModel.all — định nghĩa authoritative ở badge_model.dart,
-  // constants này chỉ giữ copy/text để tránh trùng lặp.
+  // DAILY QUOTE PLACEHOLDER
+  // Wave 2: thay bằng danh sách 365 quotes từ asset JSON.
   // ─────────────────────────────────────────────
 
-  static const List<Map<String, dynamic>> badgeDefinitions = [
-    {
-      'id': 'first_week',
-      'emoji': '🌱',
-      'title': 'First Week',
-      'requiredDays': 7,
-      'description': 'Seven days of clarity. The hardest part is behind you.',
-    },
-    {
-      'id': 'one_month',
-      'emoji': '🔥',
-      'title': 'One Month',
-      'requiredDays': 30,
-      'description': 'A full month. Your brain is already rewiring.',
-    },
-    {
-      'id': 'ninety_days',
-      'emoji': '⚡',
-      'title': '90 Days',
-      'requiredDays': 90,
-      'description': 'This is rare. Most people never reach this.',
-    },
-    {
-      'id': 'one_year',
-      'emoji': '🏆',
-      'title': 'One Year',
-      'requiredDays': 365,
-      'description': 'One year. This is who you are now.',
-    },
-  ];
-
-  // ─────────────────────────────────────────────
-  // 7. MISC COPY
-  // ─────────────────────────────────────────────
-
-  /// Placeholder daily quote — Wave 2 sẽ thay bằng 365 quotes
   static const String dailyQuotePlaceholder =
       '"The secret of getting ahead is getting started."';
-
   static const String dailyQuoteAuthorPlaceholder = '— Mark Twain';
 
-  /// Ryan teaser — hiện khi showRyanTeaser = true, biến mất khi V2 launch
-  static const String ryanTeaserText = 'Something\'s coming.';
+  // ─────────────────────────────────────────────
+  // MISC
+  // ─────────────────────────────────────────────
 
-  /// Feedback text hiện dưới streak counter ở Home
-  static const String checkedInLabel = 'Checked in ✓';
-  static const String checkInCta = 'Check in today';
+  /// Ryan teaser visible cho đến Wave 2 launch
+  static const String ryanTeaserText = "Something's coming.";
 }

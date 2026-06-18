@@ -7,8 +7,10 @@ import '../../shared/widgets/nut_pill.dart';
 import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import '../streak/streak_model.dart';
+import 'compose_screen.dart';
 import 'feed_post.dart';
 import 'feed_service.dart';
+import 'quote_model.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({
@@ -64,32 +66,101 @@ class _FeedScreenState extends State<FeedScreen> {
     _posts = widget.feedService.loadPosts();
   }
 
-  void _postProgress() {
+  Future<void> _openComposeSheet() async {
     final l10n = context.l10n;
     final streakDay = widget.streak.currentStreakDays();
 
-    widget.feedService.createProgressPost(
-      streakDay,
-      defaultUsername: l10n.feedDefaultUsername,
-      content: l10n.feedProgressContent(streakDay),
-      username: widget.username,
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.nutPalette.surface,
+      showDragHandle: true,
+      builder: (context) {
+        return ComposeProgressSheet(
+          streakDay: streakDay,
+          onPost: (content) {
+            widget.feedService.createProgressPost(
+              streakDay,
+              defaultUsername: l10n.feedDefaultUsername,
+              content: content,
+              username: widget.username,
+            );
+            setState(() => _posts = widget.feedService.loadPosts());
+          },
+        );
+      },
     );
-    setState(() => _posts = widget.feedService.loadPosts());
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final quote = widget.feedService.getQuoteOfTheDay();
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.feedTitle)),
       body: NutResponsiveListView(
         children: [
-          _FeedHeader(onPostProgress: _postProgress),
+          _FeedHeader(onPostProgress: _openComposeSheet),
+          const SizedBox(height: NutSpacing.medium),
+          _DailyWisdom(quote: quote),
           for (final post in _posts) ...[
             const SizedBox(height: NutSpacing.medium),
             _FeedPostCard(post: post),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DailyWisdom extends StatelessWidget {
+  const _DailyWisdom({required this.quote});
+
+  final DailyQuote quote;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.nutPalette;
+
+    return NutCard(
+      padding: const EdgeInsets.all(20),
+      color: palette.accentGold.withOpacity(0.05),
+      borderColor: palette.accentGold.withOpacity(0.2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.format_quote, color: palette.accentGold, size: 24),
+              const SizedBox(width: 8),
+              Text(
+                "DAILY WISDOM",
+                style: TextStyle(
+                  color: palette.accentGold,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            quote.text,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  height: 1.4,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              "— ${quote.author}",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: palette.textSecondary,
+                  ),
+            ),
+          ),
         ],
       ),
     );

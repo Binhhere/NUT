@@ -1,0 +1,13 @@
+## Copy this file to android/key.properties and fill in your real values.
+## android/key.properties is gitignored — never commit your real keystore secrets.
+##
+## How to generate a release keystore (run once, keep the .jks file safe forever):
+##   keytool -genkey -v -keystore nut-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias nut
+##
+## Then place nut-release.jks somewhere OUTSIDE the repo (e.g. a secrets folder)
+## and point storeFile at its absolute or relative path below.
+
+storePassword=CHANGE_ME
+keyPassword=CHANGE_ME
+keyAlias=nut
+storeFile=/absolute/path/to/nut-release.jks

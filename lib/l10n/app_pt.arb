@@ -72,6 +72,11 @@
   "feedMembersPill": "2,4 mil membros",
   "feedComposePrompt": "Compartilhe uma pequena vitória ou faça check-in da sua sequência.",
   "feedPostProgress": "Postar progresso",
+  "feedComposeTitle": "Postar progresso",
+  "feedComposeBodyHint": "Escreva uma pequena atualização...",
+  "feedComposeHelper": "O dia {day} será anexado a este post.",
+  "feedComposeSubmit": "Postar",
+  "feedComposeCancel": "Cancelar",
   "feedProgressPill": "Progresso",
   "feedUsername": "@{username}",
   "feedDayMeta": "{timeAgo} - Dia {day}",
@@ -86,7 +91,7 @@
   "feedMockPostDayByDay": "Check-in. Hoje vou deixar o celular fora da cama.",
   "feedMockUserClearMind": "mente_clara",
   "feedMockPostClearMind": "Cheguei a 30 dias ontem. A principal mudança é me sentir menos reativo.",
-  "feedDefaultUsername": "você",
+  "feedDefaultUsername": "Anônimo",
   "feedProgressContent": "Estou protegendo o dia {day} hoje.",
   "badgesTitle": "Medalhas",
   "badgesHeaderTitle": "Marcos",
@@ -106,7 +111,8 @@
   "profileUsername": "@{username}",
   "profileDefaultSubtitle": "Perfil local e privado para o MVP.",
   "profileReasonSubtitle": "Motivo: {reason}",
-  "profileDefaultUsername": "você",
+  "profileDefaultUsername": "Anônimo",
+  "profileAnonymousUsername": "Anônimo",
   "profileYourReason": "Seu motivo",
   "profileCurrentStreakDays": "Dias da sequência atual",
   "profileTotalRelapses": "Total de resets",
@@ -144,5 +150,58 @@
   "onboardingReasonEnergy": "Energia",
   "onboardingReasonJustTrying": "Só tentando",
   "onboardingContinue": "Continuar",
-  "onboardingSkip": "Pular por enquanto"
+  "onboardingSkip": "Pular por enquanto",
+  "onboardingStepLabel": "PASSO {current} DE {total}",
+  "@onboardingStepLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingStep1Title": "Como devemos\nte chamar?",
+  "onboardingStep1Subtitle": "Isso fica privado. Você pode mudar quando quiser.",
+  "onboardingStep1InputLabel": "NOME DE USUÁRIO",
+  "onboardingStep1InputHint": "Digite um nome",
+  "onboardingStep1Note": "Visível apenas para você neste dispositivo.",
+  "onboardingStep2Title": "Por que você\nestá aqui?",
+  "onboardingStep2Subtitle": "Escolha o que parece verdadeiro agora. Você pode mudar depois.",
+  "onboardingStep3Title": "Você está pronto.",
+  "onboardingStep3Subtitle": "Sua sequência começa no momento em que você tocar abaixo. Sem pressão, sem necessidade de recorde perfeito.",
+  "onboardingStep3StreakLabel": "SEQUÊNCIA ATUAL",
+  "onboardingStep3CTA": "Iniciar minha sequência",
+  "settingsTitle": "Configurações",
+  "settingsSectionAppearance": "Aparência",
+  "settingsDarkMode": "Modo escuro",
+  "settingsDarkModeSubtitle": "O tema claro virá em uma versão futura.",
+  "settingsSectionSecurity": "Segurança",
+  "settingsAppLock": "Bloqueio do App",
+  "settingsAppLockSubtitle": "Exigir biometria ou PIN para abrir o NUT.",
+  "settingsSectionNotifications": "Notificações",
+  "settingsDailyReminder": "Lembrete diário",
+  "settingsDailyReminderSubtitle": "Receba um lembrete diário para fazer check-in.",
+  "settingsReminderTime": "Hora do lembrete",
+  "settingsSectionData": "Dados",
+  "settingsExportData": "Exportar dados",
+  "settingsExportDataSubtitle": "Compartilhe seu arquivo de backup",
+  "settingsImportData": "Importar dados",
+  "settingsImportDataSubtitle": "Restaurar de um arquivo de backup",
+  "settingsAboutNut": "Sobre o NUT",
+  "settingsVersionInfo": "v{version} · {wave}",
+  "@settingsVersionInfo": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "wave": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSectionDeveloper": "Desenvolvedor",
+  "settingsResetOnboarding": "Resetar onboarding",
+  "settingsResetOnboardingSubtitle": "Limpa o perfil local — apenas para dev."
 }
