@@ -48,9 +48,9 @@ class StreakModel {
   // currentStreakDays — đếm số ngày calendar đã qua kể từ startDate.
   //
   // Timeline spec (Local-first V1):
-  //   Cùng ngày start   → 1  (Day 1 = ngày bắt đầu)
-  //   Ngày hôm sau      → 2
-  //   Sau 6 ngày        → 7
+  //   same calendar day as startDate => Day 1
+  //   next calendar day              => Day 2
+  //   after 6 calendar days          => Day 7
   // ─────────────────────────────────────────────
   int currentStreakDays([DateTime? now]) {
     if (!hasStarted) return 0;
