@@ -74,7 +74,55 @@ void main() {
     final now = DateTime(2026, 6, 14, 10);
     final streak = StreakModel(startDate: now, lifetimeCleanDays: 0);
 
-    expect(streak.currentStreakDays(now), 1);
+    final days = streak.currentStreakDays(now);
+    expect(days, 1, reason: 'Current date $now, start date ${streak.startDate}, diff ${now.difference(streak.startDate!).inDays}');
+    expect(streak.ripplePhaseAt(now), RipplePhase.growing);
+    expect(streak.rippleCountAt(now), 1);
+  });
+
+  test('after 6 calendar days streak reaches day 7 breakthrough', () {
+    final start = DateTime(2026, 6, 14, 10);
+    final now = DateTime(2026, 6, 20, 15); // 6 days difference
+    final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
+
+    expect(streak.currentStreakDays(now), 7);
+    expect(streak.ripplePhaseAt(now), RipplePhase.breakthrough);
+  });
+
+  test('streak boundaries for Day 30 and Day 90', () {
+    final start = DateTime(2026, 6, 14, 10);
+
+    // Day 30 (29 days after start)
+    final d30 = DateTime(2026, 7, 13, 10);
+    final s30 = StreakModel(startDate: start, lifetimeCleanDays: 0);
+    expect(s30.currentStreakDays(d30), 30);
+    expect(s30.ripplePhaseAt(d30), RipplePhase.rising);
+
+    // Day 29 (28 days after start)
+    final d29 = DateTime(2026, 7, 12, 10);
+    expect(
+        StreakModel(startDate: start, lifetimeCleanDays: 0)
+            .currentStreakDays(d29),
+        29);
+    expect(
+        StreakModel(startDate: start, lifetimeCleanDays: 0).ripplePhaseAt(d29),
+        RipplePhase.ascending);
+
+    // Day 90
+    final d90 = start.add(const Duration(days: 89));
+    final s90 = StreakModel(startDate: start, lifetimeCleanDays: 0);
+    expect(s90.currentStreakDays(d90), 90);
+    expect(s90.ripplePhaseAt(d90), RipplePhase.orbit);
+
+    // Day 89
+    final d89 = start.add(const Duration(days: 88));
+    expect(
+        StreakModel(startDate: start, lifetimeCleanDays: 0)
+            .currentStreakDays(d89),
+        89);
+    expect(
+        StreakModel(startDate: start, lifetimeCleanDays: 0).ripplePhaseAt(d89),
+        RipplePhase.rising);
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',

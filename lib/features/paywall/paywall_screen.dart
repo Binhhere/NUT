@@ -35,7 +35,8 @@ class PaywallScreen extends StatelessWidget {
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => RelapseAnalyticsScreen(
-              streak: streak ?? const StreakModel(startDate: null, lifetimeCleanDays: 0),
+              streak: streak ??
+                  const StreakModel(startDate: null, lifetimeCleanDays: 0),
               onOpenPaywall: () {},
             ),
           ),

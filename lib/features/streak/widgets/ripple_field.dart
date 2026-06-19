@@ -31,41 +31,41 @@ class RippleField extends StatefulWidget {
 
 class RippleFieldState extends State<RippleField>
     with TickerProviderStateMixin {
-
   // ── Check-in pulse ───────────────────────────
   late final AnimationController _pulseCtrl;
-  late final Animation<double>   _pulseAnim;
+  late final Animation<double> _pulseAnim;
 
   // ── Idle breathe ─────────────────────────────
   late final AnimationController _breatheCtrl;
-  late final Animation<double>   _breatheAnim;
+  late final Animation<double> _breatheAnim;
 
   // ── New ripple fade-in state ──────────────────
   double _newRippleProgress = 1.0;
-  int    _lastKnownRippleCount = 0;
+  int _lastKnownRippleCount = 0;
 
   @override
   void initState() {
     super.initState();
 
     _pulseCtrl = AnimationController(
-      vsync:    this,
+      vsync: this,
       duration: const Duration(milliseconds: 600),
     );
     _pulseAnim = CurvedAnimation(
       parent: _pulseCtrl,
-      curve:  Curves.easeOut,
+      curve: Curves.easeOut,
     );
 
     _breatheCtrl = AnimationController(
-      vsync:    this,
+      vsync: this,
       duration: const Duration(milliseconds: 2800),
     );
     _breatheAnim = Tween<double>(begin: 0.92, end: 1.0).animate(
       CurvedAnimation(parent: _breatheCtrl, curve: Curves.easeInOut),
     );
 
-    if (!RegExp(r'^true$').hasMatch(const String.fromEnvironment('FLUTTER_TEST'))) {
+    if (!RegExp(r'^true$')
+        .hasMatch(const String.fromEnvironment('FLUTTER_TEST'))) {
       _breatheCtrl.repeat(reverse: true);
     } else {
       _breatheCtrl.value = 1.0; // Static state for tests
@@ -112,39 +112,38 @@ class RippleFieldState extends State<RippleField>
 
   @override
   Widget build(BuildContext context) {
-    final theme       = Theme.of(context);
+    final theme = Theme.of(context);
     final accentColor = theme.colorScheme.primary;
-    final days        = widget.streak.currentStreakDays();
+    final days = widget.streak.currentStreakDays();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-
         // ── Visual layer ──────────────────────────
         // BreakthroughAnimation wrap RippleField canvas.
         // Phase seed/growing → passthrough (no extra cost).
         // Phase breakthrough+ → adds tilt + orb layers.
         BreakthroughAnimation(
-          phase:       widget.streak.ripplePhase,
+          phase: widget.streak.ripplePhase,
           accentColor: accentColor,
           child: AnimatedBuilder(
             animation: Listenable.merge([_breatheAnim, _pulseAnim]),
             builder: (context, _) {
               final breatheScale = _breatheAnim.value;
-              final pulseScale   = 1.0 + _pulseAnim.value * 0.06;
+              final pulseScale = 1.0 + _pulseAnim.value * 0.06;
 
               return Transform.scale(
                 scale: breatheScale * pulseScale,
                 child: SizedBox(
-                  width:  220,
+                  width: 220,
                   height: 220,
                   child: CustomPaint(
                     painter: RipplePainter(
-                      phase:             widget.streak.ripplePhase,
-                      rippleCount:       widget.streak.rippleCount,
+                      phase: widget.streak.ripplePhase,
+                      rippleCount: widget.streak.rippleCount,
                       newRippleProgress: _newRippleProgress,
-                      accentColor:       accentColor,
-                      originColor:       Colors.white,
+                      accentColor: accentColor,
+                      originColor: Colors.white,
                     ),
                   ),
                 ),
@@ -160,18 +159,18 @@ class RippleFieldState extends State<RippleField>
           text: TextSpan(
             children: [
               TextSpan(
-                text:  days.toString(),
+                text: days.toString(),
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color:         accentColor,
-                  fontSize:      36,
-                  fontWeight:    FontWeight.w600,
+                  color: accentColor,
+                  fontSize: 36,
+                  fontWeight: FontWeight.w600,
                   letterSpacing: -1,
                 ),
               ),
               TextSpan(
-                text:  '  days',
+                text: '  days',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color:    theme.colorScheme.onSurfaceVariant,
+                  color: theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                 ),
               ),
@@ -186,10 +185,10 @@ class RippleFieldState extends State<RippleField>
             duration: const Duration(milliseconds: 400),
             child: Text(
               _phaseLabel(widget.streak.ripplePhase, days),
-              key:   ValueKey(widget.streak.ripplePhase),
+              key: ValueKey(widget.streak.ripplePhase),
               style: theme.textTheme.bodySmall?.copyWith(
-                color:         theme.colorScheme.onSurfaceVariant,
-                fontSize:      11,
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 11,
                 letterSpacing: 0.8,
               ),
             ),
@@ -201,12 +200,13 @@ class RippleFieldState extends State<RippleField>
 
   String _phaseLabel(RipplePhase phase, int days) {
     return switch (phase) {
-      RipplePhase.seed        => 'Start your streak',
-      RipplePhase.growing     => '${7 - days} ${days == 6 ? 'day' : 'days'} to breakthrough',
+      RipplePhase.seed => 'Start your streak',
+      RipplePhase.growing =>
+        '${7 - days} ${days == 6 ? 'day' : 'days'} to breakthrough',
       RipplePhase.breakthrough => 'First breakthrough 🌱',
-      RipplePhase.ascending   => '${30 - days} days to next level',
-      RipplePhase.rising      => '${90 - days} days to orbit',
-      RipplePhase.orbit       => 'In orbit ✦',
+      RipplePhase.ascending => '${30 - days} days to next level',
+      RipplePhase.rising => '${90 - days} days to orbit',
+      RipplePhase.orbit => 'In orbit ✦',
     };
   }
 }

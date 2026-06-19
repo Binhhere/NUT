@@ -11,7 +11,7 @@ Future<void> main() async {
 
   await NotificationService().init();
 
-  final streakService     = StreakService();
+  final streakService = StreakService();
   final onboardingService = OnboardingService();
 
   final results = await Future.wait([
@@ -22,12 +22,12 @@ Future<void> main() async {
 
   runApp(
     NutApp(
-      streakService:      streakService,
-      onboardingService:  onboardingService,
-      feedService:        FeedService(),
-      initialStreak:      results[0] as dynamic,
-      initialOnboarding:  results[1] as dynamic,
-      initialTheme:       results[2] as AppTheme,
+      streakService: streakService,
+      onboardingService: onboardingService,
+      feedService: FeedService(),
+      initialStreak: results[0] as dynamic,
+      initialOnboarding: results[1] as dynamic,
+      initialTheme: results[2] as AppTheme,
     ),
   );
 }

@@ -138,9 +138,7 @@ class RelapseAnalyticsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: _LockedBar(
-                        palette: palette,
-                        textTheme: textTheme,
-                        label: label),
+                        palette: palette, textTheme: textTheme, label: label),
                   ),
               ],
             ),

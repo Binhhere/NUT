@@ -60,8 +60,7 @@ class StreakModel {
     return (diff < 0 ? 0 : diff) + 1;
   }
 
-  static DateTime _dateOnly(DateTime dt) =>
-      DateTime(dt.year, dt.month, dt.day);
+  static DateTime _dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);
 
   bool get isCheckedInToday {
     if (lastCheckinDate == null) return false;
@@ -102,30 +101,36 @@ class StreakModel {
   // Session 2 sẽ dùng getter này để quyết định render path.
   // ─────────────────────────────────────────────
 
-  RipplePhase get ripplePhase {
-    final days = currentStreakDays();
+  RipplePhase ripplePhaseAt([DateTime? now]) {
+    final days = currentStreakDays(now);
     if (!hasStarted) return RipplePhase.seed;
-    if (days < 8)  return RipplePhase.growing;
-    if (days == 8) return RipplePhase.breakthrough;
-    if (days < 31) return RipplePhase.ascending;
-    if (days < 91) return RipplePhase.rising;
+    if (days < 7) return RipplePhase.growing;
+    if (days == 7) return RipplePhase.breakthrough;
+    if (days < 30) return RipplePhase.ascending;
+    if (days < 90) return RipplePhase.rising;
     return RipplePhase.orbit;
   }
 
-  /// Số ripple arc cần vẽ trong phase growing (Day 1–7).
+  RipplePhase get ripplePhase => ripplePhaseAt();
+
+  /// Số ripple arc cần vẽ trong phase growing (Day 1–6).
   /// Trong các phase khác, RippleField tự tính theo phase.
-  int get rippleCount {
-    final days = currentStreakDays();
-    return (days - 1).clamp(0, 6);
+  int rippleCountAt([DateTime? now]) {
+    final days = currentStreakDays(now);
+    return days.clamp(0, 6);
   }
+
+  int get rippleCount => rippleCountAt();
 
   /// Progress nội tại trong growing phase [0.0–1.0].
   /// Dùng để animate opacity của ripple mới nhất (chưa "settled").
-  double get growingPhaseProgress {
-    final days = currentStreakDays();
-    if (days <= 1) return 0.0;
-    return ((days - 1) / 7.0).clamp(0.0, 1.0);
+  double growingPhaseProgressAt([DateTime? now]) {
+    final days = currentStreakDays(now);
+    if (days == 0) return 0.0;
+    return (days / 7.0).clamp(0.0, 1.0);
   }
+
+  double get growingPhaseProgress => growingPhaseProgressAt();
 
   StreakModel copyWith({
     DateTime? startDate,

@@ -50,9 +50,10 @@ class StreakService {
   Future<StreakModel> resetStreak(StreakModel current) async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final start = DateTime(current.startDate!.year, current.startDate!.month, current.startDate!.day);
+    final start = DateTime(current.startDate!.year, current.startDate!.month,
+        current.startDate!.day);
     final completedDays = today.difference(start).inDays;
-    
+
     final bestStreak =
         completedDays > current.bestStreak ? completedDays : current.bestStreak;
     final streak = StreakModel(

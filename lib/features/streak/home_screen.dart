@@ -89,10 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final duration = widget.streak.currentDuration();
-    final hours    = duration.inHours.remainder(24);
-    final minutes  = duration.inMinutes.remainder(60);
-    final l10n     = context.l10n;
-    final palette  = context.nutPalette;
+    final hours = duration.inHours.remainder(24);
+    final minutes = duration.inMinutes.remainder(60);
+    final l10n = context.l10n;
+    final palette = context.nutPalette;
 
     return Scaffold(
       body: Stack(
@@ -100,29 +100,29 @@ class _HomeScreenState extends State<HomeScreen> {
           NutResponsiveListView(
             children: [
               SectionHeader(
-                title:    l10n.homeTitle,
+                title: l10n.homeTitle,
                 subtitle: _supportLineForReason(l10n, widget.reason),
               ),
               const SizedBox(height: NutSpacing.large),
 
               // ── Streak card ───────────────────────────
               NutCard(
-                padding:     const EdgeInsets.fromLTRB(20, 28, 20, 20),
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
                 borderColor: palette.accentBg,
                 child: Column(
                   children: [
                     Text(
                       l10n.homeCurrentStreak,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color:          palette.textMuted,
-                            letterSpacing:  1.2,
+                            color: palette.textMuted,
+                            letterSpacing: 1.2,
                           ),
                     ),
                     const SizedBox(height: NutSpacing.medium),
 
                     // RippleField — thay thế _StreakRing
                     RippleField(
-                      key:    _rippleKey,
+                      key: _rippleKey,
                       streak: widget.streak,
                     ),
 
@@ -174,9 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: _isBusy || !widget.streak.hasStarted
                           ? null
                           : () => _runAction(widget.onResetStreak),
-                      icon:        Icons.replay_outlined,
+                      icon: Icons.replay_outlined,
                       borderColor: palette.reset.withOpacity(0.28),
-                      label:       l10n.homeResetWithSupport,
+                      label: l10n.homeResetWithSupport,
                     ),
                   ],
                 ),
@@ -190,17 +190,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: StatCard(
-                      label:      l10n.lifetimeCleanDays,
-                      value:      widget.streak.lifetimeCleanDays.toString(),
-                      sublabel:   l10n.homeDaysClean,
+                      label: l10n.lifetimeCleanDays,
+                      value: widget.streak.lifetimeCleanDays.toString(),
+                      sublabel: l10n.homeDaysClean,
                       valueColor: palette.success,
                     ),
                   ),
                   const SizedBox(width: NutSpacing.medium),
                   Expanded(
                     child: StatCard(
-                      label:    l10n.homeBestStreak,
-                      value:    widget.streak.effectiveBestStreak.toString(),
+                      label: l10n.homeBestStreak,
+                      value: widget.streak.effectiveBestStreak.toString(),
                       sublabel: l10n.homeDays,
                     ),
                   ),
@@ -244,9 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Align(
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
-              confettiController:   _confettiController,
-              blastDirectionality:  BlastDirectionality.explosive,
-              shouldLoop:           false,
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
               colors: [
                 palette.accentGold,
                 palette.success,
@@ -268,11 +268,15 @@ class _HomeScreenState extends State<HomeScreen> {
 String _supportLineForReason(AppLocalizations l10n, String? reason) {
   if (reason == null) return l10n.homeSupportDefault;
   final r = reason.toLowerCase();
-  if (r.contains('focus')      || r.contains('foco'))       return l10n.homeSupportFocus;
-  if (r.contains('confidence') || r.contains('confiança'))  return l10n.homeSupportConfidence;
-  if (r.contains('discipline') || r.contains('disciplina')) return l10n.homeSupportDiscipline;
-  if (r.contains('energy')     || r.contains('energia'))    return l10n.homeSupportEnergy;
-  if (r.contains('trying')     || r.contains('tentando'))   return l10n.homeSupportJustTrying;
+  if (r.contains('focus') || r.contains('foco')) return l10n.homeSupportFocus;
+  if (r.contains('confidence') || r.contains('confiança'))
+    return l10n.homeSupportConfidence;
+  if (r.contains('discipline') || r.contains('disciplina'))
+    return l10n.homeSupportDiscipline;
+  if (r.contains('energy') || r.contains('energia'))
+    return l10n.homeSupportEnergy;
+  if (r.contains('trying') || r.contains('tentando'))
+    return l10n.homeSupportJustTrying;
   return l10n.homeSupportDefault;
 }
 
@@ -294,16 +298,16 @@ class _SmallTime extends StatelessWidget {
       width: 92,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color:        palette.surface,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(NutRadius.card),
-        border:       Border.all(color: palette.border),
+        border: Border.all(color: palette.border),
       ),
       child: Column(
         children: [
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color:      palette.textPrimary,
+                  color: palette.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
           ),
@@ -333,7 +337,7 @@ class _WeekCard extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 6),
                 child: _WeekDay(
-                  label:   labels[i],
+                  label: labels[i],
                   isToday: i == todayIndex,
                   checked: i < todayIndex || (i == todayIndex && checkedToday),
                 ),
@@ -359,7 +363,7 @@ class _WeekDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
-    final color   = checked ? palette.accentGold : palette.surface;
+    final color = checked ? palette.accentGold : palette.surface;
 
     return Column(
       children: [
@@ -367,16 +371,16 @@ class _WeekDay extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           height: 34,
           decoration: BoxDecoration(
-            color:        checked ? palette.accentBg : palette.surface,
+            color: checked ? palette.accentBg : palette.surface,
             borderRadius: BorderRadius.circular(10),
-            border:       Border.all(
+            border: Border.all(
               color: isToday ? palette.accentGold : palette.border,
             ),
           ),
           child: Center(
             child: Icon(
               checked ? Icons.check : Icons.circle_outlined,
-              size:  15,
+              size: 15,
               color: color,
             ),
           ),
@@ -400,7 +404,7 @@ class _MilestoneCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n    = context.l10n;
+    final l10n = context.l10n;
     final palette = context.nutPalette;
 
     return NutCard(
@@ -423,10 +427,10 @@ class _MilestoneCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(NutRadius.pill),
             child: LinearProgressIndicator(
-              value:           streak.nextMilestoneProgress,
-              minHeight:       8,
+              value: streak.nextMilestoneProgress,
+              minHeight: 8,
               backgroundColor: palette.surface,
-              color:           palette.accentGold,
+              color: palette.accentGold,
             ),
           ),
           const SizedBox(height: NutSpacing.medium),
@@ -467,11 +471,11 @@ class _RyanTeaserCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width:  38,
+            width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color:  palette.premiumSurface,
-              shape:  BoxShape.circle,
+              color: palette.premiumSurface,
+              shape: BoxShape.circle,
               border: Border.all(color: palette.premium.withOpacity(0.2)),
             ),
             child: const Center(
@@ -501,7 +505,7 @@ class _RyanTeaserCard extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           NutPill(
-            label:           'V2',
+            label: 'V2',
             backgroundColor: palette.premiumBg,
             foregroundColor: palette.premium,
           ),

@@ -32,26 +32,26 @@ enum AppTheme {
   static const _prefKey = 'app_theme';
 
   String get label => switch (this) {
-        AppTheme.dark  => 'Dark',
+        AppTheme.dark => 'Dark',
         AppTheme.ocean => 'Ocean',
         AppTheme.light => 'Light',
       };
 
   ThemeData toThemeData() => switch (this) {
-        AppTheme.dark  => NutTheme.dark(),
+        AppTheme.dark => NutTheme.dark(),
         AppTheme.ocean => NutTheme.ocean(),
         AppTheme.light => NutTheme.light(),
       };
 
   ThemeMode get themeMode => switch (this) {
         AppTheme.light => ThemeMode.light,
-        _              => ThemeMode.dark,
+        _ => ThemeMode.dark,
       };
 
   static AppTheme fromString(String? value) => switch (value) {
         'ocean' => AppTheme.ocean,
         'light' => AppTheme.light,
-        _       => AppTheme.dark,
+        _ => AppTheme.dark,
       };
 
   String get persistValue => name;
@@ -199,7 +199,7 @@ class _NutRootState extends State<_NutRoot> with WidgetsBindingObserver {
     return MaterialApp(
       onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
-      theme:     themeData,
+      theme: themeData,
       darkTheme: themeData,
       themeMode: ThemeMode.dark, // always use our explicit theme, not system
       locale: widget.locale,
@@ -313,8 +313,8 @@ class _NutShellState extends State<_NutShell> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => SettingsScreen(
-          currentTheme:    widget.currentTheme,
-          onThemeChanged:  widget.onThemeChanged,
+          currentTheme: widget.currentTheme,
+          onThemeChanged: widget.onThemeChanged,
         ),
       ),
     );
@@ -346,10 +346,22 @@ class _NutShellState extends State<_NutShell> {
     ];
 
     final destinations = [
-      _NutDestination(icon: Icons.home_outlined,            selectedIcon: Icons.home,              label: l10n.navHome),
-      _NutDestination(icon: Icons.forum_outlined,           selectedIcon: Icons.forum,             label: l10n.navFeed),
-      _NutDestination(icon: Icons.workspace_premium_outlined, selectedIcon: Icons.workspace_premium, label: l10n.navBadges),
-      _NutDestination(icon: Icons.person_outline,           selectedIcon: Icons.person,            label: l10n.navProfile),
+      _NutDestination(
+          icon: Icons.home_outlined,
+          selectedIcon: Icons.home,
+          label: l10n.navHome),
+      _NutDestination(
+          icon: Icons.forum_outlined,
+          selectedIcon: Icons.forum,
+          label: l10n.navFeed),
+      _NutDestination(
+          icon: Icons.workspace_premium_outlined,
+          selectedIcon: Icons.workspace_premium,
+          label: l10n.navBadges),
+      _NutDestination(
+          icon: Icons.person_outline,
+          selectedIcon: Icons.person,
+          label: l10n.navProfile),
     ];
 
     return LayoutBuilder(
@@ -369,7 +381,8 @@ class _NutShellState extends State<_NutShell> {
                 SafeArea(
                   child: NavigationRail(
                     selectedIndex: _selectedIndex,
-                    onDestinationSelected: (i) => setState(() => _selectedIndex = i),
+                    onDestinationSelected: (i) =>
+                        setState(() => _selectedIndex = i),
                     labelType: NavigationRailLabelType.all,
                     destinations: [
                       for (final d in destinations)

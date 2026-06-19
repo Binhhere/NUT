@@ -346,7 +346,6 @@ class _Step2Reason extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 28),
-
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -363,7 +362,6 @@ class _Step2Reason extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 40),
-
           NutPrimaryButton(
             label: l10n.onboardingContinue,
             icon: Icons.arrow_forward,
@@ -404,9 +402,8 @@ class _ReasonPill extends StatelessWidget {
           color: selected ? palette.accentBg : palette.surface,
           borderRadius: BorderRadius.circular(NutRadius.pill),
           border: Border.all(
-            color: selected
-                ? palette.accentGold.withOpacity(0.4)
-                : palette.border,
+            color:
+                selected ? palette.accentGold.withOpacity(0.4) : palette.border,
             width: 0.5,
           ),
         ),
@@ -502,7 +499,6 @@ class _Step3ReadyState extends State<_Step3Ready>
               ),
             ),
             const SizedBox(height: 48),
-
             Center(
               child: Column(
                 children: [
@@ -538,7 +534,6 @@ class _Step3ReadyState extends State<_Step3Ready>
               ),
             ),
             const SizedBox(height: 48),
-
             NutPrimaryButton(
               label: l10n.onboardingStep3CTA,
               isLoading: widget.isSaving,

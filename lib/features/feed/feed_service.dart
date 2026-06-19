@@ -11,11 +11,13 @@ class FeedService {
       author: 'NUT',
     ),
     DailyQuote(
-      text: 'Discipline is choosing between what you want now and what you want most.',
+      text:
+          'Discipline is choosing between what you want now and what you want most.',
       author: 'Abraham Lincoln',
     ),
     DailyQuote(
-      text: 'The best time to plant a tree was twenty years ago. The second best time is now.',
+      text:
+          'The best time to plant a tree was twenty years ago. The second best time is now.',
       author: 'Chinese Proverb',
     ),
     DailyQuote(
@@ -27,7 +29,8 @@ class FeedService {
       author: 'Robin Sharma',
     ),
     DailyQuote(
-      text: 'Strength does not come from winning. Your struggles develop your strengths.',
+      text:
+          'Strength does not come from winning. Your struggles develop your strengths.',
       author: 'Arnold Schwarzenegger',
     ),
     DailyQuote(
@@ -35,7 +38,8 @@ class FeedService {
       author: 'Friedrich Nietzsche',
     ),
     DailyQuote(
-      text: 'You are not your urge. You are the person who chooses what to do next.',
+      text:
+          'You are not your urge. You are the person who chooses what to do next.',
       author: 'NUT',
     ),
     DailyQuote(
@@ -43,11 +47,13 @@ class FeedService {
       author: 'Marcus Aurelius',
     ),
     DailyQuote(
-      text: 'Every moment of resistance is a vote for the person you are becoming.',
+      text:
+          'Every moment of resistance is a vote for the person you are becoming.',
       author: 'NUT',
     ),
     DailyQuote(
-      text: 'We are what we repeatedly do. Excellence is not an act but a habit.',
+      text:
+          'We are what we repeatedly do. Excellence is not an act but a habit.',
       author: 'Aristotle',
     ),
     DailyQuote(
@@ -67,11 +73,13 @@ class FeedService {
       author: 'Octavia Butler',
     ),
     DailyQuote(
-      text: 'Between stimulus and response there is a space. In that space is your power.',
+      text:
+          'Between stimulus and response there is a space. In that space is your power.',
       author: 'Viktor Frankl',
     ),
     DailyQuote(
-      text: 'One day at a time is not a cliché. It is the only honest unit of measurement.',
+      text:
+          'One day at a time is not a cliché. It is the only honest unit of measurement.',
       author: 'NUT',
     ),
     DailyQuote(
@@ -95,7 +103,8 @@ class FeedService {
       author: 'Socrates',
     ),
     DailyQuote(
-      text: 'You have power over your mind, not outside events. Realise this and you will find strength.',
+      text:
+          'You have power over your mind, not outside events. Realise this and you will find strength.',
       author: 'Marcus Aurelius',
     ),
     DailyQuote(
@@ -115,7 +124,8 @@ class FeedService {
       author: 'Jim Rohn',
     ),
     DailyQuote(
-      text: 'The most important conversation you will have today is the one with yourself.',
+      text:
+          'The most important conversation you will have today is the one with yourself.',
       author: 'NUT',
     ),
     DailyQuote(

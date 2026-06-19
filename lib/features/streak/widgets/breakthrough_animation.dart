@@ -55,8 +55,8 @@ class _BreakthroughAnimationState extends State<BreakthroughAnimation>
   late final AnimationController _ctrl;
 
   // Stage sub-animations
-  late final Animation<double> _tremorAnim;  // [0.0–0.4]
-  late final Animation<double> _tiltAnim;   // [0.4–0.7]
+  late final Animation<double> _tremorAnim; // [0.0–0.4]
+  late final Animation<double> _tiltAnim; // [0.4–0.7]
   late final Animation<double> _ascentAnim; // [0.7–1.0]
 
   bool _hasPlayed = false;
@@ -145,12 +145,12 @@ class _BreakthroughAnimationState extends State<BreakthroughAnimation>
     return AnimatedBuilder(
       animation: _ctrl,
       builder: (context, _) {
-        final tremor  = _tremorAnim.value;
-        final tilt    = _tiltAnim.value;
-        final ascent  = _ascentAnim.value;
+        final tremor = _tremorAnim.value;
+        final tilt = _tiltAnim.value;
+        final ascent = _ascentAnim.value;
 
         return SizedBox(
-          width:  220,
+          width: 220,
           height: 280, // extra height để điểm sáng bay lên
           child: Stack(
             clipBehavior: Clip.none,
@@ -159,13 +159,13 @@ class _BreakthroughAnimationState extends State<BreakthroughAnimation>
               // ── Layer 1: Ripple field nghiêng + thu nhỏ ──
               Positioned(
                 bottom: 0,
-                left:   0,
-                right:  0,
+                left: 0,
+                right: 0,
                 child: _TiltedField(
-                  tilt:    tilt,
-                  ascent:  ascent,
-                  tremor:  tremor,
-                  child:   widget.child,
+                  tilt: tilt,
+                  ascent: ascent,
+                  tremor: tremor,
+                  child: widget.child,
                 ),
               ),
 
@@ -174,10 +174,10 @@ class _BreakthroughAnimationState extends State<BreakthroughAnimation>
                 Positioned(
                   // Bay từ center (140px từ bottom) lên top
                   bottom: 140 + ascent * 120,
-                  left:   0,
-                  right:  0,
+                  left: 0,
+                  right: 0,
                   child: _AscendingOrb(
-                    progress:    ascent,
+                    progress: ascent,
                     accentColor: widget.accentColor,
                   ),
                 ),
@@ -186,10 +186,10 @@ class _BreakthroughAnimationState extends State<BreakthroughAnimation>
               if (ascent > 0.2)
                 Positioned(
                   bottom: 140 + ascent * 80,
-                  left:   0,
-                  right:  0,
+                  left: 0,
+                  right: 0,
                   child: _OrbTrail(
-                    progress:    ascent,
+                    progress: ascent,
                     accentColor: widget.accentColor,
                   ),
                 ),
@@ -215,9 +215,9 @@ class _TiltedField extends StatelessWidget {
     required this.child,
   });
 
-  final double tilt;    // [0–1] mức độ nghiêng
-  final double ascent;  // [0–1] mức độ thu nhỏ khi orb bay lên
-  final double tremor;  // [0–1] rung trước khi nghiêng
+  final double tilt; // [0–1] mức độ nghiêng
+  final double ascent; // [0–1] mức độ thu nhỏ khi orb bay lên
+  final double tremor; // [0–1] rung trước khi nghiêng
   final Widget child;
 
   @override
@@ -241,13 +241,13 @@ class _TiltedField extends StatelessWidget {
     return Opacity(
       opacity: fieldOpacity,
       child: Transform(
-        transform:           matrix,
-        alignment:           Alignment.bottomCenter,
+        transform: matrix,
+        alignment: Alignment.bottomCenter,
         child: Transform.scale(
           scale: fieldScale,
           child: Transform.translate(
             offset: Offset(0, tremorOffset),
-            child:  child,
+            child: child,
           ),
         ),
       ),
@@ -282,8 +282,8 @@ class _AscendingOrb extends StatelessWidget {
       child: CustomPaint(
         size: Size(orbRadius * 6, orbRadius * 6),
         painter: _OrbPainter(
-          radius:      orbRadius,
-          color:       accentColor,
+          radius: orbRadius,
+          color: accentColor,
           glowOpacity: opacity * 0.4,
           coreOpacity: opacity,
         ),
@@ -314,7 +314,7 @@ class _OrbPainter extends CustomPainter {
       center,
       radius * 2.5,
       Paint()
-        ..color      = color.withOpacity(glowOpacity * 0.5)
+        ..color = color.withOpacity(glowOpacity * 0.5)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12),
     );
 
@@ -323,7 +323,7 @@ class _OrbPainter extends CustomPainter {
       center,
       radius * 1.6,
       Paint()
-        ..color      = color.withOpacity(glowOpacity)
+        ..color = color.withOpacity(glowOpacity)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
     );
 
@@ -348,7 +348,7 @@ class _OrbPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _OrbPainter old) =>
-      old.radius      != radius      ||
+      old.radius != radius ||
       old.glowOpacity != glowOpacity ||
       old.coreOpacity != coreOpacity;
 }
@@ -374,7 +374,7 @@ class _OrbTrail extends StatelessWidget {
       child: CustomPaint(
         size: const Size(40, 60),
         painter: _TrailPainter(
-          color:    accentColor,
+          color: accentColor,
           progress: progress,
         ),
       ),
@@ -393,8 +393,8 @@ class _TrailPainter extends CustomPainter {
     final cx = size.width / 2;
     // Vẽ 5 chấm trail phía dưới, mỗi chấm nhỏ hơn và mờ hơn
     for (var i = 0; i < 5; i++) {
-      final t       = i / 4.0;
-      final radius  = (3.5 - t * 2.5).clamp(0.5, 3.5);
+      final t = i / 4.0;
+      final radius = (3.5 - t * 2.5).clamp(0.5, 3.5);
       final opacity = ((1.0 - t) * 0.45 * progress).clamp(0.0, 1.0);
       final yOffset = 8.0 + t * 40.0;
 

@@ -53,9 +53,9 @@ class RipplePainter extends CustomPainter {
   static const double _startAngleDeg = -80.0;
   static const double _sweepAngleDeg = 160.0;
   static const double _rippleSpacing = 22.0;
-  static const double _baseRadius    = 24.0;
-  static const double _originRadius  = 6.0;
-  static const double _originXRatio  = 0.38;
+  static const double _baseRadius = 24.0;
+  static const double _originRadius = 6.0;
+  static const double _originXRatio = 0.38;
 
   static double _deg(double d) => d * math.pi / 180.0;
 
@@ -65,24 +65,24 @@ class RipplePainter extends CustomPainter {
   /// ascending: full, rising: 0.65, orbit: 0.25
   double get _fieldOpacity {
     return switch (phase) {
-      RipplePhase.seed        => 1.0,
-      RipplePhase.growing     => 1.0,
+      RipplePhase.seed => 1.0,
+      RipplePhase.growing => 1.0,
       RipplePhase.breakthrough => 1.0,
-      RipplePhase.ascending   => 1.0,
-      RipplePhase.rising      => 0.65,
-      RipplePhase.orbit       => 0.25,
+      RipplePhase.ascending => 1.0,
+      RipplePhase.rising => 0.65,
+      RipplePhase.orbit => 0.25,
     };
   }
 
   /// Số arc hiển thị theo phase.
   int get _activeCount {
     return switch (phase) {
-      RipplePhase.seed        => 0,
-      RipplePhase.growing     => rippleCount,
+      RipplePhase.seed => 0,
+      RipplePhase.growing => rippleCount,
       RipplePhase.breakthrough => rippleCount,
-      RipplePhase.ascending   => 6,
-      RipplePhase.rising      => 6,
-      RipplePhase.orbit       => 6,
+      RipplePhase.ascending => 6,
+      RipplePhase.rising => 6,
+      RipplePhase.orbit => 6,
     };
   }
 
@@ -90,9 +90,9 @@ class RipplePainter extends CustomPainter {
   double get _originOpacity {
     return switch (phase) {
       RipplePhase.ascending => 0.5,
-      RipplePhase.rising    => 0.2,
-      RipplePhase.orbit     => 0.0, // tắt hẳn, chỉ còn orb ở BreakthroughAnimation
-      _                     => 1.0,
+      RipplePhase.rising => 0.2,
+      RipplePhase.orbit => 0.0, // tắt hẳn, chỉ còn orb ở BreakthroughAnimation
+      _ => 1.0,
     };
   }
 
@@ -116,16 +116,15 @@ class RipplePainter extends CustomPainter {
     return (base * _fieldOpacity).clamp(0.0, 1.0);
   }
 
-  double _strokeWidthForIndex(int index) =>
-      (3.0 - index * 0.3).clamp(1.2, 3.0);
+  double _strokeWidthForIndex(int index) => (3.0 - index * 0.3).clamp(1.2, 3.0);
 
   // ── Build configs ──────────────────────────────
 
   List<RippleConfig> _buildConfigs(int count) => List.generate(
         count,
         (i) => RippleConfig(
-          radius:      _baseRadius + i * _rippleSpacing,
-          opacity:     _opacityForIndex(i, count),
+          radius: _baseRadius + i * _rippleSpacing,
+          opacity: _opacityForIndex(i, count),
           strokeWidth: _strokeWidthForIndex(i),
         ),
       );
@@ -135,7 +134,7 @@ class RipplePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final origin = Offset(size.width * _originXRatio, size.height * 0.5);
-    final count  = _activeCount;
+    final count = _activeCount;
 
     if (phase == RipplePhase.seed || count == 0) {
       if (_originOpacity > 0) _drawOrigin(canvas, origin, _originOpacity);
@@ -159,10 +158,10 @@ class RipplePainter extends CustomPainter {
       _deg(_sweepAngleDeg),
       false,
       Paint()
-        ..color       = accentColor.withOpacity(cfg.opacity)
+        ..color = accentColor.withOpacity(cfg.opacity)
         ..strokeWidth = cfg.strokeWidth
-        ..strokeCap   = StrokeCap.round
-        ..style       = PaintingStyle.stroke,
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke,
     );
   }
 
@@ -172,7 +171,7 @@ class RipplePainter extends CustomPainter {
       origin,
       _originRadius * 2.2,
       Paint()
-        ..color      = originColor.withOpacity(0.25 * opacity)
+        ..color = originColor.withOpacity(0.25 * opacity)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
     );
     // Core
@@ -195,9 +194,9 @@ class RipplePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant RipplePainter old) =>
-      old.phase             != phase             ||
-      old.rippleCount       != rippleCount       ||
+      old.phase != phase ||
+      old.rippleCount != rippleCount ||
       old.newRippleProgress != newRippleProgress ||
-      old.accentColor       != accentColor       ||
-      old.tiltProgress      != tiltProgress;
+      old.accentColor != accentColor ||
+      old.tiltProgress != tiltProgress;
 }

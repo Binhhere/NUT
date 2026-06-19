@@ -15,12 +15,12 @@ class JournalMood {
   final String emoji;
   final String label;
 
-  static const calm      = JournalMood._('calm',      '😌', 'Calm');
-  static const motivated = JournalMood._('motivated',  '💪', 'Motivated');
-  static const anxious   = JournalMood._('anxious',    '😰', 'Anxious');
-  static const tempted   = JournalMood._('tempted',    '😬', 'Tempted');
-  static const proud     = JournalMood._('proud',      '🙂', 'Proud');
-  static const neutral   = JournalMood._('neutral',    '😐', 'Neutral');
+  static const calm = JournalMood._('calm', '😌', 'Calm');
+  static const motivated = JournalMood._('motivated', '💪', 'Motivated');
+  static const anxious = JournalMood._('anxious', '😰', 'Anxious');
+  static const tempted = JournalMood._('tempted', '😬', 'Tempted');
+  static const proud = JournalMood._('proud', '🙂', 'Proud');
+  static const neutral = JournalMood._('neutral', '😐', 'Neutral');
 
   static const all = [calm, motivated, anxious, tempted, proud, neutral];
 
@@ -74,11 +74,11 @@ class JournalEntry {
   }) {
     final now = createdAt ?? DateTime.now();
     return JournalEntry(
-      id:        now.millisecondsSinceEpoch.toString(),
+      id: now.millisecondsSinceEpoch.toString(),
       createdAt: now,
       streakDay: streakDay,
-      body:      body,
-      mood:      mood,
+      body: body,
+      mood: mood,
     );
   }
 
@@ -87,19 +87,19 @@ class JournalEntry {
   // ─────────────────────────────────────────────
 
   Map<String, dynamic> toJson() => {
-        'id':         id,
+        'id': id,
         'created_at': createdAt.toIso8601String(),
         'streak_day': streakDay,
-        'body':       body,
-        'mood':       mood?.value,
+        'body': body,
+        'mood': mood?.value,
       };
 
   factory JournalEntry.fromJson(Map<String, dynamic> json) => JournalEntry(
-        id:        json['id'] as String,
+        id: json['id'] as String,
         createdAt: DateTime.parse(json['created_at'] as String),
         streakDay: json['streak_day'] as int,
-        body:      json['body'] as String,
-        mood:      JournalMood.fromValue(json['mood'] as String?),
+        body: json['body'] as String,
+        mood: JournalMood.fromValue(json['mood'] as String?),
       );
 
   // ─────────────────────────────────────────────
@@ -112,11 +112,11 @@ class JournalEntry {
     bool clearMood = false,
   }) {
     return JournalEntry(
-      id:        id,
+      id: id,
       createdAt: createdAt,
       streakDay: streakDay,
-      body:      body      ?? this.body,
-      mood:      clearMood ? null : mood ?? this.mood,
+      body: body ?? this.body,
+      mood: clearMood ? null : mood ?? this.mood,
     );
   }
 

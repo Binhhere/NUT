@@ -105,8 +105,7 @@ class _BadgeCard extends StatelessWidget {
     final unlocked = badge.isUnlocked(currentDays);
     final remaining =
         (badge.requiredDays - currentDays).clamp(0, badge.requiredDays);
-    final progress =
-        (currentDays / badge.requiredDays).clamp(0.0, 1.0);
+    final progress = (currentDays / badge.requiredDays).clamp(0.0, 1.0);
     final l10n = context.l10n;
     final palette = context.nutPalette;
 
@@ -114,9 +113,8 @@ class _BadgeCard extends StatelessWidget {
       children: [
         NutCard(
           padding: const EdgeInsets.fromLTRB(14, 20, 14, 16),
-          borderColor: unlocked
-              ? palette.accentGold.withOpacity(0.22)
-              : palette.border,
+          borderColor:
+              unlocked ? palette.accentGold.withOpacity(0.22) : palette.border,
           color: unlocked ? palette.accentBg.withOpacity(0.35) : palette.card,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,12 +159,9 @@ class _BadgeCard extends StatelessWidget {
                 label: unlocked
                     ? l10n.badgeUnlocked
                     : l10n.badgeDaysLeft(remaining),
-                backgroundColor: unlocked
-                    ? palette.accentBg
-                    : palette.surface,
-                foregroundColor: unlocked
-                    ? palette.accentGold
-                    : palette.textMuted,
+                backgroundColor: unlocked ? palette.accentBg : palette.surface,
+                foregroundColor:
+                    unlocked ? palette.accentGold : palette.textMuted,
                 borderColor: unlocked
                     ? palette.accentGold.withOpacity(0.28)
                     : palette.border,

@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await _storage.setNotifHour(picked.hour);
       await _storage.setNotifMinute(picked.minute);
       setState(() => _reminderTime = picked);
-      
+
       if (_notificationsEnabled) {
         final l10n = context.l10n;
         await _notificationService.scheduleDailyReminder(
@@ -147,9 +147,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(success
-              ? l10n.settingsImportSuccess
-              : l10n.settingsImportFailed),
+          content: Text(
+              success ? l10n.settingsImportSuccess : l10n.settingsImportFailed),
         ),
       );
     }
@@ -169,7 +168,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: NutResponsiveListView(
         children: [
-
           // ── Appearance ───────────────────────────────
           SmallSectionLabel(title: l10n.settingsSectionAppearance),
           const SizedBox(height: 8),
@@ -216,7 +214,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: _appLockEnabled,
               activeColor: palette.accentGold,
               title: Text(l10n.settingsAppLock, style: textTheme.bodyMedium),
-              subtitle: Text(l10n.settingsAppLockSubtitle, style: textTheme.bodySmall),
+              subtitle: Text(l10n.settingsAppLockSubtitle,
+                  style: textTheme.bodySmall),
               onChanged: _toggleAppLock,
             ),
           ),
@@ -232,15 +231,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   contentPadding: EdgeInsets.zero,
                   value: _notificationsEnabled,
                   activeColor: palette.accentGold,
-                  title: Text(l10n.settingsDailyReminder, style: textTheme.bodyMedium),
-                  subtitle: Text(l10n.settingsDailyReminderSubtitle, style: textTheme.bodySmall),
+                  title: Text(l10n.settingsDailyReminder,
+                      style: textTheme.bodyMedium),
+                  subtitle: Text(l10n.settingsDailyReminderSubtitle,
+                      style: textTheme.bodySmall),
                   onChanged: _toggleNotifications,
                 ),
                 if (_notificationsEnabled) ...[
                   Divider(color: palette.border, thickness: 0.5, height: 1),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(l10n.settingsReminderTime, style: textTheme.bodyMedium),
+                    title: Text(l10n.settingsReminderTime,
+                        style: textTheme.bodyMedium),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -252,7 +254,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(Icons.chevron_right, color: palette.textMuted, size: 18),
+                        Icon(Icons.chevron_right,
+                            color: palette.textMuted, size: 18),
                       ],
                     ),
                     onTap: _selectTime,
@@ -271,26 +274,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.upload_outlined, color: palette.textSecondary),
-                  title: Text(l10n.settingsExportData, style: textTheme.bodyMedium),
-                  subtitle: Text(l10n.settingsExportDataSubtitle, style: textTheme.bodySmall),
-                  trailing: Icon(Icons.chevron_right, color: palette.textMuted, size: 18),
+                  leading:
+                      Icon(Icons.upload_outlined, color: palette.textSecondary),
+                  title: Text(l10n.settingsExportData,
+                      style: textTheme.bodyMedium),
+                  subtitle: Text(l10n.settingsExportDataSubtitle,
+                      style: textTheme.bodySmall),
+                  trailing: Icon(Icons.chevron_right,
+                      color: palette.textMuted, size: 18),
                   onTap: _exportData,
                 ),
                 Divider(color: palette.border, thickness: 0.5, height: 1),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.download_outlined, color: palette.textSecondary),
-                  title: Text(l10n.settingsImportData, style: textTheme.bodyMedium),
-                  subtitle: Text(l10n.settingsImportDataSubtitle, style: textTheme.bodySmall),
-                  trailing: Icon(Icons.chevron_right, color: palette.textMuted, size: 18),
+                  leading: Icon(Icons.download_outlined,
+                      color: palette.textSecondary),
+                  title: Text(l10n.settingsImportData,
+                      style: textTheme.bodyMedium),
+                  subtitle: Text(l10n.settingsImportDataSubtitle,
+                      style: textTheme.bodySmall),
+                  trailing: Icon(Icons.chevron_right,
+                      color: palette.textMuted, size: 18),
                   onTap: _importData,
                 ),
                 Divider(color: palette.border, thickness: 0.5, height: 1),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.info_outline, color: palette.textSecondary),
-                  title: Text(l10n.settingsAboutNut, style: textTheme.bodyMedium),
+                  leading:
+                      Icon(Icons.info_outline, color: palette.textSecondary),
+                  title:
+                      Text(l10n.settingsAboutNut, style: textTheme.bodyMedium),
                   subtitle: Text(
                     l10n.settingsVersionInfo('0.1.0', 'Wave 1 MVP'),
                     style: textTheme.bodySmall,
@@ -315,7 +328,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   l10n.settingsResetOnboarding,
                   style: textTheme.bodyMedium?.copyWith(color: palette.reset),
                 ),
-                subtitle: Text(l10n.settingsResetOnboardingSubtitle, style: textTheme.bodySmall),
+                subtitle: Text(l10n.settingsResetOnboardingSubtitle,
+                    style: textTheme.bodySmall),
                 onTap: widget.onResetOnboarding,
               ),
             ),
@@ -354,19 +368,19 @@ class _ThemeChip extends StatelessWidget {
 
   // Preview colors cho từng theme
   static const _previewBg = {
-    AppTheme.dark:  Color(0xFF0D0D0D),
+    AppTheme.dark: Color(0xFF0D0D0D),
     AppTheme.ocean: Color(0xFF0F2027),
     AppTheme.light: Color(0xFFF7F4EE),
   };
   static const _previewAccent = {
-    AppTheme.dark:  Color(0xFFF5A623),
+    AppTheme.dark: Color(0xFFF5A623),
     AppTheme.ocean: Color(0xFF6FA897),
     AppTheme.light: Color(0xFFD4850A),
   };
 
   @override
   Widget build(BuildContext context) {
-    final bg     = _previewBg[theme]!;
+    final bg = _previewBg[theme]!;
     final accent = _previewAccent[theme]!;
 
     return GestureDetector(
@@ -408,10 +422,11 @@ class _ThemeChip extends StatelessWidget {
             Text(
               theme.label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: selected ? palette.accentGold : palette.textSecondary,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                fontSize: 11,
-              ),
+                    color:
+                        selected ? palette.accentGold : palette.textSecondary,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                    fontSize: 11,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],

@@ -133,7 +133,7 @@ class _DailyWisdom extends StatelessWidget {
               Icon(Icons.format_quote, color: palette.accentGold, size: 24),
               const SizedBox(width: 8),
               Text(
-                "DAILY WISDOM",
+                context.l10n.feedDailyWisdom,
                 style: TextStyle(
                   color: palette.accentGold,
                   fontSize: 12,
