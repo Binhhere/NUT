@@ -175,6 +175,7 @@
   "onboardingStep3CTA": "継続を始める",
   "settingsTitle": "設定",
   "settingsSectionAppearance": "外観",
+  "settingsTheme": "テーマ",
   "settingsDarkMode": "ダークモード",
   "settingsDarkModeSubtitle": "ライトテーマは今後のビルドで追加予定です。",
   "settingsSectionSecurity": "セキュリティ",

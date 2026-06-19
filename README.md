@@ -182,6 +182,19 @@ Do not commit:
 This app is suitable for local Android testing and small internal tester builds.
 Before a public Google Play release, complete `docs/RELEASE_CHECKLIST.md`.
 
+## Project History & Current Status
+
+- `docs/CHANGELOG.md` — session-by-session dev log: what changed, why,
+  and what is still open. Update this at the end of every working
+  session, not just when something feels finished.
+- `docs/V1_LAUNCH_CHECKLIST.md` — the hard scope boundary for v1.0,
+  with real checkboxes. If something isn't on that list, it does not
+  belong in v1.0, no matter how good an idea it seems mid-session.
+- `docs/RELEASE_CHECKLIST.md` — Play Store submission specifics
+  (signing, store listing, content rating). Use alongside
+  `V1_LAUNCH_CHECKLIST.md`, not instead of it — one tracks code
+  readiness, the other tracks store readiness.
+
 ## Next Product Steps
 
 1. Persist local feed progress posts if the feed remains local during early testing.

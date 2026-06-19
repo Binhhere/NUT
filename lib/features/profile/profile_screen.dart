@@ -114,6 +114,23 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(width: NutSpacing.medium),
               Expanded(
                 child: StatCard(
+                  label: l10n.homeBestStreak,
+                  value: streak.effectiveBestStreak.toString(),
+                  sublabel: l10n.homeDays,
+                  valueColor: _statColor(
+                    streak.effectiveBestStreak,
+                    palette.accentGold,
+                    palette.textMuted,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: StatCard(
                   label: l10n.lifetimeCleanDays,
                   value: streak.lifetimeCleanDays.toString(),
                   sublabel: l10n.homeDaysClean,
@@ -124,17 +141,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(width: NutSpacing.medium),
+              Expanded(
+                child: StatCard(
+                  label: l10n.profileTotalRelapses,
+                  value: streak.relapseCount.toString(),
+                  valueColor: _statColor(
+                    streak.relapseCount,
+                    palette.reset,
+                    palette.textMuted,
+                  ),
+                ),
+              ),
             ],
-          ),
-          const SizedBox(height: 16),
-          StatCard(
-            label: l10n.profileTotalRelapses,
-            value: streak.relapseCount.toString(),
-            valueColor: _statColor(
-              streak.relapseCount,
-              palette.reset,
-              palette.textMuted,
-            ),
           ),
           const SizedBox(height: 24),
 

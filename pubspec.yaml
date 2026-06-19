@@ -46,6 +46,7 @@ dependencies:
   confetti: ^0.7.0
   file_picker: ^8.0.0+1
   share_plus: ^10.0.2
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -65,15 +66,15 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/icon.png"
-  adaptive_icon_background: "#0D0D0D"
+  adaptive_icon_background: "#0F2027"
   adaptive_icon_foreground: "assets/images/icon.png"
 
 flutter_native_splash:
-  color: "#0D0D0D"
+  color: "#0F2027"
   image: "assets/images/splash.png"
   android_12:
     image: "assets/images/splash.png"
-    color: "#0D0D0D"
+    color: "#0F2027"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -334,6 +334,7 @@
   "onboardingStep3CTA": "Start my streak",
   "settingsTitle": "Settings",
   "settingsSectionAppearance": "Appearance",
+  "settingsTheme": "Theme",
   "settingsDarkMode": "Dark mode",
   "settingsDarkModeSubtitle": "Light theme coming in a later build.",
   "settingsSectionSecurity": "Security",

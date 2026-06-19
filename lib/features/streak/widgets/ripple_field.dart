@@ -2,18 +2,19 @@
 //
 // Widget chính thay thế _StreakRing trong home_screen.dart.
 //
-// Quản lý 2 AnimationController:
-//   1. _pulseCtrl    — scale pulse khi check-in (600ms, easeOut)
-//   2. _breatheCtrl  — idle breathe liên tục ở điểm sáng (2800ms, repeat)
+// ANIMATION LAYERS:
+//   1. _breatheCtrl  — idle breathe liên tục (2800ms repeat)
+//   2. _pulseCtrl    — scale pulse khi check-in (600ms, easeOut)
+//   3. BreakthroughAnimation — wrap toàn bộ khi phase >= breakthrough
 //
-// Public API:
-//   GlobalKey<RippleFieldState> + triggerCheckInPulse()
-//   → HomeScreen gọi sau khi streak update thành công.
-//
-// Session 2 sẽ bổ sung BreakthroughAnimation riêng cho phase == breakthrough.
+// PUBLIC API:
+//   GlobalKey<RippleFieldState> rippleKey
+//   rippleKey.currentState?.triggerCheckInPulse()
+//   → HomeScreen gọi sau khi streak update thành công
 
 import 'package:flutter/material.dart';
 import '../streak_model.dart';
+import 'breakthrough_animation.dart';
 import 'ripple_painter.dart';
 
 class RippleField extends StatefulWidget {
@@ -33,36 +34,38 @@ class RippleFieldState extends State<RippleField>
 
   // ── Check-in pulse ───────────────────────────
   late final AnimationController _pulseCtrl;
-  late final Animation<double> _pulseAnim;
+  late final Animation<double>   _pulseAnim;
 
   // ── Idle breathe ─────────────────────────────
   late final AnimationController _breatheCtrl;
-  late final Animation<double> _breatheAnim;
+  late final Animation<double>   _breatheAnim;
 
-  // ── New ripple fade-in ────────────────────────
+  // ── New ripple fade-in state ──────────────────
   double _newRippleProgress = 1.0;
-  int _lastKnownRippleCount = 0;
+  int    _lastKnownRippleCount = 0;
 
   @override
   void initState() {
     super.initState();
 
     _pulseCtrl = AnimationController(
-      vsync: this,
+      vsync:    this,
       duration: const Duration(milliseconds: 600),
     );
-    _pulseAnim = CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeOut);
+    _pulseAnim = CurvedAnimation(
+      parent: _pulseCtrl,
+      curve:  Curves.easeOut,
+    );
 
     _breatheCtrl = AnimationController(
-      vsync: this,
+      vsync:    this,
       duration: const Duration(milliseconds: 2800),
     )..repeat(reverse: true);
-    _breatheAnim = Tween<double>(begin: 0.85, end: 1.0).animate(
+    _breatheAnim = Tween<double>(begin: 0.92, end: 1.0).animate(
       CurvedAnimation(parent: _breatheCtrl, curve: Curves.easeInOut),
     );
 
     _lastKnownRippleCount = widget.streak.rippleCount;
-    _newRippleProgress    = 1.0; // settled on first build
   }
 
   @override
@@ -75,15 +78,18 @@ class RippleFieldState extends State<RippleField>
     }
   }
 
-  /// Public — HomeScreen gọi sau khi check-in thành công.
+  // ── Public ────────────────────────────────────
+
+  /// HomeScreen gọi sau khi check-in thành công.
   void triggerCheckInPulse() {
     _pulseCtrl.forward(from: 0);
     _triggerNewRippleFadeIn();
   }
 
+  // ── Private ───────────────────────────────────
+
   void _triggerNewRippleFadeIn() {
     setState(() => _newRippleProgress = 0.0);
-    // Animate progress từ 0 → 1 trong 600ms
     _pulseCtrl.forward(from: 0).then((_) {
       if (mounted) setState(() => _newRippleProgress = 1.0);
     });
@@ -96,6 +102,8 @@ class RippleFieldState extends State<RippleField>
     super.dispose();
   }
 
+  // ── Build ─────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
     final theme       = Theme.of(context);
@@ -105,49 +113,57 @@ class RippleFieldState extends State<RippleField>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // ── Ripple visual ─────────────────────
-        AnimatedBuilder(
-          animation: Listenable.merge([_breatheAnim, _pulseAnim]),
-          builder: (context, _) {
-            final breatheScale = _breatheAnim.value;
-            final pulseScale   = 1.0 + _pulseAnim.value * 0.06;
 
-            return Transform.scale(
-              scale: breatheScale * pulseScale,
-              child: SizedBox(
-                width:  220,
-                height: 220,
-                child: CustomPaint(
-                  painter: RipplePainter(
-                    phase:             widget.streak.ripplePhase,
-                    rippleCount:       widget.streak.rippleCount,
-                    newRippleProgress: _newRippleProgress,
-                    accentColor:       accentColor,
-                    originColor:       Colors.white,
+        // ── Visual layer ──────────────────────────
+        // BreakthroughAnimation wrap RippleField canvas.
+        // Phase seed/growing → passthrough (no extra cost).
+        // Phase breakthrough+ → adds tilt + orb layers.
+        BreakthroughAnimation(
+          phase:       widget.streak.ripplePhase,
+          accentColor: accentColor,
+          child: AnimatedBuilder(
+            animation: Listenable.merge([_breatheAnim, _pulseAnim]),
+            builder: (context, _) {
+              final breatheScale = _breatheAnim.value;
+              final pulseScale   = 1.0 + _pulseAnim.value * 0.06;
+
+              return Transform.scale(
+                scale: breatheScale * pulseScale,
+                child: SizedBox(
+                  width:  220,
+                  height: 220,
+                  child: CustomPaint(
+                    painter: RipplePainter(
+                      phase:             widget.streak.ripplePhase,
+                      rippleCount:       widget.streak.rippleCount,
+                      newRippleProgress: _newRippleProgress,
+                      accentColor:       accentColor,
+                      originColor:       Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
 
-        // ── Số ngày — nhỏ, bên dưới, không dominant ──
+        // ── Day count — nhỏ, bên dưới, không dominant ──
         const SizedBox(height: 16),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             children: [
               TextSpan(
-                text: days.toString(),
+                text:  days.toString(),
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color:       accentColor,
-                  fontSize:    36,
-                  fontWeight:  FontWeight.w600,
+                  color:         accentColor,
+                  fontSize:      36,
+                  fontWeight:    FontWeight.w600,
                   letterSpacing: -1,
                 ),
               ),
               TextSpan(
-                text: '  days',
+                text:  '  days',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color:    theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
@@ -157,15 +173,19 @@ class RippleFieldState extends State<RippleField>
           ),
         ),
 
-        // ── Phase label — hint tiến trình ─────
+        // ── Phase label — tiến trình hint ─────────
         if (widget.streak.hasStarted) ...[
           const SizedBox(height: 4),
-          Text(
-            _phaseLabel(widget.streak.ripplePhase, days),
-            style: theme.textTheme.bodySmall?.copyWith(
-              color:       theme.colorScheme.onSurfaceVariant,
-              fontSize:    11,
-              letterSpacing: 0.8,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: Text(
+              _phaseLabel(widget.streak.ripplePhase, days),
+              key:   ValueKey(widget.streak.ripplePhase),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color:         theme.colorScheme.onSurfaceVariant,
+                fontSize:      11,
+                letterSpacing: 0.8,
+              ),
             ),
           ),
         ],
@@ -176,7 +196,7 @@ class RippleFieldState extends State<RippleField>
   String _phaseLabel(RipplePhase phase, int days) {
     return switch (phase) {
       RipplePhase.seed        => 'Start your streak',
-      RipplePhase.growing     => '${7 - days} days to first breakthrough',
+      RipplePhase.growing     => '${7 - days} ${days == 6 ? 'day' : 'days'} to breakthrough',
       RipplePhase.breakthrough => 'First breakthrough 🌱',
       RipplePhase.ascending   => '${30 - days} days to next level',
       RipplePhase.rising      => '${90 - days} days to orbit',
