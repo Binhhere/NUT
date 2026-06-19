@@ -75,7 +75,9 @@ void main() {
     final streak = StreakModel(startDate: now, lifetimeCleanDays: 0);
 
     final days = streak.currentStreakDays(now);
-    expect(days, 1, reason: 'Current date $now, start date ${streak.startDate}, diff ${now.difference(streak.startDate!).inDays}');
+    expect(days, 1,
+        reason:
+            'Current date $now, start date ${streak.startDate}, diff ${now.difference(streak.startDate!).inDays}');
     expect(streak.ripplePhaseAt(now), RipplePhase.growing);
     expect(streak.rippleCountAt(now), 1);
   });

@@ -50,7 +50,7 @@ class StreakModel {
   // Timeline spec (Local-first V1):
   //   Cùng ngày start   → 1  (Day 1 = ngày bắt đầu)
   //   Ngày hôm sau      → 2
-  //   Sau 7 ngày        → 8
+  //   Sau 6 ngày        → 7
   // ─────────────────────────────────────────────
   int currentStreakDays([DateTime? now]) {
     if (!hasStarted) return 0;
