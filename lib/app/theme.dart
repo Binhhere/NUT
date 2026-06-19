@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 class NutColors {
   NutColors._();
 
-  static const background = Color(0xFF0D0D0D);
-  static const surface = Color(0xFF161616);
-  static const card = Color(0xFF1E1E1E);
-  static const border = Color(0x11FFFFFF);
+  static const background = Color(0xFF0A1010);
+  static const surface = Color(0xFF111918);
+  static const card = Color(0xFF17201F);
+  static const border = Color(0x24FFFFFF);
 
   static const accentGold = Color(0xFFF5A623);
   static const accentDark = Color(0xFFD4850A);
   static const accentBg = Color(0xFF2A1F0A);
 
   static const textPrimary = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFFA0A0A0);
-  static const textMuted = Color(0xFF555555);
+  static const textSecondary = Color(0xFFB5C1BC);
+  static const textMuted = Color(0xFF68736E);
 
-  static const success = Color(0xFF1D9E75);
+  static const success = Color(0xFF2CB894);
   static const reset = Color(0xFFE24B4A);
   static const resetBg = Color(0xFF2A1515);
 
@@ -92,48 +92,48 @@ class NutPalette extends ThemeExtension<NutPalette> {
   // Premium: blue-lavender (#7C9ECC) — phân biệt rõ với accent teal
 
   static const ocean = NutPalette(
-    background: Color(0xFF0F2027), // xanh-đen sâu — base của icon
-    surface: Color(0xFF16242A), // tầng 1 — xanh xám tối
-    card: Color(0xFF1C2E33), // tầng 2 — sáng hơn surface 1 bậc
-    border: Color(0x1AFFFFFF), // subtle white border
+    background: Color(0xFF0B1C22), // xanh-đen sâu — base của icon
+    surface: Color(0xFF10262B), // tầng 1 — xanh xám tối
+    card: Color(0xFF173238), // tầng 2 — sáng hơn surface 1 bậc
+    border: Color(0x2EFFFFFF), // subtle white border
 
     accentGold:
-        Color(0xFF6FA897), // seafoam — accent chính, màu sáng nhất trong icon
-    accentDark: Color(0xFF4D8C7A), // seafoam tối — hover / pressed state
-    accentBg: Color(0xFF0D2822), // seafoam bg rất tối — dùng cho chip, tag bg
+        Color(0xFF7DD3C7), // seafoam — accent chính, màu sáng nhất trong icon
+    accentDark: Color(0xFF4E9F93), // seafoam tối — hover / pressed state
+    accentBg: Color(0xFF0D342F), // seafoam bg rất tối — dùng cho chip, tag bg
 
-    textPrimary: Color(0xFFEAF4F1), // trắng lạnh nhẹ — dễ đọc trên nền xanh sâu
-    textSecondary: Color(0xFF7EA8A0), // teal muted — text phụ, subtitle
-    textMuted: Color(0xFF3D5C60), // rất muted — placeholder, divider, icon tắt
+    textPrimary: Color(0xFFF1FBF8), // trắng lạnh nhẹ — dễ đọc trên nền xanh sâu
+    textSecondary: Color(0xFFB7D2CD), // teal muted — text phụ, subtitle
+    textMuted: Color(0xFF6E8D89), // rất muted — placeholder, divider, icon tắt
 
-    success: Color(0xFF1DAA79), // xanh lá — giữ ngữ nghĩa, tone lạnh hơn dark
-    reset: Color(0xFFE05252), // đỏ — giữ nguyên ngữ nghĩa
-    resetBg: Color(0xFF2A1515), // reset background — giữ nguyên
+    success: Color(0xFF30C48D), // xanh lá — giữ ngữ nghĩa, tone lạnh hơn dark
+    reset: Color(0xFFFF6B6B), // đỏ — giữ nguyên ngữ nghĩa
+    resetBg: Color(0xFF32191B), // reset background — giữ nguyên
 
-    premium: Color(0xFF7C9ECC), // blue-lavender — phân biệt với accent teal
-    premiumSurface: Color(0xFF152030), // premium card surface
-    premiumBg: Color(0xFF0E1A27), // premium background deep
+    premium: Color(0xFFA9B8FF), // blue-lavender — phân biệt với accent teal
+    premiumSurface: Color(0xFF1B2440), // premium card surface
+    premiumBg: Color(0xFF111A33), // premium background deep
   );
 
   // ── Light ─────────────────────────────────────
 
   static const light = NutPalette(
-    background: Color(0xFFF7F4EE),
+    background: Color(0xFFF3F8F6),
     surface: Color(0xFFFFFFFF),
     card: Color(0xFFFFFFFF),
-    border: Color(0x1A21170A),
-    accentGold: Color(0xFFD4850A),
-    accentDark: Color(0xFF9A5C00),
-    accentBg: Color(0xFFFFF2D6),
-    textPrimary: Color(0xFF18130C),
-    textSecondary: Color(0xFF685F53),
-    textMuted: Color(0xFF9A9084),
-    success: Color(0xFF147E5F),
-    reset: Color(0xFFC93D3C),
-    resetBg: Color(0xFFFFE8E8),
-    premium: Color(0xFF665DCF),
-    premiumSurface: Color(0xFFF1EFFF),
-    premiumBg: Color(0xFFE7E5FF),
+    border: Color(0x1F10231D),
+    accentGold: Color(0xFFA96500),
+    accentDark: Color(0xFF704100),
+    accentBg: Color(0xFFFFF1D6),
+    textPrimary: Color(0xFF10231D),
+    textSecondary: Color(0xFF3F5B52),
+    textMuted: Color(0xFF5F716B),
+    success: Color(0xFF087A5A),
+    reset: Color(0xFFB4232A),
+    resetBg: Color(0xFFFFE8EA),
+    premium: Color(0xFF5546B8),
+    premiumSurface: Color(0xFFF0EEFF),
+    premiumBg: Color(0xFFE2DFFF),
   );
 
   // ─────────────────────────────────────────────

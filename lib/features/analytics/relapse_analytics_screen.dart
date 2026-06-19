@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme.dart';
 import '../../features/streak/streak_model.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
@@ -27,17 +28,18 @@ class RelapseAnalyticsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final palette = context.nutPalette;
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Analytics'),
+        title: Text(l10n.analyticsTitle),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: NutPill(
-              label: 'Premium',
+              label: l10n.profilePremium,
               icon: Icons.auto_awesome,
               backgroundColor: palette.premiumBg,
               foregroundColor: palette.premium,
@@ -52,14 +54,14 @@ class RelapseAnalyticsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: StatCard(
-                  label: 'Total resets',
+                  label: l10n.analyticsTotalResets,
                   value: '${streak.relapseCount}',
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: StatCard(
-                  label: 'Best streak',
+                  label: l10n.analyticsBestStreak,
                   value: '${streak.effectiveBestStreak}d',
                 ),
               ),
@@ -70,14 +72,14 @@ class RelapseAnalyticsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: StatCard(
-                  label: 'Lifetime clean',
+                  label: l10n.analyticsLifetimeClean,
                   value: '${streak.lifetimeCleanDays}d',
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: StatCard(
-                  label: 'Current streak',
+                  label: l10n.analyticsCurrentStreak,
                   value: '${streak.currentStreakDays()}d',
                 ),
               ),
@@ -97,7 +99,8 @@ class RelapseAnalyticsScreen extends StatelessWidget {
                     Icon(Icons.bar_chart_outlined,
                         color: palette.premium, size: 20),
                     const SizedBox(width: 8),
-                    Text('Pattern analysis', style: textTheme.titleMedium),
+                    Text(l10n.analyticsPatternTitle,
+                        style: textTheme.titleMedium),
                     const Spacer(),
                     Icon(Icons.lock_outline,
                         color: palette.textMuted, size: 16),
@@ -107,7 +110,7 @@ class RelapseAnalyticsScreen extends StatelessWidget {
                 _LockedChartPlaceholder(palette: palette),
                 const SizedBox(height: 12),
                 Text(
-                  'See which days and triggers correlate with resets. Available in Premium.',
+                  l10n.analyticsPatternBody,
                   style: textTheme.bodySmall,
                 ),
               ],
@@ -127,14 +130,19 @@ class RelapseAnalyticsScreen extends StatelessWidget {
                     Icon(Icons.psychology_outlined,
                         color: palette.premium, size: 20),
                     const SizedBox(width: 8),
-                    Text('Top triggers', style: textTheme.titleMedium),
+                    Text(l10n.analyticsTopTriggers,
+                        style: textTheme.titleMedium),
                     const Spacer(),
                     Icon(Icons.lock_outline,
                         color: palette.textMuted, size: 16),
                   ],
                 ),
                 const SizedBox(height: 12),
-                for (final label in ['Late night', 'Stress', 'Boredom'])
+                for (final label in [
+                  l10n.analyticsTriggerLateNight,
+                  l10n.analyticsTriggerStress,
+                  l10n.analyticsTriggerBoredom,
+                ])
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: _LockedBar(
@@ -147,7 +155,7 @@ class RelapseAnalyticsScreen extends StatelessWidget {
 
           // ── CTA ─────────────────────────────────────
           NutSecondaryButton(
-            label: 'Unlock analytics — Coming soon',
+            label: l10n.analyticsUnlockCta,
             foregroundColor: palette.premium,
             borderColor: palette.premium.withOpacity(0.4),
             onPressed: onOpenPaywall,

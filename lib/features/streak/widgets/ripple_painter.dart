@@ -193,10 +193,10 @@ class RipplePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant RipplePainter old) =>
-      old.phase != phase ||
-      old.rippleCount != rippleCount ||
-      old.newRippleProgress != newRippleProgress ||
-      old.accentColor != accentColor ||
-      old.tiltProgress != tiltProgress;
+  bool shouldRepaint(covariant RipplePainter oldDelegate) =>
+      oldDelegate.phase != phase ||
+      oldDelegate.rippleCount != rippleCount ||
+      oldDelegate.newRippleProgress != newRippleProgress ||
+      oldDelegate.accentColor != accentColor ||
+      oldDelegate.tiltProgress != tiltProgress;
 }

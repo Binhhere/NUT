@@ -10,6 +10,7 @@ import '../../shared/services/notification_service.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
+import 'privacy_safety_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -114,6 +115,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (picked != null && picked != _reminderTime) {
       await _storage.setNotifHour(picked.hour);
       await _storage.setNotifMinute(picked.minute);
+      if (!mounted) return;
+
       setState(() => _reminderTime = picked);
 
       if (_notificationsEnabled) {
@@ -310,6 +313,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   onTap: () => _showAbout(context),
                 ),
+                Divider(color: palette.border, thickness: 0.5, height: 1),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.privacy_tip_outlined,
+                      color: palette.textSecondary),
+                  title: Text(l10n.settingsPrivacySafety,
+                      style: textTheme.bodyMedium),
+                  subtitle: Text(l10n.settingsPrivacySafetySubtitle,
+                      style: textTheme.bodySmall),
+                  trailing: Icon(Icons.chevron_right,
+                      color: palette.textMuted, size: 18),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const PrivacySafetyScreen(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -368,14 +390,14 @@ class _ThemeChip extends StatelessWidget {
 
   // Preview colors cho từng theme
   static const _previewBg = {
-    AppTheme.dark: Color(0xFF0D0D0D),
-    AppTheme.ocean: Color(0xFF0F2027),
-    AppTheme.light: Color(0xFFF7F4EE),
+    AppTheme.dark: NutColors.background,
+    AppTheme.ocean: Color(0xFF0B1C22),
+    AppTheme.light: Color(0xFFF3F8F6),
   };
   static const _previewAccent = {
     AppTheme.dark: Color(0xFFF5A623),
-    AppTheme.ocean: Color(0xFF6FA897),
-    AppTheme.light: Color(0xFFD4850A),
+    AppTheme.ocean: Color(0xFF7DD3C7),
+    AppTheme.light: Color(0xFFA96500),
   };
 
   @override
@@ -383,53 +405,58 @@ class _ThemeChip extends StatelessWidget {
     final bg = _previewBg[theme]!;
     final accent = _previewAccent[theme]!;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        decoration: BoxDecoration(
-          color: selected ? palette.accentBg : palette.surface,
-          borderRadius: BorderRadius.circular(NutRadius.card),
-          border: Border.all(
-            color: selected ? palette.accentGold : palette.border,
-            width: selected ? 1.5 : 1,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: theme.label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          decoration: BoxDecoration(
+            color: selected ? palette.accentBg : palette.surface,
+            borderRadius: BorderRadius.circular(NutRadius.card),
+            border: Border.all(
+              color: selected ? palette.accentGold : palette.border,
+              width: selected ? 1.5 : 1,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            // Mini preview swatch
-            Container(
-              height: 28,
-              decoration: BoxDecoration(
-                color: bg,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: palette.border),
-              ),
-              child: Center(
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: accent,
-                    shape: BoxShape.circle,
+          child: Column(
+            children: [
+              // Mini preview swatch
+              Container(
+                height: 28,
+                decoration: BoxDecoration(
+                  color: bg,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: palette.border),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: accent,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              theme.label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color:
-                        selected ? palette.accentGold : palette.textSecondary,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                    fontSize: 11,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              const SizedBox(height: 6),
+              Text(
+                theme.label,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color:
+                          selected ? palette.accentGold : palette.textSecondary,
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      fontSize: 11,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

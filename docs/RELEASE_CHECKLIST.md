@@ -17,6 +17,8 @@ Use this before sharing an APK/AAB outside your own device.
 - Run `flutter analyze`.
 - Run `flutter test`.
 - Run `flutter build apk --debug`.
+- Review `docs/ANDROID_INTERNAL_TEST_PLAN.md`.
+- Review `docs/REAL_DEVICE_QA_CHECKLIST.md`.
 - Install on at least one real Android phone.
 - Test dark mode and light mode.
 - Test English, Portuguese, and Japanese device locales.
@@ -27,6 +29,8 @@ Use this before sharing an APK/AAB outside your own device.
 
 ## Before Public Google Play
 
+- Review `docs/STORE_LISTING_COPY.md`.
+- Review `docs/STORE_CONSOLE_ANSWERS.md`.
 - Replace default launcher icon with NUT branding.
 - Generate a real release keystore and create `android/key.properties`
   from `android/key.properties.example` (gradle now reads it automatically
@@ -46,6 +50,27 @@ Use this before sharing an APK/AAB outside your own device.
 - Journal and Relapse analytics screens are reachable from the paywall
   feature list as locked previews — confirm copy still reads as "coming
   soon" and not as a working purchase before public release.
+
+## Before Apple App Store
+
+- Confirm iOS bundle ID is `com.binhhere.nut`.
+- Select an Apple Developer Team in Xcode.
+- Run `flutter build ipa --release` on macOS with Xcode.
+- Upload through Xcode Organizer, Transporter, or CI on macOS.
+- Create an App Store Connect app record with matching bundle ID.
+- Add a public privacy policy URL in App Store Connect.
+- Complete App Privacy answers in App Store Connect.
+- Confirm Privacy & Safety is accessible inside the app.
+- Confirm `NSFaceIDUsageDescription` copy matches the App Lock feature.
+- Test on a real iPhone through TestFlight before public release.
+
+## Store Privacy Prep
+
+- Review `docs/PRIVACY_POLICY_DRAFT.md`.
+- Review `docs/STORE_PRIVACY_PREP.md`.
+- Review `docs/STORE_CONSOLE_ANSWERS.md`.
+- Confirm contact and public URL placeholders are gone before public testing.
+- Keep Apple App Privacy and Google Play Data safety answers in sync with the actual shipped build.
 
 ## Do Not Commit
 

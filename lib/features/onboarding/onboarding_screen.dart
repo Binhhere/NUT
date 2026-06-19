@@ -393,26 +393,32 @@ class _ReasonPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: selected ? palette.accentBg : palette.surface,
-          borderRadius: BorderRadius.circular(NutRadius.pill),
-          border: Border.all(
-            color:
-                selected ? palette.accentGold.withOpacity(0.4) : palette.border,
-            width: 0.5,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: selected ? palette.accentBg : palette.surface,
+            borderRadius: BorderRadius.circular(NutRadius.pill),
+            border: Border.all(
+              color: selected
+                  ? palette.accentGold.withOpacity(0.46)
+                  : palette.border,
+              width: selected ? 1 : 0.5,
+            ),
           ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-            color: selected ? palette.accentGold : palette.textSecondary,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+              color: selected ? palette.accentGold : palette.textSecondary,
+            ),
           ),
         ),
       ),
@@ -443,6 +449,7 @@ class _Step3ReadyState extends State<_Step3Ready>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fadeAnim;
+  bool _privacyAccepted = false;
 
   @override
   void initState() {
@@ -534,10 +541,44 @@ class _Step3ReadyState extends State<_Step3Ready>
               ),
             ),
             const SizedBox(height: 48),
+            NutCard(
+              color: _privacyAccepted
+                  ? palette.accentBg.withOpacity(0.48)
+                  : palette.card,
+              borderColor: _privacyAccepted
+                  ? palette.accentGold.withOpacity(0.38)
+                  : palette.border,
+              padding: const EdgeInsets.all(12),
+              child: CheckboxListTile(
+                value: _privacyAccepted,
+                activeColor: palette.accentGold,
+                checkColor: const Color(0xFF1A0E00),
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(
+                  l10n.onboardingPrivacyConfirmTitle,
+                  style: textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  l10n.onboardingPrivacyConfirmBody,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: palette.textSecondary,
+                    height: 1.4,
+                  ),
+                ),
+                onChanged: widget.isSaving
+                    ? null
+                    : (value) {
+                        setState(() => _privacyAccepted = value ?? false);
+                      },
+              ),
+            ),
+            const SizedBox(height: 16),
             NutPrimaryButton(
               label: l10n.onboardingStep3CTA,
               isLoading: widget.isSaving,
-              onPressed: widget.isSaving ? null : widget.onStart,
+              onPressed:
+                  widget.isSaving || !_privacyAccepted ? null : widget.onStart,
             ),
           ],
         ),

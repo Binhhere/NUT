@@ -60,6 +60,7 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
+            tooltip: l10n.settingsTitle,
             icon: const Icon(Icons.settings_outlined),
             onPressed: onOpenSettings,
           ),
@@ -230,30 +231,34 @@ class _PremiumFeatureRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(NutRadius.card),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          color: palette.premiumSurface,
-          borderRadius: BorderRadius.circular(NutRadius.card),
-          border: Border.all(color: palette.premium.withOpacity(0.2)),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, size: 18, color: palette.premium),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: palette.textPrimary,
-                    ),
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(NutRadius.card),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            color: palette.premiumSurface,
+            borderRadius: BorderRadius.circular(NutRadius.card),
+            border: Border.all(color: palette.premium.withOpacity(0.2)),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, size: 18, color: palette.premium),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: palette.textPrimary,
+                      ),
+                ),
               ),
-            ),
-            Icon(Icons.chevron_right, size: 18, color: palette.textMuted),
-          ],
+              Icon(Icons.chevron_right, size: 18, color: palette.textMuted),
+            ],
+          ),
         ),
       ),
     );

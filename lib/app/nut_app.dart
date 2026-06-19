@@ -221,11 +221,11 @@ class _NutRootState extends State<_NutRoot> with WidgetsBindingObserver {
                   children: [
                     const Icon(Icons.lock_outline, size: 64),
                     const SizedBox(height: 24),
-                    const Text('NUT is locked'),
+                    Text(context.l10n.appLockLockedTitle),
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: _checkAppLock,
-                      child: const Text('Unlock'),
+                      child: Text(context.l10n.appLockUnlock),
                     ),
                   ],
                 ),

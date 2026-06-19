@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // ── Streak card ───────────────────────────
               NutCard(
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
-                borderColor: palette.accentBg,
+                borderColor: palette.accentGold.withOpacity(0.18),
                 child: Column(
                   children: [
                     Text(
@@ -269,14 +269,18 @@ String _supportLineForReason(AppLocalizations l10n, String? reason) {
   if (reason == null) return l10n.homeSupportDefault;
   final r = reason.toLowerCase();
   if (r.contains('focus') || r.contains('foco')) return l10n.homeSupportFocus;
-  if (r.contains('confidence') || r.contains('confiança'))
+  if (r.contains('confidence') || r.contains('confiança')) {
     return l10n.homeSupportConfidence;
-  if (r.contains('discipline') || r.contains('disciplina'))
+  }
+  if (r.contains('discipline') || r.contains('disciplina')) {
     return l10n.homeSupportDiscipline;
-  if (r.contains('energy') || r.contains('energia'))
+  }
+  if (r.contains('energy') || r.contains('energia')) {
     return l10n.homeSupportEnergy;
-  if (r.contains('trying') || r.contains('tentando'))
+  }
+  if (r.contains('trying') || r.contains('tentando')) {
     return l10n.homeSupportJustTrying;
+  }
   return l10n.homeSupportDefault;
 }
 
@@ -294,26 +298,29 @@ class _SmallTime extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
 
-    return Container(
-      width: 92,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        borderRadius: BorderRadius.circular(NutRadius.card),
-        border: Border.all(color: palette.border),
-      ),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: palette.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          const SizedBox(height: 2),
-          Text(label, style: Theme.of(context).textTheme.bodySmall),
-        ],
+    return Semantics(
+      label: '$label $value',
+      child: Container(
+        width: 92,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: palette.surface,
+          borderRadius: BorderRadius.circular(NutRadius.card),
+          border: Border.all(color: palette.border),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: palette.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            const SizedBox(height: 2),
+            Text(label, style: Theme.of(context).textTheme.bodySmall),
+          ],
+        ),
       ),
     );
   }
@@ -478,8 +485,12 @@ class _RyanTeaserCard extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: palette.premium.withOpacity(0.2)),
             ),
-            child: const Center(
-              child: Text('🌙', style: TextStyle(fontSize: 18)),
+            child: Center(
+              child: Icon(
+                Icons.nightlight_round_outlined,
+                size: 19,
+                color: palette.premium,
+              ),
             ),
           ),
           const SizedBox(width: 12),

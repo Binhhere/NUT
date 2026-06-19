@@ -19,12 +19,21 @@ class NutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return DecoratedBox(
       decoration: BoxDecoration(
         color: color ?? palette.card,
         borderRadius: BorderRadius.circular(NutRadius.card),
         border: Border.all(color: borderColor ?? palette.border, width: 1),
+        boxShadow: [
+          if (isDark)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.18),
+              blurRadius: 18,
+              offset: const Offset(0, 10),
+            ),
+        ],
       ),
       child: Padding(
         padding: padding,

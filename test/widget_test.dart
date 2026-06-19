@@ -188,6 +188,14 @@ void main() {
 
     // Step 3: Ready
     expect(find.text("You're ready."), findsOneWidget);
+    expect(find.text(l10n.onboardingPrivacyConfirmTitle), findsOneWidget);
+    await tester.tap(find.text('Start my streak'));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text(l10n.homeTitle), findsNothing);
+
+    await tester.tap(find.byType(Checkbox));
+    await tester.pump();
     await tester.tap(find.text('Start my streak'));
     await tester.pump(const Duration(milliseconds: 500));
     await tester.pump(const Duration(milliseconds: 500));
@@ -246,6 +254,28 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('Small win today'), findsOneWidget);
+  });
+
+  testWidgets('settings opens privacy and safety disclosure',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_testApp());
+
+    await tester.tap(find.text(l10n.navProfile));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.ensureVisible(find.text(l10n.settingsPrivacySafety));
+    await tester.pump();
+    await tester.tap(find.text(l10n.settingsPrivacySafety));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text(l10n.privacyTitle), findsOneWidget);
+    expect(find.text(l10n.privacyLocalTitle), findsOneWidget);
   });
 }
 

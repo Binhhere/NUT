@@ -27,8 +27,9 @@ class AppConstants {
   static String streakMessage(int days) {
     if (days >= 365) return 'One year. This is who you are now.';
     if (days >= 90) return 'This is rare. Most people never get here.';
-    if (days >= 30)
+    if (days >= 30) {
       return 'A month of clarity. You\'re building something real.';
+    }
     if (days >= 7) return 'One week down. Keep the momentum.';
     return 'Every day counts. Starting is the hardest part.';
   }

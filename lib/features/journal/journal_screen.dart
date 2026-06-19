@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
@@ -23,17 +24,18 @@ class JournalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final palette = context.nutPalette;
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Journal'),
+        title: Text(l10n.journalTitle),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: NutPill(
-              label: 'Premium',
+              label: l10n.profilePremium,
               icon: Icons.auto_awesome,
               backgroundColor: palette.premiumBg,
               foregroundColor: palette.premium,
@@ -52,10 +54,10 @@ class JournalScreen extends StatelessWidget {
               children: [
                 Icon(Icons.book_outlined, color: palette.premium, size: 32),
                 const SizedBox(height: 12),
-                Text('Private journal', style: textTheme.titleMedium),
+                Text(l10n.journalPrivateTitle, style: textTheme.titleMedium),
                 const SizedBox(height: 6),
                 Text(
-                  'Write short reflections to notice patterns and build self-awareness over time.',
+                  l10n.journalPrivateBody,
                   style: textTheme.bodySmall,
                 ),
               ],
@@ -67,25 +69,25 @@ class JournalScreen extends StatelessWidget {
           _LockedEntry(
             palette: palette,
             textTheme: textTheme,
-            label: 'Day 7 · What helped today',
+            label: l10n.journalPreviewDaySeven,
           ),
           const SizedBox(height: 10),
           _LockedEntry(
             palette: palette,
             textTheme: textTheme,
-            label: 'Day 4 · Noticed a trigger',
+            label: l10n.journalPreviewDayFour,
           ),
           const SizedBox(height: 10),
           _LockedEntry(
             palette: palette,
             textTheme: textTheme,
-            label: 'Day 1 · First reflection',
+            label: l10n.journalPreviewDayOne,
           ),
           const SizedBox(height: 24),
 
           // ── CTA ─────────────────────────────────────
           NutSecondaryButton(
-            label: 'Unlock journal — Coming soon',
+            label: l10n.journalUnlockCta,
             foregroundColor: palette.premium,
             borderColor: palette.premium.withOpacity(0.4),
             onPressed: onOpenPaywall,

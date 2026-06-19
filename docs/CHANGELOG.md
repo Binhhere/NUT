@@ -2,6 +2,29 @@
 
 Track work sessions here so README/checklists do not become the only record.
 
+## 2026-06-21 - Store launch preparation
+
+- Prepared Android internal testing guidance, store listing copy, store console answer drafts, and real-device QA checklist.
+- Added iOS/App Store prep in release docs, including bundle ID, Face ID purpose string, and privacy review items.
+- Added in-app privacy confirmation during onboarding and a Settings > Privacy & Safety disclosure screen.
+- Documented current v1 privacy posture: local-first, no account, no backend, no ads, no analytics, no payment flow.
+- Validation in this launch-prep pass passed `flutter gen-l10n`, `flutter analyze`, `flutter test`, `flutter build apk --debug`, `flutter build apk --release`, and `flutter build appbundle --release`.
+
+## 2026-06-21 - UI polish pass
+
+- Refined the dark visual system with deeper graphite surfaces, stronger muted text contrast, and subtle card depth.
+- Balanced Ocean and Light palettes for stronger contrast, calmer surfaces, and clearer selected states.
+- Improved onboarding reason chips and privacy confirmation states.
+- Polished Home, Profile, Settings, and Privacy & Safety affordances with clearer icons and accessibility semantics.
+
+## 2026-06-21 - Launch readiness cleanup
+
+- Localized reachable Journal, Analytics, and App Lock screen copy across English, Portuguese, and Japanese.
+- Added a publishable privacy policy document and replaced store/privacy contact placeholders with the current support email and public policy URL.
+- Removed the empty legacy Android `com/example/nut_mvp` package folder.
+- Generated a local Android upload keystore and `android/key.properties`; both are gitignored and must be backed up outside the repo.
+- Validation passed `flutter gen-l10n`, `dart format`, `flutter analyze`, `flutter test -r compact`, `flutter build appbundle --release`, and `jarsigner -verify`.
+
 ## 2026-06-19 - Project organization pass
 
 - Added a top-level `NUT/README.md` to explain the project layout.
