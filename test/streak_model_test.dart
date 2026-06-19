@@ -2,87 +2,97 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nut_mvp/features/streak/streak_model.dart';
 
 void main() {
-  group('StreakModel currentStreakDays', () {
-    test('no startDate returns 0', () {
+  group('StreakModel.currentStreakDays', () {
+    test('returns 0 when startDate is null', () {
       const streak = StreakModel.empty;
-      expect(streak.currentStreakDays(), 0);
+
+      expect(streak.currentStreakDays(DateTime(2026, 6, 20)), 0);
     });
 
-    test('same calendar day returns Day 1', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final now = DateTime(2026, 6, 14, 23);
+    test('same calendar day as startDate is Day 1', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 14, 23, 45);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
       expect(streak.currentStreakDays(now), 1);
     });
 
-    test('next calendar day returns Day 2', () {
-      final start = DateTime(2026, 6, 14, 23);
-      final now = DateTime(2026, 6, 15, 1);
+    test('next calendar day is Day 2', () {
+      final start = DateTime(2026, 6, 14, 23, 30);
+      final now = DateTime(2026, 6, 15, 0, 15);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
       expect(streak.currentStreakDays(now), 2);
     });
 
-    test('after 6 calendar days returns Day 7', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final now = DateTime(2026, 6, 20, 10);
+    test('six calendar days after startDate is Day 7', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 20, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
       expect(streak.currentStreakDays(now), 7);
     });
   });
 
-  group('StreakModel ripplePhaseAt', () {
-    test('not started returns RipplePhase.seed', () {
+  group('StreakModel.ripplePhaseAt', () {
+    test('not started is seed', () {
       const streak = StreakModel.empty;
-      expect(streak.ripplePhaseAt(), RipplePhase.seed);
+
+      expect(streak.ripplePhaseAt(DateTime(2026, 6, 20)), RipplePhase.seed);
     });
 
-    test('Day 1 returns RipplePhase.growing', () {
-      final start = DateTime(2026, 6, 14, 10);
+    test('Day 1 is growing', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 14, 23, 45);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.ripplePhaseAt(start), RipplePhase.growing);
+
+      expect(streak.currentStreakDays(now), 1);
+      expect(streak.ripplePhaseAt(now), RipplePhase.growing);
     });
 
-    test('Day 6 returns RipplePhase.growing', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final d6 = start.add(const Duration(days: 5));
+    test('Day 2 is growing', () {
+      final start = DateTime(2026, 6, 14, 23, 30);
+      final now = DateTime(2026, 6, 15, 0, 15);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.currentStreakDays(d6), 6);
-      expect(streak.ripplePhaseAt(d6), RipplePhase.growing);
+
+      expect(streak.currentStreakDays(now), 2);
+      expect(streak.ripplePhaseAt(now), RipplePhase.growing);
     });
 
-    test('Day 7 returns RipplePhase.breakthrough', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final d7 = start.add(const Duration(days: 6));
+    test('Day 7 is breakthrough', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 20, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.currentStreakDays(d7), 7);
-      expect(streak.ripplePhaseAt(d7), RipplePhase.breakthrough);
+
+      expect(streak.currentStreakDays(now), 7);
+      expect(streak.ripplePhaseAt(now), RipplePhase.breakthrough);
     });
 
-    test('Day 8 returns RipplePhase.ascending', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final d8 = start.add(const Duration(days: 7));
+    test('Day 8 is ascending', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 21, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.currentStreakDays(d8), 8);
-      expect(streak.ripplePhaseAt(d8), RipplePhase.ascending);
+
+      expect(streak.currentStreakDays(now), 8);
+      expect(streak.ripplePhaseAt(now), RipplePhase.ascending);
     });
 
-    test('Day 30 returns RipplePhase.rising', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final d30 = start.add(const Duration(days: 29));
+    test('Day 30 is rising', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 7, 13, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.currentStreakDays(d30), 30);
-      expect(streak.ripplePhaseAt(d30), RipplePhase.rising);
+
+      expect(streak.currentStreakDays(now), 30);
+      expect(streak.ripplePhaseAt(now), RipplePhase.rising);
     });
 
-    test('Day 90 returns RipplePhase.orbit', () {
-      final start = DateTime(2026, 6, 14, 10);
-      final d90 = start.add(const Duration(days: 89));
+    test('Day 90 is orbit', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 9, 11, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-      expect(streak.currentStreakDays(d90), 90);
-      expect(streak.ripplePhaseAt(d90), RipplePhase.orbit);
+
+      expect(streak.currentStreakDays(now), 90);
+      expect(streak.ripplePhaseAt(now), RipplePhase.orbit);
     });
   });
 }
