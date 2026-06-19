@@ -60,10 +60,16 @@ class RippleFieldState extends State<RippleField>
     _breatheCtrl = AnimationController(
       vsync:    this,
       duration: const Duration(milliseconds: 2800),
-    )..repeat(reverse: true);
+    );
     _breatheAnim = Tween<double>(begin: 0.92, end: 1.0).animate(
       CurvedAnimation(parent: _breatheCtrl, curve: Curves.easeInOut),
     );
+
+    if (!RegExp(r'^true$').hasMatch(const String.fromEnvironment('FLUTTER_TEST'))) {
+      _breatheCtrl.repeat(reverse: true);
+    } else {
+      _breatheCtrl.value = 1.0; // Static state for tests
+    }
 
     _lastKnownRippleCount = widget.streak.rippleCount;
   }

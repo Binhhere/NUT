@@ -133,8 +133,8 @@
   },
   "feedTitle": "Feed",
   "feedHeaderTitle": "Community",
-  "feedHeaderSubtitle": "People are trying with you. Text-first, no images.",
-  "feedMembersPill": "2.4k members",
+  "feedHeaderSubtitle": "Local demo of the community feed. Text-first, no images.",
+  "feedMembersPill": "Local demo",
   "feedComposePrompt": "Share a small win or check in with your streak.",
   "feedPostProgress": "Post progress",
   "feedComposeTitle": "Post progress",
@@ -285,9 +285,9 @@
   "paywallFeatureAdvancedStats": "Advanced stats",
   "paywallFeatureCustomNotifications": "Custom notifications",
   "paywallFeatureWidgetsThemes": "Premium widgets/themes",
-  "paywallPremiumPlaceholder": "Premium placeholder",
-  "paywallHeadline": "Build deeper insight into your recovery.",
-  "paywallBody": "No purchase flow is active yet. These are planned tools for reflection, patterns, and personalization.",
+  "paywallPremiumPlaceholder": "Premium preview",
+  "paywallHeadline": "Planned: Build deeper insight into your recovery.",
+  "paywallBody": "No purchase flow is active. These are planned tools for reflection, patterns, and personalization.",
   "paywallMonthlyTitle": "Monthly",
   "paywallMonthlyPrice": "$4.99/month",
   "paywallMonthlyCaption": "Flexible placeholder plan",
@@ -361,6 +361,18 @@
       }
     }
   },
+  "settingsErrorBiometrics": "Biometrics/Device lock not available",
+  "settingsErrorNotifPermission": "Notification permission denied",
+  "settingsExportFailed": "Export failed: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsImportSuccess": "Data restored! Please restart the app.",
+  "settingsImportFailed": "Restore cancelled or failed.",
   "settingsSectionDeveloper": "Developer",
   "settingsResetOnboarding": "Reset onboarding",
   "settingsResetOnboardingSubtitle": "Clears local profile — dev only."

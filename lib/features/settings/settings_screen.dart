@@ -5,6 +5,7 @@ import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/services/auth_service.dart';
 import '../../shared/services/backup_service.dart';
+import '../../shared/services/local_storage_service.dart';
 import '../../shared/services/notification_service.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/responsive_page.dart';
@@ -30,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _authService = AuthService();
   final _notificationService = NotificationService();
   final _backupService = BackupService();
+  final _storage = LocalStorageService.instance;
 
   bool _appLockEnabled = false;
   bool _notificationsEnabled = false;
@@ -43,16 +45,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSettings() async {
     final lockEnabled = await _authService.isAppLockEnabled();
-    setState(() => _appLockEnabled = lockEnabled);
+    final notifEnabled = await _storage.isNotifEnabled();
+    final hour = await _storage.getNotifHour();
+    final minute = await _storage.getNotifMinute();
+
+    setState(() {
+      _appLockEnabled = lockEnabled;
+      _notificationsEnabled = notifEnabled;
+      _reminderTime = TimeOfDay(hour: hour, minute: minute);
+    });
   }
 
   Future<void> _toggleAppLock(bool value) async {
+    final l10n = context.l10n;
     if (value) {
       final available = await _authService.isBiometricAvailable();
       if (!available) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Biometrics/Device lock not available')),
+            SnackBar(content: Text(l10n.settingsErrorBiometrics)),
           );
         }
         return;
@@ -69,27 +80,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _toggleNotifications(bool value) async {
+    final l10n = context.l10n;
     if (value) {
       final granted = await _notificationService.requestPermissions();
       if (granted) {
-        // ignore: use_build_context_synchronously
-        final l10n = context.l10n;
         await _notificationService.scheduleDailyReminder(
           hour: _reminderTime.hour,
           minute: _reminderTime.minute,
           title: l10n.settingsDailyReminder,
           body: l10n.settingsDailyReminderSubtitle,
         );
+        await _storage.setNotifEnabled(true);
         setState(() => _notificationsEnabled = true);
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Notification permission denied')),
+            SnackBar(content: Text(l10n.settingsErrorNotifPermission)),
           );
         }
       }
     } else {
       await _notificationService.cancelAll();
+      await _storage.setNotifEnabled(false);
       setState(() => _notificationsEnabled = false);
     }
   }
@@ -100,9 +112,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       initialTime: _reminderTime,
     );
     if (picked != null && picked != _reminderTime) {
+      await _storage.setNotifHour(picked.hour);
+      await _storage.setNotifMinute(picked.minute);
       setState(() => _reminderTime = picked);
+      
       if (_notificationsEnabled) {
-        // ignore: use_build_context_synchronously
         final l10n = context.l10n;
         await _notificationService.scheduleDailyReminder(
           hour: picked.hour,
@@ -115,25 +129,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _exportData() async {
+    final l10n = context.l10n;
     try {
       await _backupService.exportBackup();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: $e')),
+          SnackBar(content: Text(l10n.settingsExportFailed(e.toString()))),
         );
       }
     }
   }
 
   Future<void> _importData() async {
+    final l10n = context.l10n;
     final success = await _backupService.importBackup();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(success
-              ? 'Data restored! Please restart the app.'
-              : 'Restore cancelled or failed.'),
+              ? l10n.settingsImportSuccess
+              : l10n.settingsImportFailed),
         ),
       );
     }

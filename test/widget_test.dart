@@ -66,7 +66,7 @@ void main() {
     expect(checkedIn.hasStarted, isTrue);
     expect(checkedIn.isCheckedInToday, isTrue);
     expect(checkedIn.currentStreakDays(),
-        0); // 0 because start date is today, difference is 0 days
+        1); // 1 because start date is today, Day 1 starts immediately
     expect(checkedIn.lifetimeCleanDays, 0);
   });
 
@@ -74,7 +74,7 @@ void main() {
     final now = DateTime(2026, 6, 14, 10);
     final streak = StreakModel(startDate: now, lifetimeCleanDays: 0);
 
-    expect(streak.currentStreakDays(now), 0);
+    expect(streak.currentStreakDays(now), 1);
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',
@@ -126,18 +126,21 @@ void main() {
     expect(find.text('What should\nwe call you?'), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'Binh');
     await tester.tap(find.text('Continue'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Step 2: Reason
     expect(find.text('Why are\nyou here?'), findsOneWidget);
     await tester.tap(find.text(l10n.onboardingReasonFocus));
     await tester.tap(find.text('Continue'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Step 3: Ready
     expect(find.text("You're ready."), findsOneWidget);
     await tester.tap(find.text('Start my streak'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Shell
     expect(find.text(l10n.homeTitle), findsOneWidget);
@@ -173,13 +176,15 @@ void main() {
     await tester.pumpWidget(_testApp());
 
     await tester.tap(find.text(l10n.navFeed));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     final generatedContent = l10n.feedProgressContent(0);
     expect(find.text(generatedContent), findsNothing);
 
     await tester.tap(find.byTooltip(l10n.feedPostProgress));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text(l10n.feedComposeTitle), findsOneWidget);
     expect(find.text(generatedContent), findsNothing);
@@ -187,7 +192,8 @@ void main() {
     await tester.enterText(find.byType(TextField).last, 'Small win today');
     await tester.pump();
     await tester.tap(find.text(l10n.feedComposeSubmit));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('Small win today'), findsOneWidget);
   });

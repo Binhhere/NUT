@@ -68,8 +68,8 @@
   "relapseFooter": "Você ainda é a pessoa que fez o esforço.",
   "feedTitle": "Feed",
   "feedHeaderTitle": "Comunidade",
-  "feedHeaderSubtitle": "Pessoas estão tentando com você. Texto primeiro, sem imagens.",
-  "feedMembersPill": "2,4 mil membros",
+  "feedHeaderSubtitle": "Demo local do feed da comunidade. Apenas texto, sem imagens.",
+  "feedMembersPill": "Demo local",
   "feedComposePrompt": "Compartilhe uma pequena vitória ou faça check-in da sua sequência.",
   "feedPostProgress": "Postar progresso",
   "feedComposeTitle": "Postar progresso",
@@ -126,9 +126,9 @@
   "paywallFeatureAdvancedStats": "Estatísticas avançadas",
   "paywallFeatureCustomNotifications": "Notificações personalizadas",
   "paywallFeatureWidgetsThemes": "Widgets/temas premium",
-  "paywallPremiumPlaceholder": "Placeholder premium",
-  "paywallHeadline": "Crie uma visão mais profunda da sua recuperação.",
-  "paywallBody": "Nenhum fluxo de compra está ativo ainda. Estas são ferramentas planejadas para reflexão, padrões e personalização.",
+  "paywallPremiumPlaceholder": "Prévia premium",
+  "paywallHeadline": "Planejado: Crie uma visão mais profunda da sua recuperação.",
+  "paywallBody": "Nenhum fluxo de compra está ativo. Estas são ferramentas planejadas para reflexão, padrões e personalização.",
   "paywallMonthlyTitle": "Mensal",
   "paywallMonthlyPrice": "$4.99/mês",
   "paywallMonthlyCaption": "Plano placeholder flexível",
@@ -202,6 +202,18 @@
       }
     }
   },
+  "settingsErrorBiometrics": "Biometria/Bloqueio do dispositivo não disponível",
+  "settingsErrorNotifPermission": "Permissão de notificação negada",
+  "settingsExportFailed": "Falha na exportação: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsImportSuccess": "Dados restaurados! Reinicie o app.",
+  "settingsImportFailed": "Restauração cancelada ou falhou.",
   "settingsSectionDeveloper": "Desenvolvedor",
   "settingsResetOnboarding": "Resetar onboarding",
   "settingsResetOnboardingSubtitle": "Limpa o perfil local — apenas para dev."

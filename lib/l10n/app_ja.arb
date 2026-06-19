@@ -68,8 +68,8 @@
   "relapseFooter": "努力したあなた自身は、ここに残っています。",
   "feedTitle": "フィード",
   "feedHeaderTitle": "コミュニティ",
-  "feedHeaderSubtitle": "同じように取り組む人たちがいます。テキスト中心、画像なしです。",
-  "feedMembersPill": "2.4千人",
+  "feedHeaderSubtitle": "コミュニティフィードのローカルデモ。テキスト中心、画像なしです。",
+  "feedMembersPill": "ローカルデモ",
   "feedComposePrompt": "小さな成功や継続のチェックインを共有しましょう。",
   "feedPostProgress": "進捗を投稿",
   "feedComposeTitle": "進捗を投稿",
@@ -126,8 +126,8 @@
   "paywallFeatureAdvancedStats": "高度な統計",
   "paywallFeatureCustomNotifications": "カスタム通知",
   "paywallFeatureWidgetsThemes": "プレミアムウィジェット/テーマ",
-  "paywallPremiumPlaceholder": "プレミアム placeholder",
-  "paywallHeadline": "回復への理解を深めましょう。",
+  "paywallPremiumPlaceholder": "プレミアム プレビュー",
+  "paywallHeadline": "予定：回復への理解を深めましょう。",
   "paywallBody": "購入フローはまだ有効ではありません。これらは振り返り、パターン、個人化のために予定しているツールです。",
   "paywallMonthlyTitle": "月額",
   "paywallMonthlyPrice": "$4.99/月",
@@ -202,6 +202,18 @@
       }
     }
   },
+  "settingsErrorBiometrics": "生体認証/デバイスロックが利用できません",
+  "settingsErrorNotifPermission": "通知権限が拒否されました",
+  "settingsExportFailed": "エクスポート失敗: {error}",
+  "@settingsExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsImportSuccess": "データを復元しました！アプリを再起動してください。",
+  "settingsImportFailed": "復元がキャンセルされたか失敗しました。",
   "settingsSectionDeveloper": "開発者",
   "settingsResetOnboarding": "オンボーディングをリセット",
   "settingsResetOnboardingSubtitle": "ローカルプロフィールを消去します（開発用）"

@@ -48,15 +48,19 @@ class StreakService {
   }
 
   Future<StreakModel> resetStreak(StreakModel current) async {
-    final completedDays = current.currentStreakDays();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final start = DateTime(current.startDate!.year, current.startDate!.month, current.startDate!.day);
+    final completedDays = today.difference(start).inDays;
+    
     final bestStreak =
         completedDays > current.bestStreak ? completedDays : current.bestStreak;
     final streak = StreakModel(
-      startDate: DateTime.now(),
+      startDate: now,
       lifetimeCleanDays: current.lifetimeCleanDays + completedDays,
       relapseCount: current.relapseCount + 1,
       bestStreak: bestStreak,
-      lastCheckinDate: DateTime.now(),
+      lastCheckinDate: now,
     );
 
     await _save(streak);

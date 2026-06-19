@@ -47,17 +47,17 @@ class StreakModel {
   // ─────────────────────────────────────────────
   // currentStreakDays — đếm số ngày calendar đã qua kể từ startDate.
   //
-  // Timeline spec:
-  //   Cùng ngày start   → 0  (Day 0 = ngày bắt đầu)
-  //   Ngày hôm sau      → 1
-  //   Sau 7 ngày        → 7
+  // Timeline spec (Local-first V1):
+  //   Cùng ngày start   → 1  (Day 1 = ngày bắt đầu)
+  //   Ngày hôm sau      → 2
+  //   Sau 7 ngày        → 8
   // ─────────────────────────────────────────────
   int currentStreakDays([DateTime? now]) {
     if (!hasStarted) return 0;
     final today = _dateOnly(now ?? DateTime.now());
     final start = _dateOnly(startDate!);
     final diff = today.difference(start).inDays;
-    return diff < 0 ? 0 : diff;
+    return (diff < 0 ? 0 : diff) + 1;
   }
 
   static DateTime _dateOnly(DateTime dt) =>
@@ -104,27 +104,27 @@ class StreakModel {
 
   RipplePhase get ripplePhase {
     final days = currentStreakDays();
-    if (!hasStarted || days == 0) return RipplePhase.seed;
-    if (days < 7)  return RipplePhase.growing;
-    if (days == 7) return RipplePhase.breakthrough;
-    if (days < 30) return RipplePhase.ascending;
-    if (days < 90) return RipplePhase.rising;
+    if (!hasStarted) return RipplePhase.seed;
+    if (days < 8)  return RipplePhase.growing;
+    if (days == 8) return RipplePhase.breakthrough;
+    if (days < 31) return RipplePhase.ascending;
+    if (days < 91) return RipplePhase.rising;
     return RipplePhase.orbit;
   }
 
-  /// Số ripple arc cần vẽ trong phase growing (1–6).
+  /// Số ripple arc cần vẽ trong phase growing (Day 1–7).
   /// Trong các phase khác, RippleField tự tính theo phase.
   int get rippleCount {
     final days = currentStreakDays();
-    return days.clamp(0, 6);
+    return (days - 1).clamp(0, 6);
   }
 
   /// Progress nội tại trong growing phase [0.0–1.0].
   /// Dùng để animate opacity của ripple mới nhất (chưa "settled").
   double get growingPhaseProgress {
     final days = currentStreakDays();
-    if (days == 0) return 0.0;
-    return (days / 7.0).clamp(0.0, 1.0);
+    if (days <= 1) return 0.0;
+    return ((days - 1) / 7.0).clamp(0.0, 1.0);
   }
 
   StreakModel copyWith({

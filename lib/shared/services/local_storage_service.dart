@@ -31,6 +31,8 @@ class LocalStorageService {
   static const kRelapseTriggersHistory =
       'relapse_triggers_history'; // List<String>, mỗi entry là JSON {date, triggers}
   static const kNotifEnabled = 'notif_enabled'; // bool
+  static const kNotifHour = 'notif_hour'; // int
+  static const kNotifMinute = 'notif_minute'; // int
   static const kLastCheckin = 'streak_last_checkin'; // String ISO8601
   static const kBestStreak = 'best_streak_days'; // int
 
@@ -163,6 +165,14 @@ class LocalStorageService {
       (await getBool(kNotifEnabled)) ?? false;
 
   Future<void> setNotifEnabled(bool value) => setBool(kNotifEnabled, value);
+
+  Future<int> getNotifHour() async => (await getInt(kNotifHour)) ?? 20;
+
+  Future<void> setNotifHour(int value) => setInt(kNotifHour, value);
+
+  Future<int> getNotifMinute() async => (await getInt(kNotifMinute)) ?? 0;
+
+  Future<void> setNotifMinute(int value) => setInt(kNotifMinute, value);
 
   Future<DateTime?> getLastCheckin() async {
     final s = await getString(kLastCheckin);
