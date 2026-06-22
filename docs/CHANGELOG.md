@@ -2,6 +2,14 @@
 
 Track work sessions here so README/checklists do not become the only record.
 
+## 2026-06-22 - Ripple pet visual refactor
+
+- Replaced the old one-sided ripple visual with seed, breathing, pierced-ring, breakthrough, and pet companion phases.
+- Added the pet companion renderer with cumulative hat, glasses, drink, and chair accessories.
+- Updated Home phase labels across English, Portuguese, and Japanese localization files.
+- Updated streak phase tests to cover Day 4, Day 10, Day 20, Day 21, and pet accessory unlocks.
+- Validation passed `flutter gen-l10n`, `flutter analyze`, `flutter test`, and `flutter build apk --release`.
+
 ## 2026-06-22 - Tactile interaction polish
 
 - Added a shared press-feedback wrapper for short scale and opacity response on touch.

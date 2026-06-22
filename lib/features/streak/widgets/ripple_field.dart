@@ -1,20 +1,10 @@
-// lib/features/streak/widgets/ripple_field.dart
-//
-// Widget chính thay thế _StreakRing trong home_screen.dart.
-//
-// ANIMATION LAYERS:
-//   1. _breatheCtrl  — idle breathe liên tục (2800ms repeat)
-//   2. _pulseCtrl    — scale pulse khi check-in (600ms, easeOut)
-//   3. BreakthroughAnimation — wrap toàn bộ khi phase >= breakthrough
-//
-// PUBLIC API:
-//   GlobalKey<RippleFieldState> rippleKey
-//   rippleKey.currentState?.triggerCheckInPulse()
-//   → HomeScreen gọi sau khi streak update thành công
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../l10n/l10n.dart';
 import '../streak_model.dart';
 import 'breakthrough_animation.dart';
+import 'pet_companion.dart';
 import 'ripple_painter.dart';
 
 class RippleField extends StatefulWidget {
@@ -31,128 +21,125 @@ class RippleField extends StatefulWidget {
 
 class RippleFieldState extends State<RippleField>
     with TickerProviderStateMixin {
-  // ── Check-in pulse ───────────────────────────
-  late final AnimationController _pulseCtrl;
-  late final Animation<double> _pulseAnim;
-
-  // ── Idle breathe ─────────────────────────────
-  late final AnimationController _breatheCtrl;
-  late final Animation<double> _breatheAnim;
-
-  // ── New ripple fade-in state ──────────────────
-  double _newRippleProgress = 1.0;
-  int _lastKnownRippleCount = 0;
+  late final AnimationController _breathingPulseController;
+  late final AnimationController _pierceController;
+  late final AnimationController _settleController;
+  late int _lastKnownPiercedCount;
 
   @override
   void initState() {
     super.initState();
-
-    _pulseCtrl = AnimationController(
+    _breathingPulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 520),
     );
-    _pulseAnim = CurvedAnimation(
-      parent: _pulseCtrl,
-      curve: Curves.easeOut,
-    );
-
-    _breatheCtrl = AnimationController(
+    _pierceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2800),
+      duration: const Duration(milliseconds: 720),
+      value: 1,
     );
-    _breatheAnim = Tween<double>(begin: 0.92, end: 1.0).animate(
-      CurvedAnimation(parent: _breatheCtrl, curve: Curves.easeInOut),
+    _settleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 420),
     );
-
-    if (!RegExp(r'^true$')
-        .hasMatch(const String.fromEnvironment('FLUTTER_TEST'))) {
-      _breatheCtrl.repeat(reverse: true);
-    } else {
-      _breatheCtrl.value = 1.0; // Static state for tests
-    }
-
-    _lastKnownRippleCount = widget.streak.rippleCount;
+    _lastKnownPiercedCount = widget.streak.piercedRingCount;
   }
 
   @override
   void didUpdateWidget(covariant RippleField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newCount = widget.streak.rippleCount;
-    if (newCount > _lastKnownRippleCount) {
-      _lastKnownRippleCount = newCount;
-      _triggerNewRippleFadeIn();
-    }
+    _lastKnownPiercedCount = widget.streak.piercedRingCount;
   }
 
-  // ── Public ────────────────────────────────────
-
-  /// HomeScreen gọi sau khi check-in thành công.
   void triggerCheckInPulse() {
-    _pulseCtrl.forward(from: 0);
-    _triggerNewRippleFadeIn();
-  }
+    final reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ??
+        MediaQuery.maybeOf(context)?.accessibleNavigation ??
+        false;
+    if (reduceMotion) {
+      _pierceController.value = 1;
+      _settleController.value = 1;
+      return;
+    }
 
-  // ── Private ───────────────────────────────────
-
-  void _triggerNewRippleFadeIn() {
-    setState(() => _newRippleProgress = 0.0);
-    _pulseCtrl.forward(from: 0).then((_) {
-      if (mounted) setState(() => _newRippleProgress = 1.0);
-    });
+    switch (widget.streak.ripplePhase) {
+      case RipplePhase.seed:
+      case RipplePhase.breathing:
+        _breathingPulseController.forward(from: 0);
+      case RipplePhase.piercing:
+        _lastKnownPiercedCount = widget.streak.piercedRingCount;
+        _pierceController.forward(from: 0).then((_) {
+          if (mounted) _settleController.forward(from: 0);
+        });
+      case RipplePhase.breakthrough:
+      case RipplePhase.pet:
+        _breathingPulseController.forward(from: 0);
+    }
   }
 
   @override
   void dispose() {
-    _pulseCtrl.dispose();
-    _breatheCtrl.dispose();
+    _breathingPulseController.dispose();
+    _pierceController.dispose();
+    _settleController.dispose();
     super.dispose();
   }
-
-  // ── Build ─────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final accentColor = theme.colorScheme.primary;
     final days = widget.streak.currentStreakDays();
+    final phase = widget.streak.ripplePhase;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // ── Visual layer ──────────────────────────
-        // BreakthroughAnimation wrap RippleField canvas.
-        // Phase seed/growing → passthrough (no extra cost).
-        // Phase breakthrough+ → adds tilt + orb layers.
-        BreakthroughAnimation(
-          phase: widget.streak.ripplePhase,
-          accentColor: accentColor,
-          child: AnimatedBuilder(
-            animation: Listenable.merge([_breatheAnim, _pulseAnim]),
-            builder: (context, _) {
-              final breatheScale = _breatheAnim.value;
-              final pulseScale = 1.0 + _pulseAnim.value * 0.06;
+        if (phase == RipplePhase.pet)
+          PetCompanion(
+            accessories: widget.streak.petAccessories,
+            accentColor: accentColor,
+          )
+        else
+          BreakthroughAnimation(
+            phase: phase,
+            accentColor: accentColor,
+            child: AnimatedBuilder(
+              animation: Listenable.merge([
+                _breathingPulseController,
+                _pierceController,
+                _settleController,
+              ]),
+              builder: (context, _) {
+                final pulse =
+                    mathEaseOut(_breathingPulseController.value) * 0.08;
+                final settle =
+                    Curves.easeInOut.transform(_settleController.value);
+                final settleOffset = Offset(0, mathSin(settle) * 5);
 
-              return Transform.scale(
-                scale: breatheScale * pulseScale,
-                child: SizedBox(
-                  width: 220,
-                  height: 220,
-                  child: CustomPaint(
-                    painter: RipplePainter(
-                      phase: widget.streak.ripplePhase,
-                      rippleCount: widget.streak.rippleCount,
-                      newRippleProgress: _newRippleProgress,
-                      accentColor: accentColor,
-                      originColor: Colors.white,
+                return Transform.translate(
+                  offset: settleOffset,
+                  child: Transform.scale(
+                    scale: 1 + pulse,
+                    child: SizedBox(
+                      width: 220,
+                      height: 220,
+                      child: CustomPaint(
+                        painter: RipplePainter(
+                          phase: phase,
+                          piercedRingCount: _lastKnownPiercedCount,
+                          ringDecayProgress: widget.streak.ringDecayProgress,
+                          breathingProgress: widget.streak.breathingProgress,
+                          pierceProgress: _pierceController.value,
+                          accentColor: accentColor,
+                          originColor: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-
-        // ── Day count — nhỏ, bên dưới, không dominant ──
         const SizedBox(height: 16),
         RichText(
           textAlign: TextAlign.center,
@@ -168,7 +155,7 @@ class RippleFieldState extends State<RippleField>
                 ),
               ),
               TextSpan(
-                text: '  days',
+                text: '  ${context.l10n.homeDays}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
@@ -177,15 +164,13 @@ class RippleFieldState extends State<RippleField>
             ],
           ),
         ),
-
-        // ── Phase label — tiến trình hint ─────────
         if (widget.streak.hasStarted) ...[
           const SizedBox(height: 4),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 300),
             child: Text(
-              _phaseLabel(widget.streak.ripplePhase, days),
-              key: ValueKey(widget.streak.ripplePhase),
+              _phaseLabel(context.l10n, phase, days),
+              key: ValueKey('${phase.name}-$days'),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
                 fontSize: 11,
@@ -198,15 +183,24 @@ class RippleFieldState extends State<RippleField>
     );
   }
 
-  String _phaseLabel(RipplePhase phase, int days) {
+  String _phaseLabel(AppLocalizations l10n, RipplePhase phase, int days) {
     return switch (phase) {
-      RipplePhase.seed => 'Start your streak',
-      RipplePhase.growing =>
-        '${7 - days} ${days == 6 ? 'day' : 'days'} to breakthrough',
-      RipplePhase.breakthrough => 'First breakthrough 🌱',
-      RipplePhase.ascending => '${30 - days} days to next level',
-      RipplePhase.rising => '${90 - days} days to orbit',
-      RipplePhase.orbit => 'In orbit ✦',
+      RipplePhase.seed => l10n.homeRippleSeedLabel,
+      RipplePhase.breathing => l10n.homeRippleBreathingLabel,
+      RipplePhase.piercing => l10n.homeRipplePiercingLabel(
+          widget.streak.piercedRingCount,
+          StreakModel.totalRingLayers,
+          StreakModel.breakthroughDay - days,
+        ),
+      RipplePhase.breakthrough => l10n.homeRippleBreakthroughLabel,
+      RipplePhase.pet => l10n.homeRipplePetLabel,
     };
   }
+}
+
+double mathEaseOut(double value) => Curves.easeOut.transform(value);
+
+double mathSin(double value) {
+  // Keeps ripple_field free of a broad dart:math import at call sites.
+  return value <= 0 || value >= 1 ? 0 : 4 * value * (1 - value);
 }

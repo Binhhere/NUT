@@ -69,6 +69,24 @@
       }
     }
   },
+  "homeRippleSeedLabel": "Start your streak",
+  "homeRippleBreathingLabel": "Seed growing",
+  "homeRipplePiercingLabel": "{pierced} of {total} rings opened - {daysLeft, plural, =0{breakthrough today} =1{1 day to breakthrough} other{{daysLeft} days to breakthrough}}",
+  "@homeRipplePiercingLabel": {
+    "placeholders": {
+      "pierced": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "daysLeft": {
+        "type": "int"
+      }
+    }
+  },
+  "homeRippleBreakthroughLabel": "Breakthrough today",
+  "homeRipplePetLabel": "Pet companion unlocked",
   "homeQuoteTitle": "Today",
   "homeQuoteBody": "You do not need intensity. You need one protected choice.",
   "@homeQuoteBody": {

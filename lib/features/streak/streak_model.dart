@@ -1,21 +1,33 @@
+/// Visual phase of the streak ripple/pet system on the Home screen.
 enum RipplePhase {
-  /// Day 0: no active streak yet.
+  /// Day 0: no active streak yet — just a dim seed.
   seed,
 
-  /// Day 1-6: early growth, one ripple arc per day.
-  growing,
+  /// Day 1-3: seed breathing, growing larger with each check-in.
+  /// No rings yet.
+  breathing,
 
-  /// Day 7: first breakthrough moment.
+  /// Day 4-20: seed is surrounded by 18 concentric rings and pierces
+  /// one new ring per day in a zigzag path. Pierced rings decay
+  /// (crumble) over time rather than vanishing instantly.
+  piercing,
+
+  /// Day 21, played once: rings collapse inward and vanish, the seed
+  /// flashes and flies diagonally up-right, becoming the pet.
   breakthrough,
 
-  /// Day 8-29: post-breakthrough climb.
-  ascending,
+  /// Day 22+: stable pet companion state. Accessories unlock at
+  /// 22 / 100 / 200 / 365 days and stack (kept, not replaced).
+  pet,
+}
 
-  /// Day 30-89: stronger long-streak state.
-  rising,
-
-  /// Day 90+: stable orbit state.
-  orbit,
+/// Accessories the pet companion can wear, unlocked cumulatively by
+/// streak day and stacked (earlier accessories are kept).
+enum PetAccessory {
+  hat, // day 22+
+  glasses, // day 100+
+  drink, // day 200+
+  chair, // day 365+
 }
 
 class StreakModel {
@@ -75,7 +87,7 @@ class StreakModel {
 
   int get nextMilestone {
     final days = currentStreakDays();
-    const milestones = [7, 30, 90, 365];
+    const milestones = [21, 100, 200, 365];
 
     for (final milestone in milestones) {
       if (days < milestone) return milestone;
@@ -96,34 +108,86 @@ class StreakModel {
     return (currentStreakDays() / milestone).clamp(0.0, 1.0);
   }
 
+  /// Total ring layers surrounding the seed during the piercing phase.
+  static const int totalRingLayers = 18;
+
+  /// Day the piercing phase starts (rings appear, first ring pierced).
+  static const int piercingStartDay = 4;
+
+  /// Day the breakthrough happens (seed becomes the pet).
+  static const int breakthroughDay = 21;
+
   RipplePhase ripplePhaseAt([DateTime? now]) {
     if (startDate == null) return RipplePhase.seed;
 
     final days = currentStreakDays(now);
-    if (days < 7) return RipplePhase.growing;
-    if (days == 7) return RipplePhase.breakthrough;
-    if (days < 30) return RipplePhase.ascending;
-    if (days < 90) return RipplePhase.rising;
-    return RipplePhase.orbit;
+    if (days < piercingStartDay) return RipplePhase.breathing;
+    if (days < breakthroughDay) return RipplePhase.piercing;
+    if (days == breakthroughDay) return RipplePhase.breakthrough;
+    return RipplePhase.pet;
   }
 
   RipplePhase get ripplePhase => ripplePhaseAt();
 
-  int rippleCountAt([DateTime? now]) {
+  /// How many of the 18 rings have been pierced so far (0-18).
+  /// Day 4 pierces ring #1, day 21 pierces ring #18.
+  int piercedRingCountAt([DateTime? now]) {
     final days = currentStreakDays(now);
-    return days.clamp(0, 6);
+    if (days < piercingStartDay) return 0;
+    final pierced = days - piercingStartDay + 1;
+    return pierced.clamp(0, totalRingLayers);
   }
 
-  int get rippleCount => rippleCountAt();
+  int get piercedRingCount => piercedRingCountAt();
 
-  double growingPhaseProgressAt([DateTime? now]) {
+  /// Decay (crumble) amount applied uniformly to every pierced ring,
+  /// based on days elapsed since the piercing phase began.
+  /// 0% at day 4, ~20% at day 10, ~80% at day 20, 100% at day 21.
+  double ringDecayProgressAt([DateTime? now]) {
+    final days = currentStreakDays(now);
+    if (days < piercingStartDay) return 0.0;
+
+    // Piecewise-linear through the two anchor points the person
+    // specified (day 10 -> 0.20, day 20 -> 0.80), clamped to [0, 1].
+    const d1 = 10.0, p1 = 0.20;
+    const d2 = 20.0, p2 = 0.80;
+    final d = days.toDouble();
+
+    double progress;
+    if (d <= d1) {
+      progress = (d - piercingStartDay) / (d1 - piercingStartDay) * p1;
+    } else if (d <= d2) {
+      progress = p1 + (d - d1) / (d2 - d1) * (p2 - p1);
+    } else {
+      progress = p2 + (d - d2) / (breakthroughDay - d2) * (1.0 - p2);
+    }
+
+    return progress.clamp(0.0, 1.0);
+  }
+
+  double get ringDecayProgress => ringDecayProgressAt();
+
+  /// Breathing-phase growth, 0.0 (day 0) to 1.0 (day 3, about to pierce).
+  double breathingProgressAt([DateTime? now]) {
     final days = currentStreakDays(now);
     if (days == 0) return 0.0;
-
-    return (days / 7.0).clamp(0.0, 1.0);
+    return (days / (piercingStartDay - 1)).clamp(0.0, 1.0);
   }
 
-  double get growingPhaseProgress => growingPhaseProgressAt();
+  double get breathingProgress => breathingProgressAt();
+
+  /// Accessories unlocked so far, cumulative (earlier ones stay).
+  Set<PetAccessory> petAccessoriesAt([DateTime? now]) {
+    final days = currentStreakDays(now);
+    final result = <PetAccessory>{};
+    if (days >= 22) result.add(PetAccessory.hat);
+    if (days >= 100) result.add(PetAccessory.glasses);
+    if (days >= 200) result.add(PetAccessory.drink);
+    if (days >= 365) result.add(PetAccessory.chair);
+    return result;
+  }
+
+  Set<PetAccessory> get petAccessories => petAccessoriesAt();
 
   StreakModel copyWith({
     DateTime? startDate,

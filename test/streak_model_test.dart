@@ -41,58 +41,95 @@ void main() {
       expect(streak.ripplePhaseAt(DateTime(2026, 6, 20)), RipplePhase.seed);
     });
 
-    test('Day 1 is growing', () {
+    test('Day 1 is breathing', () {
       final start = DateTime(2026, 6, 14, 10, 30);
       final now = DateTime(2026, 6, 14, 23, 45);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
       expect(streak.currentStreakDays(now), 1);
-      expect(streak.ripplePhaseAt(now), RipplePhase.growing);
+      expect(streak.ripplePhaseAt(now), RipplePhase.breathing);
+      expect(streak.breathingProgressAt(now), closeTo(1 / 3, 0.001));
     });
 
-    test('Day 2 is growing', () {
+    test('Day 3 is breathing at full seed growth', () {
       final start = DateTime(2026, 6, 14, 23, 30);
-      final now = DateTime(2026, 6, 15, 0, 15);
+      final now = DateTime(2026, 6, 16, 0, 15);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
-      expect(streak.currentStreakDays(now), 2);
-      expect(streak.ripplePhaseAt(now), RipplePhase.growing);
+      expect(streak.currentStreakDays(now), 3);
+      expect(streak.ripplePhaseAt(now), RipplePhase.breathing);
+      expect(streak.breathingProgressAt(now), 1.0);
     });
 
-    test('Day 7 is breakthrough', () {
+    test('Day 4 starts piercing with the first ring opened', () {
       final start = DateTime(2026, 6, 14, 10, 30);
-      final now = DateTime(2026, 6, 20, 9, 0);
+      final now = DateTime(2026, 6, 17, 9, 0);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
-      expect(streak.currentStreakDays(now), 7);
+      expect(streak.currentStreakDays(now), 4);
+      expect(streak.ripplePhaseAt(now), RipplePhase.piercing);
+      expect(streak.piercedRingCountAt(now), 1);
+    });
+
+    test('Day 10 has seven pierced rings and about 20 percent decay', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 6, 23, 9, 0);
+      final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
+
+      expect(streak.currentStreakDays(now), 10);
+      expect(streak.ripplePhaseAt(now), RipplePhase.piercing);
+      expect(streak.piercedRingCountAt(now), 7);
+      expect(streak.ringDecayProgressAt(now), closeTo(0.20, 0.001));
+    });
+
+    test('Day 20 has seventeen pierced rings and about 80 percent decay', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 7, 3, 9, 0);
+      final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
+
+      expect(streak.currentStreakDays(now), 20);
+      expect(streak.ripplePhaseAt(now), RipplePhase.piercing);
+      expect(streak.piercedRingCountAt(now), 17);
+      expect(streak.ringDecayProgressAt(now), closeTo(0.80, 0.001));
+    });
+
+    test('Day 21 is breakthrough with all rings pierced', () {
+      final start = DateTime(2026, 6, 14, 10, 30);
+      final now = DateTime(2026, 7, 4, 9, 0);
+      final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
+
+      expect(streak.currentStreakDays(now), 21);
       expect(streak.ripplePhaseAt(now), RipplePhase.breakthrough);
+      expect(streak.piercedRingCountAt(now), StreakModel.totalRingLayers);
+      expect(streak.ringDecayProgressAt(now), 1.0);
     });
 
-    test('Day 8 is ascending', () {
-      final start = DateTime(2026, 6, 14, 10, 30);
-      final now = DateTime(2026, 6, 21, 9, 0);
+    test('pet accessories unlock cumulatively', () {
+      final start = DateTime(2026, 1, 1, 10, 30);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
-      expect(streak.currentStreakDays(now), 8);
-      expect(streak.ripplePhaseAt(now), RipplePhase.ascending);
-    });
-
-    test('Day 30 is rising', () {
-      final start = DateTime(2026, 6, 14, 10, 30);
-      final now = DateTime(2026, 7, 13, 9, 0);
-      final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-
-      expect(streak.currentStreakDays(now), 30);
-      expect(streak.ripplePhaseAt(now), RipplePhase.rising);
-    });
-
-    test('Day 90 is orbit', () {
-      final start = DateTime(2026, 6, 14, 10, 30);
-      final now = DateTime(2026, 9, 11, 9, 0);
-      final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
-
-      expect(streak.currentStreakDays(now), 90);
-      expect(streak.ripplePhaseAt(now), RipplePhase.orbit);
+      expect(streak.ripplePhaseAt(DateTime(2026, 1, 22)), RipplePhase.pet);
+      expect(
+        streak.petAccessoriesAt(DateTime(2026, 1, 22)),
+        {PetAccessory.hat},
+      );
+      expect(
+        streak.petAccessoriesAt(DateTime(2026, 4, 10)),
+        {PetAccessory.hat, PetAccessory.glasses},
+      );
+      expect(
+        streak.petAccessoriesAt(DateTime(2026, 7, 19)),
+        {PetAccessory.hat, PetAccessory.glasses, PetAccessory.drink},
+      );
+      expect(
+        streak.petAccessoriesAt(DateTime(2026, 12, 31)),
+        {
+          PetAccessory.hat,
+          PetAccessory.glasses,
+          PetAccessory.drink,
+          PetAccessory.chair,
+        },
+      );
     });
   });
 }

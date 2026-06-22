@@ -78,53 +78,39 @@ void main() {
     expect(days, 1,
         reason:
             'Current date $now, start date ${streak.startDate}, diff ${now.difference(streak.startDate!).inDays}');
-    expect(streak.ripplePhaseAt(now), RipplePhase.growing);
-    expect(streak.rippleCountAt(now), 1);
+    expect(streak.ripplePhaseAt(now), RipplePhase.breathing);
+    expect(streak.breathingProgressAt(now), closeTo(1 / 3, 0.001));
   });
 
-  test('after 6 calendar days streak reaches day 7 breakthrough', () {
+  test('after 3 calendar days streak starts piercing on day 4', () {
     final start = DateTime(2026, 6, 14, 10);
-    final now = DateTime(2026, 6, 20, 15); // 6 days difference
+    final now = DateTime(2026, 6, 17, 15); // 3 days difference
     final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
-    expect(streak.currentStreakDays(now), 7);
-    expect(streak.ripplePhaseAt(now), RipplePhase.breakthrough);
+    expect(streak.currentStreakDays(now), 4);
+    expect(streak.ripplePhaseAt(now), RipplePhase.piercing);
+    expect(streak.piercedRingCountAt(now), 1);
   });
 
-  test('streak boundaries for Day 30 and Day 90', () {
+  test('streak boundaries for breakthrough and pet accessories', () {
     final start = DateTime(2026, 6, 14, 10);
 
-    // Day 30 (29 days after start)
-    final d30 = DateTime(2026, 7, 13, 10);
-    final s30 = StreakModel(startDate: start, lifetimeCleanDays: 0);
-    expect(s30.currentStreakDays(d30), 30);
-    expect(s30.ripplePhaseAt(d30), RipplePhase.rising);
+    final d20 = start.add(const Duration(days: 19));
+    final s20 = StreakModel(startDate: start, lifetimeCleanDays: 0);
+    expect(s20.currentStreakDays(d20), 20);
+    expect(s20.ripplePhaseAt(d20), RipplePhase.piercing);
+    expect(s20.piercedRingCountAt(d20), 17);
 
-    // Day 29 (28 days after start)
-    final d29 = DateTime(2026, 7, 12, 10);
-    expect(
-        StreakModel(startDate: start, lifetimeCleanDays: 0)
-            .currentStreakDays(d29),
-        29);
-    expect(
-        StreakModel(startDate: start, lifetimeCleanDays: 0).ripplePhaseAt(d29),
-        RipplePhase.ascending);
+    final d21 = start.add(const Duration(days: 20));
+    final s21 = StreakModel(startDate: start, lifetimeCleanDays: 0);
+    expect(s21.currentStreakDays(d21), 21);
+    expect(s21.ripplePhaseAt(d21), RipplePhase.breakthrough);
 
-    // Day 90
-    final d90 = start.add(const Duration(days: 89));
-    final s90 = StreakModel(startDate: start, lifetimeCleanDays: 0);
-    expect(s90.currentStreakDays(d90), 90);
-    expect(s90.ripplePhaseAt(d90), RipplePhase.orbit);
-
-    // Day 89
-    final d89 = start.add(const Duration(days: 88));
-    expect(
-        StreakModel(startDate: start, lifetimeCleanDays: 0)
-            .currentStreakDays(d89),
-        89);
-    expect(
-        StreakModel(startDate: start, lifetimeCleanDays: 0).ripplePhaseAt(d89),
-        RipplePhase.rising);
+    final d22 = start.add(const Duration(days: 21));
+    final s22 = StreakModel(startDate: start, lifetimeCleanDays: 0);
+    expect(s22.currentStreakDays(d22), 22);
+    expect(s22.ripplePhaseAt(d22), RipplePhase.pet);
+    expect(s22.petAccessoriesAt(d22), {PetAccessory.hat});
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',
