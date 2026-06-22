@@ -4,6 +4,7 @@ import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
+import '../../shared/widgets/nut_pressable.dart';
 import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import '../streak/streak_model.dart';
@@ -196,44 +197,50 @@ class _FeedHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: NutSpacing.medium),
-        NutCard(
-          padding: const EdgeInsets.all(14),
-          borderColor: palette.accentBg,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(NutRadius.card),
+        Semantics(
+          button: true,
+          label: l10n.feedPostProgress,
+          child: NutPressable(
             onTap: onPostProgress,
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: palette.accentBg,
-                    borderRadius: BorderRadius.circular(NutRadius.pill),
+            enableHaptics: true,
+            child: NutCard(
+              padding: const EdgeInsets.all(14),
+              borderColor: palette.accentBg,
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: palette.accentBg,
+                      borderRadius: BorderRadius.circular(NutRadius.pill),
+                    ),
+                    child: Icon(
+                      Icons.trending_up,
+                      color: palette.accentGold,
+                      size: 20,
+                    ),
                   ),
-                  child: Icon(
-                    Icons.trending_up,
-                    color: palette.accentGold,
-                    size: 20,
+                  const SizedBox(width: NutSpacing.medium),
+                  Expanded(
+                    child: Text(
+                      l10n.feedComposePrompt,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: palette.textSecondary,
+                          ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: NutSpacing.medium),
-                Expanded(
-                  child: Text(
-                    l10n.feedComposePrompt,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: palette.textSecondary,
-                        ),
+                  const SizedBox(width: NutSpacing.small),
+                  Tooltip(
+                    message: l10n.feedPostProgress,
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      color: palette.accentGold,
+                      size: 24,
+                    ),
                   ),
-                ),
-                const SizedBox(width: NutSpacing.small),
-                IconButton(
-                  onPressed: onPostProgress,
-                  icon: const Icon(Icons.add),
-                  color: palette.accentGold,
-                  tooltip: l10n.feedPostProgress,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

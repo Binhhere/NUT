@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nut_mvp/app/theme.dart';
+import 'package:nut_mvp/shared/widgets/nut_pressable.dart';
 
 // ─────────────────────────────────────────────
 // NutPrimaryButton
@@ -31,33 +32,36 @@ class NutPrimaryButton extends StatelessWidget {
     final palette = context.nutPalette;
     const darkOnGold = Color(0xFF1A0E00);
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          // HTML: color #1A0E00 (dark brownish — intentionally NOT NutColors.background)
-          backgroundColor: palette.accentGold,
-          foregroundColor: darkOnGold,
-          disabledBackgroundColor: palette.accentGold.withOpacity(0.45),
-          disabledForegroundColor: darkOnGold.withOpacity(0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(NutRadius.button),
+    return NutPressable(
+      enabled: onPressed != null && !isLoading,
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: ElevatedButton(
+          onPressed: isLoading ? null : onPressed,
+          style: ElevatedButton.styleFrom(
+            // HTML: color #1A0E00 (dark brownish — intentionally NOT NutColors.background)
+            backgroundColor: palette.accentGold,
+            foregroundColor: darkOnGold,
+            disabledBackgroundColor: palette.accentGold.withOpacity(0.45),
+            disabledForegroundColor: darkOnGold.withOpacity(0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 17),
           ),
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 17),
+          child: isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: darkOnGold,
+                  ),
+                )
+              : _child(),
         ),
-        child: isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: darkOnGold,
-                ),
-              )
-            : _child(),
       ),
     );
   }
@@ -110,45 +114,48 @@ class NutGhostButton extends StatelessWidget {
     final fg = foregroundColor ?? palette.textSecondary;
     final border = borderColor ?? palette.border;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: fg,
-          side: BorderSide(color: border, width: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(NutRadius.button),
+    return NutPressable(
+      enabled: onPressed != null,
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: fg,
+            side: BorderSide(color: border, width: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: icon != null
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 18, color: fg),
-                  const SizedBox(width: 8),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: fg,
-                      letterSpacing: 0.01 * 14,
+          child: icon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: 18, color: fg),
+                    const SizedBox(width: 8),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: fg,
+                        letterSpacing: 0.01 * 14,
+                      ),
                     ),
+                  ],
+                )
+              : Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: fg,
+                    letterSpacing: 0.01 * 14,
                   ),
-                ],
-              )
-            : Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: fg,
-                  letterSpacing: 0.01 * 14,
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -181,43 +188,46 @@ class NutSecondaryButton extends StatelessWidget {
     final palette = context.nutPalette;
     final fg = foregroundColor ?? palette.textPrimary;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: fg,
-          side: BorderSide(color: borderColor, width: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(NutRadius.button),
+    return NutPressable(
+      enabled: onPressed != null,
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: fg,
+            side: BorderSide(color: borderColor, width: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: icon == null
-            ? Text(
-                label,
-                style: TextStyle(
-                  color: fg,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            : Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 18, color: fg),
-                  const SizedBox(width: 8),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: fg,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
+          child: icon == null
+              ? Text(
+                  label,
+                  style: TextStyle(
+                    color: fg,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: 18, color: fg),
+                    const SizedBox(width: 8),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        color: fg,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -241,44 +251,47 @@ class NutDestructiveButton extends StatelessWidget {
     // HTML: border 0.5px solid rgba(226,75,74,0.25)
     const borderColor = Color(0x40E24B4A);
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: palette.reset,
-          backgroundColor: Colors.transparent,
-          side: const BorderSide(color: borderColor, width: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(NutRadius.button),
+    return NutPressable(
+      enabled: onPressed != null,
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: palette.reset,
+            backgroundColor: Colors.transparent,
+            side: const BorderSide(color: borderColor, width: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: icon != null
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 18, color: palette.reset),
-                  const SizedBox(width: 8),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: palette.reset,
+          child: icon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: 18, color: palette.reset),
+                    const SizedBox(width: 8),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: palette.reset,
+                      ),
                     ),
+                  ],
+                )
+              : Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: palette.reset,
                   ),
-                ],
-              )
-            : Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: palette.reset,
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -304,27 +317,30 @@ class NutResetConfirmButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.nutPalette;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: palette.resetBg,
-          foregroundColor: palette.reset,
-          side: const BorderSide(color: Color(0x4DE24B4A), width: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(NutRadius.button),
+    return NutPressable(
+      enabled: onPressed != null,
+      child: SizedBox(
+        width: double.infinity,
+        height: 54,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: palette.resetBg,
+            foregroundColor: palette.reset,
+            side: const BorderSide(color: Color(0x4DE24B4A), width: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 17),
           ),
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 17),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: palette.reset,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: palette.reset,
+            ),
           ),
         ),
       ),

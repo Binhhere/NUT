@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/badges/badges_screen.dart';
@@ -320,6 +321,12 @@ class _NutShellState extends State<_NutShell> {
     );
   }
 
+  void _selectDestination(int index) {
+    if (index == _selectedIndex) return;
+    HapticFeedback.selectionClick();
+    setState(() => _selectedIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -381,8 +388,7 @@ class _NutShellState extends State<_NutShell> {
                 SafeArea(
                   child: NavigationRail(
                     selectedIndex: _selectedIndex,
-                    onDestinationSelected: (i) =>
-                        setState(() => _selectedIndex = i),
+                    onDestinationSelected: _selectDestination,
                     labelType: NavigationRailLabelType.all,
                     destinations: [
                       for (final d in destinations)
@@ -404,7 +410,7 @@ class _NutShellState extends State<_NutShell> {
           body: body,
           bottomNavigationBar: NavigationBar(
             selectedIndex: _selectedIndex,
-            onDestinationSelected: (i) => setState(() => _selectedIndex = i),
+            onDestinationSelected: _selectDestination,
             destinations: [
               for (final d in destinations)
                 NavigationDestination(

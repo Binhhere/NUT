@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../app/nut_app.dart';
 import '../../app/theme.dart';
@@ -8,6 +9,7 @@ import '../../shared/services/backup_service.dart';
 import '../../shared/services/local_storage_service.dart';
 import '../../shared/services/notification_service.dart';
 import '../../shared/widgets/nut_card.dart';
+import '../../shared/widgets/nut_pressable.dart';
 import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import 'privacy_safety_screen.dart';
@@ -72,10 +74,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final authenticated = await _authService.authenticate();
       if (authenticated) {
         await _authService.setAppLockEnabled(true);
+        HapticFeedback.selectionClick();
         setState(() => _appLockEnabled = true);
       }
     } else {
       await _authService.setAppLockEnabled(false);
+      HapticFeedback.selectionClick();
       setState(() => _appLockEnabled = false);
     }
   }
@@ -92,6 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           body: l10n.settingsDailyReminderSubtitle,
         );
         await _storage.setNotifEnabled(true);
+        HapticFeedback.selectionClick();
         setState(() => _notificationsEnabled = true);
       } else {
         if (mounted) {
@@ -103,6 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } else {
       await _notificationService.cancelAll();
       await _storage.setNotifEnabled(false);
+      HapticFeedback.selectionClick();
       setState(() => _notificationsEnabled = false);
     }
   }
@@ -117,6 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await _storage.setNotifMinute(picked.minute);
       if (!mounted) return;
 
+      HapticFeedback.selectionClick();
       setState(() => _reminderTime = picked);
 
       if (_notificationsEnabled) {
@@ -409,8 +416,9 @@ class _ThemeChip extends StatelessWidget {
       button: true,
       selected: selected,
       label: theme.label,
-      child: GestureDetector(
+      child: NutPressable(
         onTap: onTap,
+        enableHaptics: true,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,

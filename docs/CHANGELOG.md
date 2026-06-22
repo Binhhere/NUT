@@ -2,6 +2,13 @@
 
 Track work sessions here so README/checklists do not become the only record.
 
+## 2026-06-22 - Tactile interaction polish
+
+- Added a shared press-feedback wrapper for short scale and opacity response on touch.
+- Applied tactile feedback to primary/secondary/destructive buttons, stat cards, onboarding reason chips, theme chips, Feed compose entry, premium feature rows, and tab changes.
+- Added haptic feedback only for selection-style interactions such as tabs, chips, toggles, checkbox confirmation, and premium/feed entry points.
+- Validation passed `flutter analyze`, `flutter test`, and `flutter build apk --release`.
+
 ## 2026-06-21 - Store launch preparation
 
 - Prepared Android internal testing guidance, store listing copy, store console answer drafts, and real-device QA checklist.

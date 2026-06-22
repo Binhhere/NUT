@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme.dart';
 import 'nut_card.dart';
+import 'nut_pressable.dart';
 
 /// Vertical stat card matching the HTML home stats:
 /// small uppercase label, large value, optional muted sublabel.
@@ -35,7 +36,9 @@ class StatCard extends StatelessWidget {
       container: true,
       button: onTap != null,
       label: semanticsLabel,
-      child: GestureDetector(
+      child: NutPressable(
+        enabled: onTap != null,
+        enableHaptics: onTap != null,
         onTap: onTap,
         child: NutCard(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
@@ -97,7 +98,12 @@ class PaywallScreen extends StatelessWidget {
                             Icons.chevron_right,
                             color: palette.textMuted,
                           ),
-                    onTap: feature.onTap,
+                    onTap: feature.onTap == null
+                        ? null
+                        : () {
+                            HapticFeedback.selectionClick();
+                            feature.onTap!();
+                          },
                   ),
               ],
             ),

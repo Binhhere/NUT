@@ -9,11 +9,13 @@
 // Step 3 không có "Skip" — user phải tap "Start my streak".
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
+import '../../shared/widgets/nut_pressable.dart';
 import 'onboarding_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -397,8 +399,9 @@ class _ReasonPill extends StatelessWidget {
       button: true,
       selected: selected,
       label: label,
-      child: GestureDetector(
+      child: NutPressable(
         onTap: onTap,
+        enableHaptics: true,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -569,6 +572,7 @@ class _Step3ReadyState extends State<_Step3Ready>
                 onChanged: widget.isSaving
                     ? null
                     : (value) {
+                        HapticFeedback.selectionClick();
                         setState(() => _privacyAccepted = value ?? false);
                       },
               ),

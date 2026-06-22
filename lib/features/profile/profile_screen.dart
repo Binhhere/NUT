@@ -5,6 +5,7 @@ import '../../l10n/l10n.dart';
 import '../../shared/widgets/nut_button.dart';
 import '../../shared/widgets/nut_card.dart';
 import '../../shared/widgets/nut_pill.dart';
+import '../../shared/widgets/nut_pressable.dart';
 import '../../shared/widgets/responsive_page.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/stat_card.dart';
@@ -234,9 +235,9 @@ class _PremiumFeatureRow extends StatelessWidget {
     return Semantics(
       button: true,
       label: label,
-      child: InkWell(
+      child: NutPressable(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(NutRadius.card),
+        enableHaptics: true,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
