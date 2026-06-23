@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 import '../../app/theme.dart';
 import '../../l10n/l10n.dart';
-import '../../shared/widgets/nut_button.dart';
 import 'streak_model.dart';
 import 'widgets/shrine_core.dart';
 
@@ -107,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 32),
 
                       // ── Check-in button ──────────────────
-                      NutPrimaryButton(
+                      _ShrineCheckInButton(
                         onPressed: _isBusy
                             ? null
                             : () => _runAction(
@@ -120,16 +119,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: widget.streak.isCheckedInToday
                             ? l10n.homeCheckedInToday
                             : l10n.homeCheckInToday,
+                        isCheckedIn: widget.streak.isCheckedInToday,
                       ),
                       const SizedBox(height: 12),
 
                       // ── Reset button (subtle) ────────────
-                      NutGhostButton(
+                      _ShrineResetButton(
                         onPressed: _isBusy || !widget.streak.hasStarted
                             ? null
                             : () => _runAction(widget.onResetStreak),
                         icon: Icons.replay_outlined,
-                        borderColor: palette.reset.withOpacity(0.22),
                         label: l10n.homeResetWithSupport,
                       ),
                     ],
@@ -150,6 +149,144 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontStyle: FontStyle.italic,
                       height: 1.5,
                     ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShrineCheckInButton extends StatelessWidget {
+  const _ShrineCheckInButton({
+    required this.label,
+    required this.icon,
+    required this.isCheckedIn,
+    this.onPressed,
+  });
+
+  static const _amberText = Color(0xFFE0B87C);
+  static const _amberBorder = Color(0xFFD4A87A);
+  static const _darkFill = Color(0xFF15100C);
+  static const _quietFill = Color(0xFF11100D);
+
+  final String label;
+  final IconData icon;
+  final bool isCheckedIn;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+    final fg = isCheckedIn
+        ? _amberText.withOpacity(0.72)
+        : _amberText.withOpacity(enabled ? 0.92 : 0.38);
+    final borderOpacity = isCheckedIn ? 0.24 : 0.42;
+    final fill = isCheckedIn ? _quietFill.withOpacity(0.72) : _darkFill;
+
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(NutRadius.button),
+          boxShadow: [
+            if (enabled && !isCheckedIn)
+              BoxShadow(
+                color: _amberBorder.withOpacity(0.10),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
+              ),
+          ],
+        ),
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            backgroundColor: enabled ? fill : _quietFill.withOpacity(0.38),
+            foregroundColor: fg,
+            disabledForegroundColor: fg,
+            side: BorderSide(
+              color: _amberBorder.withOpacity(enabled ? borderOpacity : 0.12),
+              width: 0.8,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(NutRadius.button),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 18, color: fg),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  color: fg,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShrineResetButton extends StatelessWidget {
+  const _ShrineResetButton({
+    required this.label,
+    required this.icon,
+    this.onPressed,
+  });
+
+  static const _mutedText = Color(0xFFB49C78);
+  static const _mutedBorder = Color(0xFFC29D68);
+  static const _darkFill = Color(0xFF0D0B09);
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+    final fg = _mutedText.withOpacity(enabled ? 0.70 : 0.28);
+
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: _darkFill.withOpacity(enabled ? 0.50 : 0.30),
+          foregroundColor: fg,
+          disabledForegroundColor: fg,
+          side: BorderSide(
+            color: _mutedBorder.withOpacity(enabled ? 0.18 : 0.08),
+            width: 0.6,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(NutRadius.button),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 18, color: fg),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: fg,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.08,
               ),
             ),
           ],

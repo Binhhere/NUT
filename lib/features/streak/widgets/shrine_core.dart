@@ -191,13 +191,16 @@ class ShrineCoreState extends State<ShrineCore> with TickerProviderStateMixin {
 class _DayLabel extends StatelessWidget {
   const _DayLabel({required this.days, required this.phase});
 
+  static const _dayNumber = Color(0xFFC88A3E);
+  static const _dayUnit = Color(0xFF9E8A72);
+  static const _phaseText = Color(0xFFB0936B);
+
   final int days;
   final ShrinePhase phase;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final palette = context.nutPalette;
     final theme = Theme.of(context);
 
     final phaseLabel = switch (phase) {
@@ -216,7 +219,7 @@ class _DayLabel extends StatelessWidget {
               TextSpan(
                 text: days.toString(),
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color: palette.accentGold,
+                  color: _dayNumber.withOpacity(0.94),
                   fontSize: 40,
                   fontWeight: FontWeight.w600,
                   letterSpacing: -1,
@@ -225,7 +228,7 @@ class _DayLabel extends StatelessWidget {
               TextSpan(
                 text: '  ${l10n.homeDays}',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: palette.textMuted,
+                  color: _dayUnit.withOpacity(0.74),
                   fontSize: 13,
                 ),
               ),
@@ -240,7 +243,7 @@ class _DayLabel extends StatelessWidget {
               phaseLabel,
               key: ValueKey(phase),
               style: theme.textTheme.bodySmall?.copyWith(
-                color: palette.textMuted,
+                color: _phaseText.withOpacity(0.78),
                 fontSize: 11,
                 letterSpacing: 1.0,
               ),
