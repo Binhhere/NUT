@@ -104,32 +104,14 @@ void main() {
       expect(streak.ringDecayProgressAt(now), 1.0);
     });
 
-    test('pet accessories unlock cumulatively', () {
+    test('Day 22 and later use the sprout phase', () {
       final start = DateTime(2026, 1, 1, 10, 30);
       final streak = StreakModel(startDate: start, lifetimeCleanDays: 0);
 
       expect(streak.ripplePhaseAt(DateTime(2026, 1, 22)), RipplePhase.pet);
-      expect(
-        streak.petAccessoriesAt(DateTime(2026, 1, 22)),
-        {PetAccessory.hat},
-      );
-      expect(
-        streak.petAccessoriesAt(DateTime(2026, 4, 10)),
-        {PetAccessory.hat, PetAccessory.glasses},
-      );
-      expect(
-        streak.petAccessoriesAt(DateTime(2026, 7, 19)),
-        {PetAccessory.hat, PetAccessory.glasses, PetAccessory.drink},
-      );
-      expect(
-        streak.petAccessoriesAt(DateTime(2026, 12, 31)),
-        {
-          PetAccessory.hat,
-          PetAccessory.glasses,
-          PetAccessory.drink,
-          PetAccessory.chair,
-        },
-      );
+      expect(streak.ripplePhaseAt(DateTime(2026, 4, 10)), RipplePhase.pet);
+      expect(streak.ripplePhaseAt(DateTime(2026, 7, 19)), RipplePhase.pet);
+      expect(streak.ripplePhaseAt(DateTime(2026, 12, 31)), RipplePhase.pet);
     });
   });
 }

@@ -92,7 +92,7 @@ void main() {
     expect(streak.piercedRingCountAt(now), 1);
   });
 
-  test('streak boundaries for breakthrough and pet accessories', () {
+  test('streak boundaries for breakthrough and sprout phase', () {
     final start = DateTime(2026, 6, 14, 10);
 
     final d20 = start.add(const Duration(days: 19));
@@ -110,7 +110,6 @@ void main() {
     final s22 = StreakModel(startDate: start, lifetimeCleanDays: 0);
     expect(s22.currentStreakDays(d22), 22);
     expect(s22.ripplePhaseAt(d22), RipplePhase.pet);
-    expect(s22.petAccessoriesAt(d22), {PetAccessory.hat});
   });
 
   testWidgets('NUT shell renders the main tabs after onboarding',
@@ -131,7 +130,8 @@ void main() {
       ),
     );
 
-    expect(find.text(l10n.homeTitle), findsOneWidget);
+    // Home shrine screen is identified by its key
+    expect(find.byKey(const Key('homeShrineScreen')), findsOneWidget);
     expect(find.text(l10n.navHome), findsOneWidget);
     expect(find.text(l10n.navFeed), findsOneWidget);
     expect(find.text(l10n.navBadges), findsOneWidget);
@@ -186,8 +186,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
     await tester.pump(const Duration(milliseconds: 500));
 
-    // Shell
-    expect(find.text(l10n.homeTitle), findsOneWidget);
+    // Shell — home shrine screen key
+    expect(find.byKey(const Key('homeShrineScreen')), findsOneWidget);
     expect(find.text(l10n.navHome), findsOneWidget);
   });
 

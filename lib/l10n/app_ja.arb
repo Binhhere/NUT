@@ -39,11 +39,6 @@
   "homeWeekdaySunday": "日",
   "homeNextMilestone": "次のマイルストーン",
   "homeNextMilestoneBody": "{daysLeft, plural, =0{マイルストーン達成です。今日も守り続けましょう。} =1{{milestone}日バッジまであと1日です。} other{{milestone}日バッジまであと{daysLeft}日です。}}",
-  "homeRippleSeedLabel": "\u7d99\u7d9a\u3092\u59cb\u3081\u307e\u3057\u3087\u3046",
-  "homeRippleBreathingLabel": "\u7a2e\u304c\u80b2\u3063\u3066\u3044\u307e\u3059",
-  "homeRipplePiercingLabel": "{total}\u500b\u306e\u30ea\u30f3\u30b0\u306e\u3046\u3061{pierced}\u500b\u304c\u958b\u304d\u307e\u3057\u305f - {daysLeft, plural, =0{\u4eca\u65e5\u30d6\u30ec\u30a4\u30af\u30b9\u30eb\u30fc} =1{\u30d6\u30ec\u30a4\u30af\u30b9\u30eb\u30fc\u307e\u3067\u3042\u30681\u65e5} other{\u30d6\u30ec\u30a4\u30af\u30b9\u30eb\u30fc\u307e\u3067\u3042\u3068{daysLeft}\u65e5}}",
-  "homeRippleBreakthroughLabel": "\u4eca\u65e5\u30d6\u30ec\u30a4\u30af\u30b9\u30eb\u30fc",
-  "homeRipplePetLabel": "\u30da\u30c3\u30c8\u30b3\u30f3\u30d1\u30cb\u30aa\u30f3\u304c\u89e3\u653e\u3055\u308c\u307e\u3057\u305f",
   "homeQuoteTitle": "今日",
   "homeQuoteBody": "強さよりも、守られたひとつの選択が大切です。",
   "homeRyanTeaserTitle": "Ryan companion",
@@ -260,5 +255,8 @@
   "analyticsTriggerLateNight": "深夜",
   "analyticsTriggerStress": "ストレス",
   "analyticsTriggerBoredom": "退屈",
-  "analyticsUnlockCta": "分析を解除 - 近日公開"
+  "analyticsUnlockCta": "分析を解除 - 近日公開",
+  "homeShrineRootingLabel": "根が深まっています",
+  "homeShrineOpeningLabel": "殻が開いています",
+  "homeShrinesSproutLabel": "芽が育っています"
 }

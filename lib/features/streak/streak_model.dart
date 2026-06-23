@@ -1,4 +1,4 @@
-/// Visual phase of the streak ripple/pet system on the Home screen.
+/// Visual phase of the Home shrine system.
 enum RipplePhase {
   /// Day 0: no active streak yet — just a dim seed.
   seed,
@@ -12,22 +12,12 @@ enum RipplePhase {
   /// (crumble) over time rather than vanishing instantly.
   piercing,
 
-  /// Day 21, played once: rings collapse inward and vanish, the seed
-  /// flashes and flies diagonally up-right, becoming the pet.
+  /// Day 21, played once: the shell opens and the core emits a calm pulse.
   breakthrough,
 
-  /// Day 22+: stable pet companion state. Accessories unlock at
-  /// 22 / 100 / 200 / 365 days and stack (kept, not replaced).
+  /// Day 22+: sprout phase.
+  /// Kept as `pet` to avoid a risky enum rename cascade.
   pet,
-}
-
-/// Accessories the pet companion can wear, unlocked cumulatively by
-/// streak day and stacked (earlier accessories are kept).
-enum PetAccessory {
-  hat, // day 22+
-  glasses, // day 100+
-  drink, // day 200+
-  chair, // day 365+
 }
 
 class StreakModel {
@@ -175,19 +165,6 @@ class StreakModel {
   }
 
   double get breathingProgress => breathingProgressAt();
-
-  /// Accessories unlocked so far, cumulative (earlier ones stay).
-  Set<PetAccessory> petAccessoriesAt([DateTime? now]) {
-    final days = currentStreakDays(now);
-    final result = <PetAccessory>{};
-    if (days >= 22) result.add(PetAccessory.hat);
-    if (days >= 100) result.add(PetAccessory.glasses);
-    if (days >= 200) result.add(PetAccessory.drink);
-    if (days >= 365) result.add(PetAccessory.chair);
-    return result;
-  }
-
-  Set<PetAccessory> get petAccessories => petAccessoriesAt();
 
   StreakModel copyWith({
     DateTime? startDate,

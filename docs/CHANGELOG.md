@@ -2,6 +2,14 @@
 
 Track work sessions here so README/checklists do not become the only record.
 
+## 2026-06-23 - Remove legacy pet path from Home shrine
+
+- Removed the old pet companion and accessory progression from the Home shrine path.
+- Deleted legacy ripple/pet visual widgets that were no longer referenced by Home.
+- Kept the compatibility `RipplePhase.pet` enum value but treats Day 22+ as sprout phase in the shrine visual.
+- Updated streak and widget tests to assert sprout phase behavior without pet accessories.
+- Validation passed `flutter gen-l10n`, `flutter analyze`, and `flutter test`.
+
 ## 2026-06-22 - Ripple pet visual refactor
 
 - Replaced the old one-sided ripple visual with seed, breathing, pierced-ring, breakthrough, and pet companion phases.

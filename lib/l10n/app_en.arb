@@ -69,24 +69,18 @@
       }
     }
   },
-  "homeRippleSeedLabel": "Start your streak",
-  "homeRippleBreathingLabel": "Seed growing",
-  "homeRipplePiercingLabel": "{pierced} of {total} rings opened - {daysLeft, plural, =0{breakthrough today} =1{1 day to breakthrough} other{{daysLeft} days to breakthrough}}",
-  "@homeRipplePiercingLabel": {
-    "placeholders": {
-      "pierced": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      },
-      "daysLeft": {
-        "type": "int"
-      }
-    }
+  "homeShrineRootingLabel": "Rooting deeper",
+  "@homeShrineRootingLabel": {
+    "description": "Shrine phase label for day 0-20 rooting/cracking phase."
   },
-  "homeRippleBreakthroughLabel": "Breakthrough today",
-  "homeRipplePetLabel": "Pet companion unlocked",
+  "homeShrineOpeningLabel": "Shell opening",
+  "@homeShrineOpeningLabel": {
+    "description": "Shrine phase label for day 21 breakthrough."
+  },
+  "homeShrinesSproutLabel": "Sprout growing",
+  "@homeShrinesSproutLabel": {
+    "description": "Shrine phase label for day 22+ sprout phase."
+  },
   "homeQuoteTitle": "Today",
   "homeQuoteBody": "You do not need intensity. You need one protected choice.",
   "@homeQuoteBody": {
