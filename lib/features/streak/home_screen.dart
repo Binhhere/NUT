@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         key: _shrineKey,
                         streak: widget.streak,
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 38),
 
                       // ── Check-in button ──────────────────
                       _ShrineCheckInButton(
@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             : l10n.homeCheckInToday,
                         isCheckedIn: widget.streak.isCheckedInToday,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
 
                       // ── Reset button (subtle) ────────────
                       _ShrineResetButton(
@@ -139,15 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // ── Bottom: daily quote ────────────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(28, 0, 28, 20),
+              padding: const EdgeInsets.fromLTRB(30, 6, 30, 22),
               child: Text(
                 l10n.homeQuoteBody,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: palette.textMuted,
-                      fontSize: 12,
+                      color: const Color(0xFF9A8A76).withOpacity(0.76),
+                      fontSize: 12.5,
                       fontStyle: FontStyle.italic,
-                      height: 1.5,
+                      height: 1.55,
                     ),
               ),
             ),
@@ -205,7 +205,7 @@ class _ShrineCheckInButton extends StatelessWidget {
           : const Color(0xFF553414).withOpacity(0.84),
       focusBorder: _amberBorder.withOpacity(0.58),
       glow: enabled && !isCheckedIn
-          ? _amberBorder.withOpacity(0.10)
+          ? _amberBorder.withOpacity(0.07)
           : Colors.transparent,
       fontSize: 15,
       fontWeight: FontWeight.w600,
@@ -246,6 +246,7 @@ class _ShrineResetButton extends StatelessWidget {
       glow: Colors.transparent,
       fontSize: 14,
       fontWeight: FontWeight.w500,
+      height: 50,
     );
   }
 }
@@ -263,6 +264,7 @@ class _ShrineActionButton extends StatefulWidget {
     required this.glow,
     required this.fontSize,
     required this.fontWeight,
+    this.height = 54,
     this.onPressed,
   });
 
@@ -277,6 +279,7 @@ class _ShrineActionButton extends StatefulWidget {
   final Color glow;
   final double fontSize;
   final FontWeight fontWeight;
+  final double height;
   final VoidCallback? onPressed;
 
   @override
@@ -324,7 +327,7 @@ class _ShrineActionButtonState extends State<_ShrineActionButton> {
             curve: Curves.easeOut,
             child: AnimatedContainer(
               width: double.infinity,
-              height: 54,
+              height: widget.height,
               duration: const Duration(milliseconds: 140),
               curve: Curves.easeOut,
               decoration: BoxDecoration(

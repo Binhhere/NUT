@@ -43,12 +43,12 @@ class ShrineCoreState extends State<ShrineCore> with TickerProviderStateMixin {
 
     _breathingCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 3200),
+      duration: const Duration(milliseconds: 4600),
     )..repeat(reverse: true);
 
     _openCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1600),
+      duration: const Duration(milliseconds: 1850),
     );
 
     _sproutCtrl = AnimationController(
@@ -58,7 +58,7 @@ class ShrineCoreState extends State<ShrineCore> with TickerProviderStateMixin {
 
     _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 480),
+      duration: const Duration(milliseconds: 560),
     );
 
     _syncToStreak();
@@ -135,7 +135,7 @@ class ShrineCoreState extends State<ShrineCore> with TickerProviderStateMixin {
                   Curves.easeInOut.transform(_breathingCtrl.value);
               final pulse = Curves.elasticOut
                   .transform(Curves.easeOut.transform(_pulseCtrl.value));
-              final scale = 1.0 + pulse * 0.04;
+              final scale = 1.0 + pulse * 0.032;
 
               final crackProgress = switch (phase) {
                 ShrinePhase.cracking =>
@@ -165,7 +165,7 @@ class ShrineCoreState extends State<ShrineCore> with TickerProviderStateMixin {
             },
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 18),
 
         // Day count
         _DayLabel(days: days, phase: phase),
@@ -236,7 +236,7 @@ class _DayLabel extends StatelessWidget {
           ),
         ),
         if (days > 0) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 400),
             child: Text(
@@ -272,8 +272,8 @@ class _StatsOverlay extends StatelessWidget {
       opacity: 1.0,
       duration: const Duration(milliseconds: 200),
       child: Container(
-        margin: const EdgeInsets.only(top: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        margin: const EdgeInsets.only(top: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: palette.card,
           borderRadius: BorderRadius.circular(NutRadius.card),
@@ -344,7 +344,7 @@ class _StatRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: isLast ? 0 : 10),
+      padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

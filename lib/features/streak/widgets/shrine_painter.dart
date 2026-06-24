@@ -96,11 +96,11 @@ class ShrinePainter extends CustomPainter {
   static const _outerR = 130.0;
   static const _innerR = 32.0;
   static const _coreR = 14.0;
-  static const _layerWarpStrength = 0.28;
-  static const _layerThickness = 12.0;
+  static const _layerWarpStrength = 0.30;
+  static const _layerThickness = 13.0;
   static const _grooveWidth = 8.0;
-  static const _massShadowYOffset = 28.0;
-  static const _lowerMassDarkenOpacity = 0.22;
+  static const _massShadowYOffset = 30.0;
+  static const _lowerMassDarkenOpacity = 0.26;
   static const _cavityRadius = 34.0;
   static const _deepSourceYOffset = 112.0;
   static const _deepSourceWidth = 118.0;
@@ -179,22 +179,22 @@ class ShrinePainter extends CustomPainter {
     canvas.drawOval(
       Rect.fromCenter(
         center: base + const Offset(0, 42),
-        width: _outerR * 1.95,
-        height: 72,
+        width: _outerR * 2.02,
+        height: 78,
       ),
       Paint()
-        ..color = Colors.black.withOpacity(0.34)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 24),
+        ..color = Colors.black.withOpacity(0.38)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 26),
     );
     canvas.drawOval(
       Rect.fromCenter(
         center: base + const Offset(0, 22),
-        width: _outerR * 1.45,
-        height: 48,
+        width: _outerR * 1.52,
+        height: 50,
       ),
       Paint()
-        ..color = Colors.black.withOpacity(0.28)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16),
+        ..color = Colors.black.withOpacity(0.30)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 17),
     );
   }
 
@@ -245,7 +245,7 @@ class ShrinePainter extends CustomPainter {
     canvas.drawPath(
       backingPath,
       Paint()
-        ..color = Colors.black.withOpacity(0.18 + t * 0.13)
+        ..color = Colors.black.withOpacity(0.22 + t * 0.14)
         ..style = PaintingStyle.fill,
     );
 
@@ -257,7 +257,7 @@ class ShrinePainter extends CustomPainter {
     canvas.drawPath(
       groovePath,
       Paint()
-        ..color = palette.crackColor.withOpacity(0.22 + t * 0.14)
+        ..color = palette.crackColor.withOpacity(0.26 + t * 0.15)
         ..strokeWidth = (_grooveWidth * (1.12 - t * 0.28)).clamp(4.0, 9.0)
         ..strokeJoin = StrokeJoin.round
         ..style = PaintingStyle.stroke,
@@ -270,9 +270,9 @@ class ShrinePainter extends CustomPainter {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color.lerp(layerColor, palette.rimHighlight, 0.18)!,
+            Color.lerp(layerColor, palette.rimHighlight, 0.16)!,
             layerColor,
-            Color.lerp(layerColor, palette.crackColor, 0.42)!,
+            Color.lerp(layerColor, palette.crackColor, 0.50)!,
           ],
           stops: const [0.0, 0.46, 1.0],
         ).createShader(bounds)
@@ -299,7 +299,7 @@ class ShrinePainter extends CustomPainter {
   Path _buildLayerPath(Offset center, double r, int seed) {
     final points = <Offset>[];
     final xScale = 1.04 + _signedNoise(seed, 90) * 0.06;
-    final yScale = 0.90 + _signedNoise(seed, 91) * 0.05;
+    final yScale = 0.86 + _signedNoise(seed, 91) * 0.045;
     final layerOffset = Offset(
       _signedNoise(seed, 92) * 5.5,
       _signedNoise(seed, 93) * 4.0,
@@ -307,7 +307,7 @@ class ShrinePainter extends CustomPainter {
 
     for (var i = 0; i < _majorPointCount; i++) {
       final angle = -math.pi / 2 + (i / _majorPointCount) * math.pi * 2;
-      final lowerMass = math.sin(angle) > 0 ? 1.07 : 0.97;
+      final lowerMass = math.sin(angle) > 0 ? 1.09 : 0.96;
       final warp = 1 + _signedNoise(seed, i) * _layerWarpStrength;
       final localR = r * lowerMass * warp;
       points.add(
@@ -346,7 +346,7 @@ class ShrinePainter extends CustomPainter {
     double t,
   ) {
     final groovePaint = Paint()
-      ..color = palette.crackColor.withOpacity(0.13 + t * 0.12)
+      ..color = palette.crackColor.withOpacity(0.15 + t * 0.13)
       ..strokeWidth = 1.0 + (1 - t) * 0.8
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -380,7 +380,7 @@ class ShrinePainter extends CustomPainter {
     double t,
   ) {
     final darkChip = Paint()
-      ..color = Colors.black.withOpacity(0.12 + t * 0.10)
+      ..color = Colors.black.withOpacity(0.14 + t * 0.11)
       ..strokeWidth = 3.0 + t * 1.6
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -503,8 +503,8 @@ class ShrinePainter extends CustomPainter {
     canvas.drawOval(
       rect.inflate(9),
       Paint()
-        ..color = Colors.black.withOpacity(0.42)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16),
+        ..color = Colors.black.withOpacity(0.48)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18),
     );
     canvas.drawOval(
       rect,
@@ -512,8 +512,8 @@ class ShrinePainter extends CustomPainter {
         ..shader = RadialGradient(
           center: const Alignment(0, -0.08),
           colors: [
-            const Color(0xFF100B08).withOpacity(0.94),
-            palette.coreOuter.withOpacity(0.22),
+            const Color(0xFF100B08).withOpacity(0.97),
+            palette.coreOuter.withOpacity(0.24),
             palette.rimHighlight.withOpacity(0.11),
             Colors.transparent,
           ],
@@ -705,7 +705,7 @@ class ShrinePainter extends CustomPainter {
 
   Offset _polar(Offset center, double angle, double r, int seed) {
     final xScale = 1.04 + _signedNoise(seed, 90) * 0.06;
-    final yScale = 0.90 + _signedNoise(seed, 91) * 0.05;
+    final yScale = 0.86 + _signedNoise(seed, 91) * 0.045;
     return center +
         Offset(
           math.cos(angle) * r * xScale,
