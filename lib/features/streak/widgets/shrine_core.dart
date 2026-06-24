@@ -226,7 +226,7 @@ class _DayLabel extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: '  ${l10n.homeDays}',
+                text: '  ${_homeDayUnit(context, days)}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: _dayUnit.withOpacity(0.74),
                   fontSize: 13,
@@ -277,19 +277,23 @@ class _StatsOverlay extends StatelessWidget {
         decoration: BoxDecoration(
           color: palette.card,
           borderRadius: BorderRadius.circular(NutRadius.card),
-          border: Border.all(color: palette.accentGold.withOpacity(0.18)),
+          border: Border.all(
+            color: const Color(0xFFD4A87A).withOpacity(0.18),
+          ),
         ),
         child: Column(
           children: [
             _StatRow(
               label: l10n.homeCurrentStreak,
-              value: '${streak.currentStreakDays()} ${l10n.homeDays}',
+              value:
+                  '${streak.currentStreakDays()} ${_homeDayUnit(context, streak.currentStreakDays())}',
               palette: palette,
               theme: theme,
             ),
             _StatRow(
               label: l10n.homeBestStreak,
-              value: '${streak.effectiveBestStreak} ${l10n.homeDays}',
+              value:
+                  '${streak.effectiveBestStreak} ${_homeDayUnit(context, streak.effectiveBestStreak)}',
               palette: palette,
               theme: theme,
             ),
@@ -301,7 +305,8 @@ class _StatsOverlay extends StatelessWidget {
             ),
             _StatRow(
               label: l10n.homeNextMilestone,
-              value: '${streak.daysToNextMilestone} ${l10n.homeDays}',
+              value:
+                  '${streak.daysToNextMilestone} ${_homeDayUnit(context, streak.daysToNextMilestone)}',
               palette: palette,
               theme: theme,
               isLast: true,
@@ -311,6 +316,14 @@ class _StatsOverlay extends StatelessWidget {
       ),
     );
   }
+}
+
+String _homeDayUnit(BuildContext context, int count) {
+  final unit = context.l10n.homeDays;
+  if (count == 1 && unit.endsWith('s')) {
+    return unit.substring(0, unit.length - 1);
+  }
+  return unit;
 }
 
 class _StatRow extends StatelessWidget {
